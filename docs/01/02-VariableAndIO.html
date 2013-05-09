@@ -1,49 +1,429 @@
-<!DOCTYPE html>
-<!--
-  TechFUN HTML5 slide template
+  <!DOCTYPE html>
+  <!--
+    TechFUN HTML5 slide template
 
-  Authors: Kodama Shindo(@kodam)
+    Authors: Kodama Shindo(@kodam)
 
-  URL: http://code.google.com/p/html5slides/
--->
+    URL: http://code.google.com/p/html5slides/
+  -->
 
-<html>
+  <html>
   <head>
-    <title>第2回 C言語勉強会</title>
+    <title>C言語勉強会 第2回</title>
 
     <meta charset='utf-8'>
     <script
-      src='../template/files/slides.js'></script>
+    src='../template/files/slides.js'></script>
   </head>
-  
+
   <style>
-    /* Your individual styles here, or just use inline styles if that’s
-       what you want. */
-    
-    
-  </style>
-
-  <body style='display: none'>
-
-    <section class='slides layout-regular template-default'>
+      /* Your individual styles here, or just use inline styles if that’s
+      what you want. */
       
-      <!-- Your slides (<article>s) go here. Delete or comment out the
-           slides below. -->
+      
+      </style>
 
-      <article>
-        <h1>
-          第2回　C言語勉強会
-          <br>
-          　変数と入出力
-        </h1>
-        <p>
-          Hiroaki Murayama 
-          <br>
-          May 9, 2013
-        </p>
-      </article>
+      <body style='display: none'>
 
-    </section>
+        <section class='slides layout-regular template-default'>
 
-  </body>
-</html>
+        <!-- Your slides (<article>s) go here. Delete or comment out the
+        slides below. -->
+
+        <article>
+          <h1>
+            変数と入出力
+          </h1>
+          <p>C言語勉強会 第二回</p>
+          <p>
+            Yuya Kumagai 
+            <br>
+            May 10, 2013
+          </p>
+        </article>
+
+        <article>
+          <h3>
+            変数
+          </h3>
+          <ul>
+            <li>
+              プログラミングの際に、数字や文字を保存する必要がある機会は多い。
+            </li>
+            <li>
+              そういう時に数字や文字を（メモリに）入れておく入れ物を<span class="red">変数</span>と呼ぶ。
+            </li>
+          </ul>
+        </article>
+
+        <article>
+          <h3>
+            型
+          </h3>
+          <ul>
+            <li>
+              変数には入れておけるデータの内容によって<span class="red">型</span>と呼ばれるものがある。
+            </li>
+            <li>
+              例）
+              <ul>
+                <table>
+                  <tr>
+                    <td>
+                      整数
+                    </td>
+                    <td>
+                      int型
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      実数※
+                    </td>
+                    <td>
+                      float型
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+
+                    </td>
+                    <td>
+                      double型
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      文字
+                    </td>
+                    <td>
+                      char型
+                    </td>
+                  </tr>
+                </table>
+              </ul>
+            </li>
+          </ul>
+          <p>※プログラミングでは、整数以外の数字のことを<span class="red">実数</span>と呼ぶ。数学の実数と違う意味であることに注意。</p>
+        </article>
+
+        <article>
+          <h3>
+            変数の宣言
+          </h3>
+          <ul>
+            <li>
+              変数はプログラムの中で<span class="red">宣言</span>をすることで使えるようになる。
+            </li>
+            <li>
+              例）
+              <section>
+<pre>
+int a, b, value;
+char name;
+</pre>
+              </section>
+            </li>
+            <li>
+              上のような記述が宣言で、このように、「<span class="blue">型名</span> 変数名」の順に書く。
+            </li>
+            <li>
+              この場合、「a」、「b」、「value」という名前の<span class="blue">int</span>型の変数と、「name」という名前の<span class="blue">char</span>型変数が宣言され、使えるようになった。
+            </li>
+          </ul>
+        </article>
+
+        <article>
+          <h3>
+            変数の名前
+          </h3>
+          <ul>
+            <li>
+              基本的に変数の名前は<span class="red">重複しないなら自由</span>につけられるが、<span class="red">名前の最初が数字以外</span>でなければならない
+            </li>
+            <li>
+              変数の名前は<span class="red">31文字以内</span>。
+            </li>
+            <li>
+              名前の中で<span class="red">ハイフン( - )は使用できない</span>。
+            </li>
+            <li>
+              アルファべットの<span class="red">大文字と小文字は別の文字</span>として扱われる。
+            </li>
+            <li>
+              <span class="red">予約語</span>と呼ばれるプログラムの命令を指示する単語は<span class="red">使用できない</span>
+            </li>
+          </ul>
+        </article>
+
+        <article>
+          <h3>
+            変数の代入と初期化
+          </h3>
+          <ul>
+            <li>
+              変数に値を入れることを<span class="red">代入</span>という。
+            </li>
+            <section>
+<pre>
+int a; /* int型変数 a を宣言 */
+a = 10; /* 右辺の値 (10) を左辺の変数 (a) に代入 */
+</pre>
+            </section>
+            <li>
+              変数を宣言する際に、あらかじめ中身を入れることを<span class="red">初期化</span>という。
+            </li>
+            <section>
+              <pre>int b = 19; /* int型変数 b を宣言し、19を代入 */</pre>
+            </section>
+            <li>
+              初期化は<span class="red">宣言時のみ可能</span>。
+            </li>
+          </ul>
+        </article>
+
+        <article>
+          <h3>
+            演算子
+          </h3>
+          <ul>
+            <li>
+              プログラムの中では変数を使って計算（演算）する場面が多々ある。
+            </li>
+            <li>
+              その際に使うのが<span class="red">演算子</span>である。
+            </li>
+          </ul>
+          <table>
+            <tr>
+              <td>
+                =
+              </td>
+              <td>
+                代入。イコールの意味ではない
+              </td>
+            </tr>
+            <tr>
+              <td>
+                +
+              </td>
+              <td>
+                数学の加算と同じ
+              </td>
+            </tr>
+            <tr>
+              <td>
+                -
+              </td>
+              <td>
+                数学の減算と同じ
+              </td>
+            </tr>
+            <tr>
+              <td>
+                *
+              </td>
+              <td>
+                数学の乗算と同じ
+              </td>
+            </tr>
+            <tr>
+              <td>
+                /
+              </td>
+              <td>
+                数学の割り算と同じ
+              </td>
+            </tr>
+            <tr>
+              <td>
+                %
+              </td>
+              <td>
+                割り算の余りを表す
+              </td>
+            </tr>
+          </table>
+          <p>他にもif文などで使う比較演算子や論理演算子がある。第3回資料参照。</p>
+        </article>
+
+        <article>
+          <h3>
+            出力
+          </h3>
+          <ul>
+            <li>
+              <span class="red">printf関数</span>を使って、<span class="red">変数を出力</span>する。
+            </li>
+            <section>
+<pre>
+/* これは全体のコードの一部なので、これだけでは動作しません */
+int a = 5;
+int b = 10;
+printf( "aは %d で、bは %d です。\n", a, b ); /* 出力を行う */
+</pre>
+            </section>
+            <li>
+              <span class="red">１個目の引数は文字列。</span>変数を表示したい箇所に「<span class="blue">%d</span>」のような変数を表す記号をいれる。<span class="red">２個目以降の引数は変数。</span>出力したい変数を入れる。
+            </li>
+            <li>
+              上記の例では変数を2個入れたが、<span class="red">変数の数は何個でも構わない。</span>0個でも良い。
+            </li>
+            <section>
+<pre>
+実行結果：aは 5 で、bは 10 です。
+</pre>
+            </section>
+          </ul>
+        </article>
+
+        <article>
+          <h3>
+            書式指定子
+          </h3>
+          <section>
+<pre>
+/* 前のページより */
+printf( "aは %d で、bは %d です。\n", a, b );
+</pre>
+           </section>
+          <ul>
+            <li>
+              先ほど紹介した「<span class="blue">%d</span>」のような変数を表す記号だが、これは変数の型によってそれぞれ別の記号を使う。
+            </li>
+          </ul>
+          <table>
+            <tr>
+              <td>
+                int型
+              </td>
+              <td>
+                %d
+              </td>
+            </tr>
+            <tr>
+              <td>
+                float型
+              </td>
+              <td>
+                %f
+              </td>
+            </tr>
+            <tr>
+              <td>
+                double型
+              </td>
+              <td>
+                %lf
+              </td>
+            </tr>
+            <tr>
+              <td>
+                char型
+              </td>
+              <td>
+                %c
+              </td>
+            </tr>
+            <tr>
+              <td>
+                文字列
+              </td>
+              <td>
+                %s
+              </td>
+            </tr>
+          </table>
+          <p><span class="red">出力する桁数の指定等</span>、他にもいろいろできるので、必要なときは「書式指定子」でググる</p>
+        </article>
+        <article>
+          <h3>
+            エスケープシーケンス
+          </h3>
+          <ul>
+            <li>
+              今まで出力した文字列の最後に「<span class="blue">\n</span>」と書いてある。
+            </li>
+          </ul>
+          <ul>
+            <li>
+              「<span class="blue">\n</span>」のように「<span class="blue">\</span>」から始まる文字※（文字列ではない）は、<span class="red">エスケープシーケンス（エスケープ文字）</span>である（第一回資料参照）。「<span class="blue">\n</span>」は<span class="red">改行</span>という意味である。
+            </li>
+          </ul>
+          <ul>
+            <li>
+              <span class="blue">エスケープ文字</span>は、普通の文字と同じ扱いなので何個でも置ける。
+            </li>
+          </ul>
+          <ul>
+            <li>
+              「<span class="blue">\n</span>」を毎回書いたが、かかなくても<span class="red">エラーにはならない</span>。改行がなされないだけ。
+            </li>
+          </ul>
+          <p>※Windowsだと、「<span class="blue">\</span>」が「<span class="blue">¥</span>」になるが、意味は同じである。</p>
+        </article>
+        <article>
+          <h3>
+            出力例（これまでのを踏まえて）
+          </h3>
+          
+          <ul>
+            <li>
+              int型だけでなく、float型、double型の変数も出力する例。（\nを３回使い３回改行している）
+            </li>
+          
+            <section>
+<pre>
+/* これは全体のコードの一部なので、これだけでは動作しません */
+int a = 10;
+float b = 5.4321;
+double c = 9.87654321;
+printf( "aは %d。\nbは %f。\ncは %lf です。\n", a, b, c );
+</pre>
+            </section>
+
+            <li>
+              実行結果
+            </li>
+
+            <section>
+<pre>
+aは 10。
+bは 5.432100。
+cは 9.876543 です。
+</pre>
+            </section>
+            
+          </ul>
+        </article>
+        <article>
+          <h3>
+            入力
+          </h3>
+          
+          <ul>
+            <li>
+              入力には<span class="red">scanf関数</span>というものを使う。キーボードで入力した内容を変数に入れることが出来る。
+            </li>
+          
+            <section>
+<pre>
+/* これは全体のコードの一部なので、これだけでは動作しません */
+int a, b;
+scanf( "%d %d", &a, &b );
+</pre>
+            </section>
+
+            <li>
+              上のような記述で a と b に数字を入れることが出来る。
+            </li>
+            <li>
+              printf関数と違って変数の前に<span class="red"> &amp; （アンパーサンド）が必要</span>。
+            </li>
+            
+          </ul>
+        </article>
+      </section>
+
+    </body>
+    </html>
