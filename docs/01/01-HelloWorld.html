@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<!--
+  TechFUN HTML5 slide template
+
+  Authors: Kodama Shindo(@kodam)
+
+  URL: http://code.google.com/p/html5slides/
+-->
+
+<html>
+  <head>
+    <title>第1回 C言語勉強会</title>
+
+    <meta charset='utf-8'>
+    <script
+      src='../template/files/slides.js'></script>
+  </head>
+  
+  <style>
+    /* Your individual styles here, or just use inline styles if that’s
+       what you want. */
+    
+    
+  </style>
+
+  <body style='display: none'>
+
+    <section class='slides layout-regular template-default'>
+      
+      <!-- Your slides (<article>s) go here. Delete or comment out the
+           slides below. -->
+
+      <article>
+        <h1>
+          第1回　C言語勉強会
+          <br>
+          　プログラミングとは何か
+        </h1>
+        <p>
+          Hiroaki Murayama 
+          <br>
+          May 9, 2013
+        </p>
+      </article>
+      
+      <article>
+        <h3>
+          プログラミング
+        </h3>
+        <ul>
+          <li>
+            <span class="red">プログラミング</span>とは、人間の意図した処理を行うようにコンピュータに指示を与える命令書(<span class="red">プログラム</span>)を作成する作業のことである。
+          </li>
+          <li>
+            プログラムの命令書は、さまざまな専用の言語で文章(<span class="red">ソースコード</span>)から作成される。(C、C＋＋、Javaなど)
+          </li>
+          <li>
+            しかし、そのままのソースコードでは、コンピュータは命令を理解できない。
+          </li>
+          <li>
+            コンピュータが理解できる言葉(<span class="red">機械語</span>)に翻訳しなくてはならない。
+          </li>
+          <li>
+            命令を記述した機械語の命令書がプログラムである。
+          </li>
+        </ul>
+      </article>
+
+      <article>
+        <h3>
+          コンパイル 
+        </h3>
+        <ul>
+          <li>
+            <span class="red">コンパイル</span>とは、ソースコードを機械語の命令書であるプログラムに変換する作業である。
+          </li>
+          <li>
+            また、コンパイルする前のソースコードのファイルを<span class="red">ソースファイル</span>といい。
+            コンパイルされたプログラムを<span class="red">実行ファイル</span>と呼ぶ。
+          </li>
+          <li>
+            プログラミングには、さまざまな種類があり、コンパイル形式を使わずに命令を実行させる方法も沢山ある。(ここでは割愛)
+          </li>
+        </ul>
+      </article>
+
+      <article>
+        <h3>
+          C言語のソースコードの基本形 
+        </h3>
+        <section>
+        <pre>
+#include &lt;stdio.h&gt; /* プログラミングに必要な命令群を読み込む */
+
+int main(void)
+{
+  /* プログラムは{}で囲まれた部分の命令が実行される */
+
+  /* 端末にHello World+(改行)を表示させる命令 */
+  printf(&quot;Hello World!\n&quot;);
+
+  return 0; /* プログラムを終了させる */
+}        </pre>
+        </section>
+        <ul>
+          <li>
+            /*と*/で囲まれた部分は<span class="red">コメント</span>と言い、コンパイル時には無視される。
+          </li>
+          <li>
+            C言語では、コンピュータへの命令を<span class="red">関数</span>で表す。また、ソースコードは関数の集合であり、printfもmainも関数である。
+          </li>
+        </ul>
+      </article>
+
+      <article>
+        <h3>
+          C言語のソースコードの基本形 
+        </h3>
+        <ul>
+          <li>
+            C言語はmain関数を必ず持ち、最初にmain関数の中身が実行される。また、main関数以外の関数も作成することが出来る。
+            一般的にプログラムが最初に実行される領域のことを<span class="red">アプリケーションエントリポイント</span>と呼ぶ。
+            C言語のアプリケーションエントリポイントはmain関数である。
+          </li>
+          <li>
+            ソースコードでは、命令がある行の最後に<span class="red">;(セミコロン)</span>をつける。空白や改行しか無い行はコンパイル時に無視されるので必要ない。
+          </li>
+        </ul>
+      </article>
+
+      <article>
+        <h3>
+          printfの説明
+        </h3>
+        <section>
+        <pre>
+  /* 端末にHello World+(改行)を表示させる命令 */
+  printf(&quot;Hello World!\n&quot;);</pre>
+        </section>
+        <ul>
+          <li>
+            関数はprintf("Hello")のように書き、printfは<span class="red">関数名</span>といい、()でくくられた部分を<span class="red">引数</span>という。
+            関数は、関数名と小括弧()と引数から成り立っており、引数のないものも存在する。
+          </li>
+          <li>
+            この関数の引数は、&quot;Hello World!\n&quot;である。"(ダブルクォート)で囲われた文字を文字列としてひとかたまりで扱う。
+            この関数は、<span class="red">引数で指定された文字列を端末に表示する関数</span>である。
+          </li>
+        </ul>
+      </article>
+
+      <article>
+        <h3>
+          printfの説明
+        </h3>
+        <section>
+        <pre>
+  /* 端末にHello World+(改行)を表示させる命令 */
+  printf(&quot;Hello World!\n&quot;);</pre>
+        </section>
+        <ul>
+          <li>
+            改行は<span class="red">\n(バックスラッシュエヌ)</span>で表し、文字として表せない制御文字として、エスケープシーケンスと呼ばれる特別な表記がある。Windowsでは\の代わりに¥を使うので注意。
+          </li>
+        </ul>
+        <p>
+          エスケープシーケンス一覧表 - <a href="http://wisdom.sakura.ne.jp/programming/c/Cdata1.html" target="_blank">http://wisdom.sakura.ne.jp/programming/c/Cdata1.html</a>
+        </p>
+      </article>
+
+    </section>
+
+  </body>
+</html>
