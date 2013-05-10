@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<!--
+	TechFUN HTML5 slide template
+
+	Authors: Kodama Shindo(@kodam)
+
+	Using: Google HTML5 slides template(https://code.google.com/p/html5slides/)
+-->
+
+<html>
+<head>
+	<title>C言語勉強会 第3回</title>
+
+	<meta charset='utf-8'>
+	<script
+	src='../template/files/slides.js'></script>
+</head>
+
+
+<body style='display: none'>
+
+	<section class='slides layout-regular template-default'>
+
+			<!-- Your slides (<article>s) go here. Delete or comment out the
+			slides below. -->
+
+
+			<article>
+				<h1>
+					分岐
+				</h1>
+				<p>
+					C言語勉強会 第3回
+				</p>
+				<p>
+					kumar
+					<br>
+					May 10, 2013
+				</p>
+			</article>
+			
+			<article>
+				<h3>分岐</h3>
+				<ul>
+					<li>
+						これまでのプログラムは、<span class="blue">main関数から始まり、順番に下の方へ流 れていき、main関数の終了とともに終わる</span>という一直線のものばかりでした。
+					</li>
+					<li>
+						処理を途中で条件により分けることを、<span class="red">分岐</span>と言います。
+					</li>
+				</ul>
+			</article>
+
+			<article>
+				<h3>
+					if文
+				</h3>
+				<ul>
+					<li>
+						<span class="red">if文</span>はそのまま「<span class="blue">もし〜だったら、〜する</span>」といった<span class="blue">命令の形式</span>です。
+					</li>
+					<section>
+<pre>
+if (条件式)
+  真文;
+</pre>
+<p>or</p>
+<pre>
+if (条件式) {
+  複数行の真文;	/* ０行以上 */
+}
+</pre>
+					</section>
+					<li>
+						もし<span class="red">条件式が真</span>だったら、<span class="red">真文</span>を実行する。
+					</li>
+				</ul>
+			</article>
+
+			<article>
+				<h3>
+					if文
+				</h3>
+				<ul>
+					<li>
+						変数 x が 5 <span class="red">なら</span>、<span class="green">「こんにちは」と出力する。</span>
+					</li>
+					<section>
+<pre>
+if (x == 5) {
+  printf("こんにちは\n");
+}
+</pre>
+					</section>
+					<li>
+						変数 y が 10 以上 <span class="red">なら</span>、<span class="green">「こんばんは」と出力する。</span>
+					</li>
+					<section>
+<pre>
+if (y >= 10) {
+  printf("こんばんは\n");
+}
+</pre>
+					</section>
+				</ul>
+			</article>
+
+			<article>
+				<h3>
+					if文
+				</h3>
+				<ul>
+					<li>
+						if文で付けられる条件は１つではなく、<span class="red">複数つけることもできます</span>
+					</li>
+				</ul>
+				<section>
+<pre>
+if (a < 5 && b > 10) printf("こんにちは\n");
+</pre>
+				</section>
+				<p><small>もし a が 5 より小さい、<span class="red">かつ</span> b が 10 より大きい なら〜〜</small></p>
+				<section>
+<pre>
+if (a < 7 || b == 5) printf("おはようございます\n");
+</pre>
+				</section>
+				<p><small>もし a が 7 より小さい、<span class="red">または</span> b が 5 なら〜〜</small></p>
+			</article>
+
+			<article>
+				<h3>
+					if文
+				</h3>
+				<ul>
+					<li>
+						<span class="red">elseには</span>、<span class="blue">前の条件以外で</span>という意味があります。
+					</li>
+					<li>
+						else
+					</li>
+					<section>
+<pre>
+if (条件式) {
+  真文
+} else {
+  偽文	/* 条件式が偽のとき実行される */
+}
+</pre>
+					</section>
+					<li>
+						else if
+					</li>
+					<section>
+<pre>
+if (条件式1) {
+  真文1
+} else if (条件式2) {
+  真文2	/* 条件式1が偽、かつ条件式2が真のとき実行される */
+}
+</pre>
+					</section>
+				</ul>
+			</article>
+
+			<article>
+				<h3>
+					switch文
+				</h3>
+				<ul>
+					<li>
+						switch 文は「<span class="blue">変数の値が特定の値だったら、〜してください</span>」という感じの命令です。
+					</li>
+				</ul>
+				<section>
+<pre>
+switch (制御式) {	// 制御式には、変数名を入れる。
+  case 定数1:	// もし x の値が 定数1 なら…
+    文	 	// この文を実行する。
+    break;	// switch文から抜ける。
+  case 定数2:	// もし x の値が 定数2 なら…
+    文   		//
+    break;	//
+  default:	// これまでの条件に当てはまらなかったなら…
+    文  	 	//
+}
+</pre>
+				</section>
+				<p class="smaller">
+					制御式には、変数だけではなく、定数も入れることが出来る。逆に、caseの方の値は定数でなければならない。
+				</p>
+			</article>
+
+			<article>
+				<h3>
+					switch文
+				</h3>
+				<ul>
+					<li>
+						実例）※unkoはint型変数であるとする。
+					</li>
+				</ul>
+				<section>
+<pre>
+switch (unko) {
+  case 1:
+    printf("うんこ可愛い！！\n");
+    break;
+  case 2:
+    printf("うんこしゅごい！！\n");
+    break;
+  default:
+    printf("うんこヤバい！！\n");
+}
+</pre>
+				</section>
+				<p>
+					unkoの値が 1 ならば、「うんこ可愛い!!」と出力され、<br />2 ならば、「うんこしゅごい!!」と出力され、<br />それ以外ならば、「うんこヤバい!!」と出力される。
+				</p>
+			</article>
+
+			<article>
+				<h3>
+					演算子いろいろ
+				</h3>
+				<p>比較演算子（関係演算子）</p>
+				<table>
+					<tr>
+						<td>
+							&lt;
+						</td>
+						<td>
+							左辺が右辺より小さい
+						</td>
+					</tr>
+					<tr>
+						<td>
+							&gt;
+						</td>
+						<td>
+							左辺が右辺より大きい
+						</td>
+					</tr>
+					<tr>
+						<td>
+							&lt;=
+						</td>
+						<td>
+							左辺が右辺以下
+						</td>
+					</tr>
+					<tr>
+						<td>
+							&gt;=
+						</td>
+						<td>
+							左辺が右辺以上
+						</td>
+					</tr>
+					<tr>
+						<td>
+							==
+						</td>
+						<td>
+							左辺が右辺と同じ
+						</td>
+					</tr>
+					<tr>
+						<td>
+							!=
+						</td>
+						<td>
+							左辺が右辺と同じでない
+						</td>
+					</tr>
+				</table>
+				<p>論理演算子</p>
+				<table>
+					<tr>
+						<td>
+							&amp;&amp;
+						</td>
+						<td>
+							左辺かつ右辺（AND）
+						</td>
+					</tr>
+					<tr>
+						<td>
+							||
+						</td>
+						<td>
+							左辺または右辺（OR）
+						</td>
+					</tr>
+				</table>
+			</article>
+
+		</section>
+
+	</body>
+	</html>
