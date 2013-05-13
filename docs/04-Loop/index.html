@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<!--
+  TechFUN HTML5 slide template
+
+  Authors: Kodama Shindo(@kodam)
+
+  Using: Google HTML5 slides template(https://code.google.com/p/html5slides/)
+-->
+<html>
+  <head>
+    <title>ループ</title>
+    <meta charset="utf-8" />
+    <script src="../template/files/slides.js"></script>
+    <style>
+.slides article em {
+    color: red;
+    font-style: normal;
+}
+    </style>
+  </head>
+  <body style="display: none">
+    <section class='slides layout-regular template-default'>
+      <article>
+<h1>ループ</h1>
+
+<p>C言語勉強会 第四回</p>
+
+<p>kumar <br />
+May 13, 2013 <br />
+<a href="http://www.geocities.jp/ky_webid/index.html">引用 : Programming Place Plus</a></p>
+      </article>
+      <article>
+<h3>ループ（反復）ありなしで比較してみる</h3>
+
+<ul>
+<li>入力された文字列を10回繰り返し出力する。</li>
+</ul>
+      </article>
+      <article>
+<h3>ループを使わなかった場合</h3>
+
+<p><em>クソ長くてページに収まらない</em></p>
+
+<pre><code>#include &lt;stdio.h&gt;
+
+int main(void) {
+    char c;
+
+    printf("1文字入力してください：");
+    scanf("%c", &amp;c);
+
+    /* 10回出力する */
+    printf("%c\n", c);
+    printf("%c\n", c);
+    printf("%c\n", c);
+    printf("%c\n", c);
+    printf("%c\n", c);
+    printf("%c\n", c);
+    printf("%c\n", c);
+    printf("%c\n", c);
+    printf("%c\n", c);
+    printf("%c\n", c);
+
+    return 0;
+}
+</code></pre>
+      </article>
+      <article>
+<h3>ループを使って書きなおすと</h3>
+
+<pre><code>#include &lt;stdio.h&gt;
+
+int main(void) {
+    char c;
+
+    printf("1文字入力してください：");
+    scanf("%c", &amp;c);
+
+    /* 10回出力する */
+    int i = 0;
+    while(i &lt; 10) {
+        printf("%c\n", c);
+        i++;    /* iに1を足す。（インクリメントという） */
+    }
+
+    return 0;
+}
+</code></pre>
+
+<p><em>スッキリ！！</em><small>その気になれば10000回ループも簡単</small></p>
+      </article>
+      <article>
+<h3>while文</h3>
+
+<p><em>条件式が真である限り繰り返す文</em></p>
+
+<p>while文の構造）</p>
+
+<pre><code>while( 条件式 ){
+    ループさせる処理
+}
+</code></pre>
+
+<p><em>「条件式」の部分には、「処理を繰り返すのはどんなときか」を記述します。</em></p>
+      </article>
+      <article>
+<h3>while文</h3>
+
+<p>実行される処理の順序</p>
+
+<ol>
+<li>「条件式」を調べる。「真」なら２へ。「偽」なら４へ。</li>
+<li>「ループさせる処理」を実行する。３へ。</li>
+<li>「ループさせる処理」が全て終了したら１へ戻る。</li>
+<li>while文を終了させて、次の処理へ進む。</li>
+</ol>
+      </article>
+      <article>
+<h3>while文</h3>
+
+<p>ページ「ループを使ってみると」の例より抜粋）</p>
+
+<pre><code>/* 10回出力する */
+int i = 0;
+while(i &lt; 10) {
+    printf("%c\n", c);
+    i++;    /* iに1を足す。（インクリメントという） */
+}
+</code></pre>
+
+<p>どのように動作してこのコードで処理が10回繰り返されるのか、イメージしてみましょう。</p>
+      </article>
+      <article>
+<h3>より高機能なループ文がある</h3>
+
+<pre><code>#include &lt;stdio.h&gt;
+
+int main(void) {
+    char c;
+
+    printf("1文字入力してください：");
+    scanf("%c", &amp;c);
+
+    /* 10回出力する */
+    int i;
+    for(i = 0; i &lt; 10; i++) {
+        printf("%c\n", c);
+    }
+
+    return 0;
+}
+</code></pre>
+
+<p><em>状況によりwhile文よりもさらに短く書ける！！</em></p>
+      </article>
+      <article>
+<h3>for文</h3>
+
+<p><em>while文よりも高機能なループ文</em></p>
+
+<p>for文の構造）</p>
+
+<pre><code>for( 初期設定式; 条件式; 再設定式 ){
+    ループさせる処理
+}
+</code></pre>
+
+<ul>
+<li><em>「初期設定式」は、最初に for文に差し掛かったときに、１度だけ実行される式</em>です。 ここで、ループを始める前の準備を行います。</li>
+<li><em>「条件式」は、while文のものと同じ</em>で、真のときループし、偽のときに for文全体を終了させ、抜けます。</li>
+<li><em>「再設定式」は</em>、「ループさせる処理」が最後まで終了したときに実行される式で、<em>１回分のループを終える度に実行されます</em>。</li>
+</ul>
+      </article>
+      <article>
+<h3>for文</h3>
+
+<p>実行される処理の順序</p>
+
+<ol>
+<li>「初期設定式」を実行。２へ。</li>
+<li>「条件式」を調べる。「真」なら３へ。「偽」なら６へ。</li>
+<li>「ループさせる処理」を実行する。４へ。</li>
+<li>「ループさせる処理」が全て終了したら５へ。</li>
+<li>「再設定式」を実行。２へ戻る。</li>
+<li>for文を終了させて、次の処理へ進む。</li>
+</ol>
+      </article>
+      <article>
+<h3>for文</h3>
+
+<p>ページ「より高機能なループ文がある」の例より抜粋）</p>
+
+<pre><code>/* 10回出力する */
+int i;
+for(i = 0; i &lt; 10; i++) {
+    printf("%c\n", c);
+}
+</code></pre>
+
+<p>再び、どのように動作してこのコードで処理が10回繰り返されるのか、イメージしてみましょう。</p>
+      </article>
+      <article>
+<h3>do文（do-while文）</h3>
+
+<p><em>do文では、ループ内の処理が必ず１度は実行される。</em></p>
+
+<p>do文の構造）</p>
+
+<pre><code>do{
+    ループさせる処理
+} while( 条件式 );
+</code></pre>
+
+<p>while文やfor文では、条件式が負の場合、ループ内の処理が１度も実行されないことがあるのですが、do文では、ループ内の処理が必ず１度は実行されます。</p>
+
+<p>ご察しの通り、ループさせる処理を実行してから、条件式を評価してループを継続するか判断します。</p>
+
+<p>他のループ文に比べて、使う機会が非常に少ないループ文です。</p>
+      </article>
+      <article>
+<h3>goto文</h3>
+
+<p><em>同じ関数内の別の場所へ一気に移動させる。 移動先はラベルで表現する。</em></p>
+
+<p><em>※この文は使ってはならない。とよく言われます。</em>goto文は（同じ関数内であれば）どこへでも移動できるため、処理の流れが非常に分かりにくくなる可能性が高いからです。<small>どうしても使いたい場合はいいですがやめておきましょう。</small></p>
+
+<pre><code>    goto ラベル名;
+</code></pre>
+
+<p>ラベル</p>
+
+<pre><code>ラベル名:
+</code></pre>
+      </article>
+      <article>
+<h3>goto文の例</h3>
+
+<pre><code>#include &lt;stdio.h&gt;
+
+int main(void) {
+    int i = 0;
+unko:    /* これがラベル */
+    if(i &gt;= 5) {
+        goto final_unko;    /* iが5以上ならラベルfinal_unkoへジャンプ */
+    }
+    printf("変数iは今 %d\n", i);
+
+    i++;
+    goto unko;  /* ラベルunkoへジャンプ */
+
+final_unko:
+
+    return 0;
+}
+</code></pre>
+      </article>
+      <article>
+<h3>無限ループ</h3>
+
+<p><em>永遠に繰り返されるループ</em></p>
+
+<p>無限ループの例）</p>
+
+<pre><code>while( true ){
+    printf("unko\n");
+}
+</code></pre>
+
+<p>このプログラムを実行すると、永遠にunkoと出力され続ける。（ちなみに、Ctrl + Cで、端末で実行中のプログラムを強制終了できる。）</p>
+      </article>
+      <article>
+<h3>break;</h3>
+
+<p><em>ループ文を、中断して抜ける。</em></p>
+
+<p>前のページの「無限ループの例」を、while文の条件式を true から変えずに、break文を使って、5回だけ出力するように書き換えてみる。</p>
+
+<pre><code>int i = 0;
+while( true ){
+    if(i &gt;= 5) {
+        break;
+    }
+    printf("unko\n");
+    i++;
+}
+</code></pre>
+
+<p>if文を使い、i が 5 (以上)になったとき、break を発動させ、ループを中断して抜けだした。</p>
+
+<p><small>ちなみに、switch文も抜け出すことができる。</small></p>
+      </article>
+      <article>
+<h3>continue;</h3>
+
+<p><em>現在のループを打ち切り（後続の処理を無視して）次のループへ進ませる</em></p>
+
+<p>for文の場合は「再設定式」が実行されてから、次へ進みます。 次のループへ進んだとき、当然「条件式」がチェックされます。これが偽になれば、ループ全体を終えることになります。</p>
+
+<pre><code>int i;
+for(i = 0; i &lt; 5; i++) {
+    scanf(" %c", &amp;c);
+    if(c == 'a') {
+        count++;
+        continue;
+    }
+    /* continueされた場合continueより下に書かれているので実行されない */
+    printf("aを入力しろよ！！！次から気をつけろよ！！！\n");
+}
+</code></pre>
+      </article>
+      <article>
+<h3>諸々 1</h3>
+
+<p>for文の構造）</p>
+
+<pre><code>for( 初期設定式; 条件式; 再設定式 ){
+    ループさせる処理
+}
+</code></pre>
+
+<p>これは、通常のwhile文に文を多少加えた</p>
+
+<pre><code>初期設定式;
+while( 条件式 ){
+    ループさせる処理
+    再設定式;
+}
+</code></pre>
+
+<p>と同じ動きをしています。今までの内容から気づいていた人も多いかと思います。</p>
+      </article>
+      <article>
+<h3>諸々 2</h3>
+
+<p>また、for文の初期設定式と条件式は省略が可能です。例えば、</p>
+
+<pre><code>for( ; 条件式 ; ){
+    ループさせる処理
+}
+</code></pre>
+
+<p>このように両方省略する事もでき、御察しの通り、while文と同じ動きになります。</p>
+      </article>
+      <article>
+<h3>諸々 3</h3>
+
+<p>for文の初期設定式において、変数を宣言することが可能。</p>
+
+<p>ページ「for文」の例を改変）</p>
+
+<pre><code>    for(int i = 0; i &lt; 10; i++) {
+        printf("%c\n", c);
+    }
+</code></pre>
+
+<p>int iをfor文の外で宣言せずに、初期設定式の中で宣言している。行数が減って楽である。（<em>ただし、C99以前では不可能。</em>）</p>
+      </article>
+      <article>
+<h3>諸々 4</h3>
+
+<p>ループ文もif文と同様に、処理が１行であるなら大括弧{}を省略できる。</p>
+
+<pre><code>for( 初期設定式; 条件式; 再設定式 )
+    ループさせる処理
+</code></pre>
+
+<p>ループ文の中にループ文を入れ子（ネスト）して書くことが出来る。</p>
+
+<pre><code>while( 条件式 ){
+    ...
+    while( 条件式 ){
+        ...
+    }
+    ...
+}
+</code></pre>
+      </article>
+    </section>
+  </body>
+</html>
