@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<!--
+  TechFUN HTML5 slide template
+
+  Authors: Kodama Shindo(@kodam)
+
+  Using: Google HTML5 slides template(https://code.google.com/p/html5slides/)
+-->
+<html>
+  <head>
+    <title>関数</title>
+    <meta charset="utf-8" />
+    <script src="../template/files/slides.js"></script>
+    <style>
+.slides article em {
+    color: red;
+    font-style: normal;
+}
+    </style>
+  </head>
+  <body style="display: none">
+    <section class='slides layout-regular template-default'>
+      <article>
+<h1>関数</h1>
+
+<p>C言語勉強会 第五回</p>
+
+<p>kumar <br />
+May 14, 2013 <br />
+<a href="http://www.geocities.jp/ky_webid/index.html">引用 : Programming Place Plus</a></p>
+      </article>
+      <article>
+<h3>関数（サブルーチン）</h3>
+
+<p><em>何らかの処理を行うために必要な命令文を書き並べたもの</em></p>
+
+<p>これまでに、main関数、printf関数、scanf関数といった「<em>関数</em>」を使ってきました。 関数は「何らかの処理を行うために必要な命令文を書き並べたもの」といえます。</p>
+      </article>
+      <article>
+<h3>関数の３つの構成要素</h3>
+
+<p>関数には、「<em>関数名</em>」「<em>引数</em>」「<em>戻り値</em>」という３つの構成要素があります。</p>
+
+<ul>
+<li><em>関数名</em>は、関数に付けられた名前です。 例えば、main関数なら「main」が名前になります。 関数名として有効な名前は、変数名の規則と同様です（第３章参照）。</li>
+<li><em>引数</em>は、関数を呼び出すときに、その関数に指定する情報のことです。 例えば、printf関数を「printf( "Hello, World" );」のように呼び出しますが、ここで ( ) の中に記述している情報が引数です。 なお、「引数」は「ひきすう」と読みます。</li>
+<li><em>戻り値</em>は、関数内の処理が終わったとき、関数側から返される情報です。返し値や返り値と呼ぶ人もいます。実は、main関数の終わりに書いていた return文は、戻り値を返すための命令文です。</li>
+</ul>
+      </article>
+      <article>
+<h3>関数の定義（記述）</h3>
+
+<p>関数は次のように定義します。</p>
+
+<pre><code>戻り値の型 関数名( 引数の型と名前, 引数の型と名前, … )  /* 引数は 0個以上 */
+{
+    ...
+
+    return /* 戻り値 */
+    /* 戻り値がなければreturn文自体が不要 */
+}
+</code></pre>
+
+<p>この形式を見ると分かるように、引数や戻り値には型があります。また、引数には１つ１つに名前を付けます。 引数は０個以上の任意の個数記述できます。 <br />
+０個の場合には、そのことを意味する「void」と書きます。 <br />
+戻り値がない関数の場合は、戻り値の型は「void」です。</p>
+      </article>
+      <article>
+<h3>関数の定義（記述）</h3>
+
+<p>引数は、関数を呼び出す側と、呼び出される側とで、呼び名を変えることがあります。 <em>呼び出す側は、引数を実引数</em>と呼び、<em>呼び出される側（定義の側）では仮引数</em>と呼びます。</p>
+
+<pre><code>void printUnko(int num) {
+    int i;
+    for(i = 0; i &lt; num; i++) {
+        printf("うんこ\n");
+    }
+}
+
+int main(void) {
+    printUnko(10);
+    return 0;
+}
+</code></pre>
+
+<p>この例ではnumは仮引数、10は実引数</p>
+      </article>
+      <article>
+<h3>main関数</h3>
+
+<p><em>Ｃ言語では、必ず記述しなければならない必須の関数</em></p>
+
+<p>ご存知の通り、Ｃ言語のプログラムは main関数から始まります。</p>
+
+<pre><code>int main(void) {
+    ...
+    return 0;
+}
+</code></pre>
+
+<p>戻り値の型が int型である以上、main関数には必ず return文があります。 main関数の戻り値を 0 にすると、問題無く正常に処理が終了したことを表し、 0以外を返すと、何らかのエラーが発生して終了したことを表すことになっています。</p>
+      </article>
+      <article>
+<h3>標準ライブラリ関数</h3>
+
+<p><em>Ｃ言語の規格によって、あらかじめ用意されている関数</em></p>
+
+<p>printf関数や scanf関数のようなものが標準ライブラリ関数に当たります。</p>
+
+<p>標準ライブラリ関数を使うには、「<code>#include &lt;stdio.h&gt;</code>」のような記述が必要になります。 「<code>stdio.h</code>」の部分は、関数ごとに決まっています。 main関数はこのような記述が不要なので、標準ライブラリ関数とは別です。</p>
+
+<p><a href="http://ja.wikipedia.org/wiki/%E6%A8%99%E6%BA%96C%E3%83%A9%E3%82%A4%E3%83%96%E3%83%A9%E3%83%AA">標準Cライブラリ - Wikipedia</a></p>
+      </article>
+      <article>
+<h3>自作関数を定義する</h3>
+
+<p>ページ「関数の記述」にならって、底辺の長さと高さを引数に取り、三角形の面積を返す（戻り値）関数を作ってみよう。</p>
+
+<pre><code>double areaOfTriangle(double b, double h) {
+    double ans = b * h / 2.0;
+    return ans;
+}
+</code></pre>
+      </article>
+      <article>
+<h3>自作関数の呼び出し</h3>
+
+<p>当然、標準ライブラリ関数と同じように呼び出して使うことが出来る。</p>
+
+<pre><code>#include &lt;stdio.h&gt;
+
+double areaOfTriangle(double b, double h) {
+    double ans = b * h / 2.0;
+    return ans;
+}
+
+/* C言語プログラムは、main関数から実行される */
+int main(void) {
+    /* 関数を呼び出し、戻り値を得る */
+    double a = areaOfTriangle(5.0, 8.0);
+    printf("底辺の長さ5.0、高さ8.0の三角形の面積は %f\n", a);
+
+    return 0;
+}
+</code></pre>
+      </article>
+      <article>
+<h3>諸々</h3>
+
+<ul>
+<li>自作関数と標準ライブラリ関数とを完全な別物である、あるいは標準ライブラリ関数がとても特別なもののように考える人がいるようです。 どちらもただの「関数」であることに変わりはありません。 標準ライブラリ関数といえども、どこかに自作関数と同じように中身を記述している部分があります。</li>
+<li>関数の中から、別の関数を呼び出すことも、もちろん可能です。（というかmain関数も関数ですから当然か）</li>
+<li>前のページの例のareaOfTriangle関数をmain関数の下に書いた場合、コンパイルで失敗し、実行できない。この場合、areaOfTriangle関数の定義が、main関数でareaOfTriangle関数を呼び出す前に行われていないためです。これは後述の、関数プロトタイプで解決出来ます。</li>
+</ul>
+      </article>
+      <article>
+<h3>関数プロトタイプ</h3>
+
+<p><em>関数名・引数・戻り値の組み合わせを、関数本体と別に記述しておき、 このような関数が存在しているのだということを宣言するもの</em></p>
+
+<pre><code>#include &lt;stdio.h&gt;
+
+double areaOfTriangle(double b, double h);/* 関数プロトタイプ */
+
+int main(void) {
+    double a = areaOfTriangle(5.0, 8.0);
+    printf("底辺の長さ5.0、高さ8.0の三角形の面積は %f\n", a);
+
+    return 0;
+}
+
+double areaOfTriangle(double b, double h) {
+    double ans = b * h / 2.0;
+    return ans;
+}
+</code></pre>
+      </article>
+      <article>
+<h3>関数プロトタイプは必須</h3>
+
+<p><em>C99以降、そしてC++では、関数プロトタイプは必須</em></p>
+
+<p>大規模なプログラムになると、自作のヘッダーファイル（〜.h）に関数プロトタイプだけ書いておいたりします。
+例）ヘッダーファイル（triangle.h）</p>
+
+<pre><code>#ifndef TRIANGLE_H
+#define TRIANGLE_H
+
+double areaOfTriangle(double b, double h);
+...
+
+#endif  /* TRIANGLE_H */
+</code></pre>
+
+<p>例）ヘッダーファイルの読み込み（*.c）</p>
+
+<pre><code>#include "triangle.h" /* triangle.hがソースと同じディレクトリにある場合 */
+</code></pre>
+      </article>
+    </section>
+  </body>
+</html>
