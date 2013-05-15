@@ -295,6 +295,29 @@ switch (unko) {
 				</table>
 			</article>
 
+			<article>
+				<h3>
+					コラム｜C言語が他の言語と違う点
+				</h3>
+				<p>
+					C言語にはC++やJava、(Processing)等の他の言語と違って、<code>true</code>や、<code>false</code>はありません。（bool、boolean型も無い）
+				</p>
+				<p>
+					C言語では<br />
+					<code>true</code>は<span class="red">0以外のすべての値</span>、<br />
+					<code>false</code>は<span class="red">0</span>に相当します。
+				</p>
+				<section>
+<pre>
+int t = (3 == 3);	/* tには1が代入される */
+int f = (3 == 5);	/* tには0が代入される */
+</pre>
+				</section>
+				<p>
+					ただし、C99以降なら、C++との互換を取る理由で、標準Cライブラリ stdbool.h をインクルードすることでtrueもfalseもbool型も使えるようになります。
+				</p>
+			</article>
+
 		</section>
 
 	</body>
