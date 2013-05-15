@@ -1,4 +1,4 @@
-? my ($title, $sections) = @_;
+? my ($title, $css, $sections) = @_;
 <!DOCTYPE html>
 <!--
   TechFUN HTML5 slide template
@@ -17,10 +17,10 @@
     color: red;
     font-style: normal;
 }
-    </style>
+<?= Text::MicroTemplate::encoded_string($css) ?>  </style>
   </head>
   <body style="display: none">
-    <section class='slides layout-regular template-default'>
+    <section class="slides layout-regular template-default">
 ? for my $section (@$sections) {
       <article>
 <?= Text::MicroTemplate::encoded_string($section) ?>      </article>

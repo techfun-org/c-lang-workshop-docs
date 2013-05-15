@@ -529,9 +529,13 @@ pod2usage(1) if $help;
 
 my $filename = shift or pod2usage("Missing filename");
 my $src = do {
-    open my $fh, '<', $filename or die $!;
+    open my $fh, '<:encoding(utf-8)', $filename or die $!;
     local $/; <$fh>;
 };
+my $css = '';
+if ($src =~ s!<style\s*[\w="/]*>(.*?)</style>!!ms) {
+    $css = $1;
+}
 my @sections = map { decode_utf8(markdown($_)) } split /^----$/m, $src;
 my ($title) = $sections[0] =~ m!<h\d\s*[\w="]*>(.*?)</h\d>!;
 
@@ -539,7 +543,7 @@ my $template = do {
     open my $fh, '<:encoding(utf-8)', $template_file or die $!;
     local $/; <$fh>;
 };
-my $html = render_mt($template, $title, \@sections);
+my $html = render_mt($template, $title, $css, \@sections);
 
 if ($output) {
     (my $output_file = $filename) =~ s/\..+$//;
