@@ -261,12 +261,13 @@ final_unko:
 
 <p>無限ループの例）</p>
 
-<pre><code>while( true ){
+<pre><code>while( 1 ){
     printf("unko\n");
 }
 </code></pre>
 
 <p>このプログラムを実行すると、永遠にunkoと出力され続ける。（ちなみに、Ctrl + Cで、端末で実行中のプログラムを強制終了できる。）</p>
+<p><small>常に真になる"1 &gt; 0"の結果は1と同じである。</small></p>
       </article>
       <article>
 <h3>break;</h3>
@@ -276,7 +277,7 @@ final_unko:
 <p>前のページの「無限ループの例」を、while文の条件式を true から変えずに、break文を使って、5回だけ出力するように書き換えてみる。</p>
 
 <pre><code>int i = 0;
-while( true ){
+while( 1 ){
     if(i &gt;= 5) {
         break;
     }
