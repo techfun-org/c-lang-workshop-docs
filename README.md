@@ -19,6 +19,7 @@ TechFUNのC言語勉強会資料
 4. 文章は、である調を使用し、体言止めはなるべく使わない
 5. 誤字・脱字、プログラムエラーがある場合はIssueまたはPullRequestを送る
 6. PullRequestはマージする前に必ず第3者のレビューを1回は通す
+7. これを必ず読む→[資料を書く](https://github.com/techfun-org/c-lang-workshop-docs/wiki/%E8%B3%87%E6%96%99%E3%82%92%E6%9B%B8%E3%81%8F)
 
 リンク
 ------
