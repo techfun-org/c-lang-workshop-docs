@@ -537,7 +537,10 @@ my $css = '';
 if ($src =~ s!<style\s*[\w="/]*>(.*?)</style>!!ms) {
     $css = $1;
 }
-my @sections = map { decode_utf8(markdown($_)) } split /^----$/m, $src;
+my @sections = map {
+    # XXX *emphasis* hack
+    decode_utf8(markdown(encode_utf8($_)));
+} split /^----$/m, $src;
 my ($title) = $sections[0] =~ m!<h\d\s*[\w="]*>(.*?)</h\d>!;
 
 my $template = do {
