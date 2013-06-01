@@ -532,6 +532,7 @@ my $src = do {
     open my $fh, '<:encoding(utf-8)', $filename or die $!;
     local $/; <$fh>;
 };
+$src =~ s/\r\n/\n/g; # for Windows :/
 my $css = '';
 if ($src =~ s!<style\s*[\w="/]*>(.*?)</style>!!ms) {
     $css = $1;
