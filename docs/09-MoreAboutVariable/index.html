@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<!--
+  TechFUN HTML5 slide template
+
+  Authors: Kodama Shindo(@kodam)
+
+  Using: Google HTML5 slides template(https://code.google.com/p/html5slides/)
+-->
+<html>
+  <head>
+    <title>変数についてより詳しく</title>
+    <meta charset="utf-8" />
+    <script src="../template/files/slides.js"></script>
+    <style>
+.slides article em {
+    color: red;
+    font-style: normal;
+}
+  </style>
+  </head>
+  <body style="display: none">
+    <section class="slides layout-regular template-default">
+      <article>
+<h1>変数についてより詳しく</h1>
+
+<p>C言語勉強会 第九回</p>
+
+<p>kumar8600 <br />
+June 2, 2013</p>
+      </article>
+      <article>
+<h3>今回の内容</h3>
+
+<ul>
+<li>型変換
+<ul>
+<li>暗黙の型変換</li>
+<li>明示的型変換（キャスト）</li>
+</ul></li>
+<li>データ型
+<ul>
+<li>符号の有無</li>
+<li>最大値・最小値</li>
+</ul></li>
+<li>スコープ
+<ul>
+<li>変数が存在する範囲</li>
+</ul></li>
+<li>記憶クラス指定子
+<ul>
+<li>変数の保存方法を指定する</li>
+</ul></li>
+<li>型修飾子
+<ul>
+<li>変数の属性を指定する</li>
+</ul></li>
+</ul>
+
+<p>↓次回やろうかな↓</p>
+
+<ul>
+<li>アドレス
+<ul>
+<li>変数のメモリ上での座標</li>
+</ul></li>
+<li>ポインタ変数
+<ul>
+<li>アドレスを代入するための変数の型</li>
+</ul></li>
+</ul>
+      </article>
+      <article>
+<h2>型変換</h2>
+      </article>
+      <article>
+<h3>暗黙の型変換</h3>
+      </article>
+      <article>
+<h3>明示的型変換（キャスト）</h3>
+      </article>
+      <article>
+<h2>データ型をもっと知ろう</h2>
+      </article>
+      <article>
+<h3>符号の有無</h3>
+
+<p>以下のキーワードを整数型の前後に付加することで符号の有無を指定する。</p>
+
+<table>
+    <tr>
+        <th>
+            キーワード
+        </th>
+        <th>
+            意味
+        </th>
+    </tr>
+    <tr>
+        <td>
+            signed
+        </td>
+        <td>
+            符号あり
+        </td>
+    </tr>
+    <tr>
+        <td>
+            unsigned
+        </td>
+        <td>
+            符号なし
+        </td>
+    </tr>
+</table>
+
+<p>符号無しのint型変数を宣言するには以下のように書く。</p>
+
+<pre><code>unsigned int x;
+</code></pre>
+
+<p>符号がないので、当然負の数は扱えない。</p>
+
+<p>これらのキーワードを省略した場合、自動的に<code>signed</code>が指定される。<small>ただしchar型は処理系による</small></p>
+      </article>
+      <article>
+<p>なぜわざわざ符号なしの変数なんか宣言するのか？ <br />
+それは、符号なしの時のほうが、扱える値の範囲が正の方向に長いので、そのほうが便利な場面があるからだ。<small>これは実際にそういった場面が来ればわかると思う。</small></p>
+      </article>
+      <article>
+<h3>整数型の最大値・最小値</h3>
+
+<p>変数の型によって、扱える値の範囲は変わる。</p>
+
+<table>
+  <tr>
+    <th>
+      符号
+    </th>
+    <th>
+      型
+    </th>
+    <th>
+      バイト数
+    </th>
+    <th>
+      値の範囲
+    </th>
+  </tr>
+  <tr>
+    <td>
+      signed
+    </td>
+    <td rowspan="2">
+      char
+    </td>
+    <td rowspan="2">
+      1
+    </td>
+    <td>
+        -128 ～ 127
+    </td>
+  </tr>
+  <tr>
+    <td>
+      unsinged
+    </td>
+    <td>
+        0 ～ 255
+    </td>
+  </tr>
+  <tr>
+    <td>
+      signed
+    </td>
+    <td rowspan="2">
+      short
+    </td>
+    <td rowspan="2">
+      2
+    </td>
+    <td>
+        -32,768 ～ 32,767
+    </td>
+  </tr>
+  <tr>
+    <td>
+      unsigned
+    </td>
+    <td>
+        -32,768 ～ 32,767
+    </td>
+  </tr>
+  <tr>
+    <td>
+      signed
+    </td>
+    <td rowspan="2">
+      int
+    </td>
+    <td rowspan="2">
+      4
+    </td>
+    <td>
+        -2,147,483,648 ～ 2,147,483,647(±約21億)
+    </td>
+  </tr>
+  <tr>
+    <td>
+      unsigned
+    </td>
+    <td>
+        0～4,294,967,295(約42億)
+    </td>
+  </tr>
+</table>
+      </article>
+      <article>
+<table>
+  <tr>
+    <th>
+      符号
+    </th>
+    <th>
+      型
+    </th>
+    <th>
+      バイト数
+    </th>
+    <th>
+      値の範囲
+    </th>
+  </tr>
+  <tr>
+    <td>
+      signed
+    </td>
+    <td rowspan="2">
+      long
+    </td>
+    <td rowspan="2">
+      4
+    </td>
+    <td>
+        -2,147,483,648 ～ 2,147,483,647(±約21億)
+    </td>
+  </tr>
+  <tr>
+    <td>
+      unsigned
+    </td>
+    <td>
+        0～4,294,967,295(約42億)
+    </td>
+  </tr>
+  <tr>
+    <td>
+      signed
+    </td>
+    <td rowspan="2">
+      long long
+    </td>
+    <td rowspan="2">
+      8
+    </td>
+    <td>
+        -9,223,372,036,854,775,808 ～ 9,223,372,036,854,775,807(±約922京)
+    </td>
+  </tr>
+  <tr>
+    <td>
+      unsigned
+    </td>
+    <td>
+        0～18,446,744,073,709,551,615(約1844京)
+    </td>
+  </tr>
+</table>
+
+<p><small>以上の表はWindows 32bit環境、64bit環境でのものである。UNIX 64bit環境ではlong型はlong long型と同じ大きさになる。 <br />
+しかも、Cの規格はこれと同一ではない。<a href="http://en.wikipedia.org/wiki/C_data_types">C data types - Wikipedia</a>を参照。 <br />
+<code>short</code>, <code>long</code>, <code>long long</code> は <code>~ int</code>の略である。</small></p>
+      </article>
+      <article>
+<h3>浮動小数点型</h3>
+
+<p>精度が低い順に、<code>float</code>, <code>double</code>, <code>long double</code> がある。</p>
+
+<p>とりあえずdouble型を使うと高速だし十分な制度があると思う。</p>
+      </article>
+      <article>
+<h2>スコープ</h2>
+      </article>
+      <article>
+<h3>ブロック</h3>
+
+<p><code>{</code>と<code>}</code>に囲まれた領域をブロックと呼ぶ。</p>
+      </article>
+      <article>
+<h3>グローバル変数</h3>
+
+<p>全てのスコープからアクセスできる変数</p>
+
+<pre><code>#include &lt;stdio.h&gt;
+
+int a = 3;
+
+int main(void) {
+
+    printf("%d\n", a);
+
+    return 0;
+}
+</code></pre>
+
+<p>上の例では a の値 3 が出力される。</p>
+
+<p>a のようにどこの関数の中でもない、プログラムの最も外側の部分に書かれた変数は、すべての関数からアクセスできる。</p>
+
+<p>こういった変数が <em>グローバル変数</em> である。</p>
+      </article>
+      <article>
+<h3>ローカル変数</h3>
+
+<p>プログラムの一部分でしかアクセスできない変数のこと（グローバル変数の逆）</p>
+      </article>
+      <article>
+<pre><code>#include &lt;stdio.h&gt;
+
+void print_a() {
+    int o = a;
+    printf("%d\n", o);
+}
+
+int main(void) {
+    int a = 10;  /* A */
+
+    print_a();
+
+    return 0;
+    /* B */
+}
+</code></pre>
+
+<p>上の例は、コンパイル時にエラーとなる。 
+ローカル変数は、その変数が宣言された場所からその変数が定義されたブロックを抜けるまででしかアクセス出来ないからだ。</p>
+
+<p>この例では a にアクセスできるのはAからBまでである。</p>
+
+<p>こういったある変数や関数が特定の名前で参照される範囲のことを、 <em>スコープ</em> と呼ぶ。</p>
+      </article>
+      <article>
+<h3>変数の優先度</h3>
+
+<p>ブロックの外側で宣言された変数よりも、内側で宣言された変数が優先される。 </p>
+
+<pre><code>#include &lt;stdio.h&gt;
+
+int a = 3;
+
+int main(void) {
+    int a = 10;
+
+    printf("%d\n", a);
+
+    return 0;
+}
+</code></pre>
+
+<p>上の例では、main関数の中で宣言された方の a の値 10 が出力される。  </p>
+      </article>
+      <article>
+<h3>理解しているか？</h3>
+
+<p>今までの内容を理解しているなら、下のプログラムを実行するとどう出力されるかわかるはずだ。</p>
+
+<pre><code>#include &lt;stdio.h&gt;
+
+int main(void) {
+    int a = 10;
+
+  if(1) {
+    int a = 20;
+    printf("%d\n", a);
+  }
+
+    printf("%d\n", a);
+
+  return 0;
+}
+</code></pre>
+      </article>
+      <article>
+<p>main関数ではじめに a を宣言し、10で初期化した。その後、if文の中でもう一度 a という名前の変数を宣言したが、これらは全く別の変数であることを意識出来れば、なんの迷いもない問題だ。答えは<code>20(改行)10</code>。</p>
+      </article>
+      <article>
+<h2>記憶クラス指定子</h2>
+      </article>
+      <article>
+<h3>記憶クラス指定子</h3>
+
+<p>変数の保存方法を更に細かく指定する</p>
+
+<pre><code>static int a;
+</code></pre>
+
+<p>この<code>static</code>のように、通常の変数の宣言の前につける。</p>
+
+<p>以下の五つが存在する</p>
+
+<ul>
+<li>static</li>
+<li>extern</li>
+<li>時代遅れな指定子
+<ul>
+<li>auto</li>
+<li>register</li>
+</ul></li>
+<li>typedef
+<ul>
+<li>構文の都合で分類されているだけ</li>
+</ul></li>
+</ul>
+      </article>
+      <article>
+<h3>自動変数（auto）</h3>
+
+<p>プログラム中の宣言されたブロック内でのみ使用できる変数。 <br />
+つまり、 <em>今まで使ってきた普通の変数</em> 。</p>
+
+<pre><code>auto int a;
+</code></pre>
+
+<p>または</p>
+
+<pre><code>int a;
+</code></pre>
+
+<p>のように書く。auto句を付けたところで全く意味は無い。と言うか混乱を招くので付けないほうがいい。</p>
+
+<p>そんな句がなぜあるか？というと、C言語の前身であるB言語は変数の宣言に<code>auto 変数名</code>と書いたからである。型名が無いが、B言語には整数型しかなかった。</p>
+      </article>
+      <article>
+<h3>自動変数のココが自動</h3>
+
+<p><em>特定の区域内に到達すると自動的に変数領域を確保し</em> 、 <em>その区域を脱すると自動的にその領域を開放して消滅する</em> 点が自動</p>
+
+<pre><code>void print_a() {
+    int o;
+    o = 10;
+    printf("%d\n", o);
+}
+</code></pre>
+
+<p>この関数を呼び出した場合、 <br />
+関数を呼び出すと同時にメモリーのどこかあいてるところに int型変数o のための領域を確保し、 <br />
+関数を実行しおわると先ほど確保した 変数o の領域を開放し消滅する。</p>
+      </article>
+      <article>
+<p>砕いていうと、関数を呼び出すたび変数を作り、抜けるとき変数を消してるだけである。</p>
+      </article>
+      <article>
+<h3>静的変数（static）</h3>
+
+<p>どこに宣言していようとも関係なく、<em>プログラムの実行開始時にメモリ上に作られ、初期値も与えられる変数</em> 。</p>
+
+<p><em>関数が終了しても値を保持しているローカル変数</em> 。という認識で問題ないだろう。</p>
+      </article>
+      <article>
+<pre><code>#include &lt;stdio.h&gt;
+
+void printCalledNum() {
+    static int n = 0;
+    n++;
+    printf("%d回目の呼び出し\n", n);
+}
+
+int main(void) {
+
+    printCalledNum();
+    printCalledNum();
+    printCalledNum();
+
+    return 0;
+}
+</code></pre>
+
+<p>printCalledNum関数の n は静的変数なので、printCalledNum関数を抜けだしても値は保持されている。</p>
+      </article>
+      <article>
+<h3>静的変数は必ず初期化される</h3>
+
+<p>静的変数は、具体的な初期値を与えなくても、必ず 0 で初期化されることが保証されている。</p>
+
+<p>なので、前のページの例ではわかりやすいように 0 で n を初期化しているが、書かなくても同じ結果である。</p>
+
+<p>もしかして知らなかった人もいるかもしれないが、逆に普通の変数や配列は、宣言しても初期値は入っていないので注意。<small>厳密には初期値はメモリ上に残ったゴミ</small></p>
+      </article>
+      <article>
+<h3>extern宣言</h3>
+
+<p>C言語でも複数ファイルを使ったプログラムをかけるのだが、その際に別のファイルに書かれたグローバル変数や関数を使うためにextern宣言が必要になる。</p>
+
+<p>この話は面白いのだが奥が深いので、今回は省略する。知りたかったらググるといい。</p>
+      </article>
+      <article>
+<h3>レジスター変数（register）（時代遅れらしい）</h3>
+
+<p>コンピューターには主記憶装置である「メモリ」の他に、CPUに内蔵されていて、メモリと比べるととてつもなく速く、低容量な「 <em>レジスタ</em> 」がある。実はCPUによる計算は、メモリに入っている値を一度レジスタにコピーしてから行われている。（なんか最近は違うかもしれない）</p>
+
+<p>そんな高速なレジスタに変数を格納したいとき、この指定子を使う。</p>
+
+<pre><code>register int a;
+</code></pre>
+
+<p>register変数は「出来れば」レジスタに変数を格納する。容量が足りないとき等は結局いつもどおりメモリを使うので注意。</p>
+
+<p>あと、register変数のアドレスを得ることは出来ない。</p>
+      </article>
+      <article>
+<p>ちなみに、 <em>今はコンパイラーの最適化が凄いので、凄いプログラマーじゃないとこんなもの書く必要はない</em> 。私も書いたことないです。</p>
+      </article>
+      <article>
+<h3>typedef</h3>
+      </article>
+      <article>
+<h2>型修飾子</h2>
+      </article>
+      <article>
+<h3>型修飾子</h3>
+
+<p>データ型を用途に応じてきめ細かく指定する。</p>
+
+<p>変数を宣言する際、型の前後に付加する。</p>
+
+<pre><code>const int a;
+</code></pre>
+
+<p>または</p>
+
+<pre><code>int const a;
+</code></pre>
+
+<p>のように記述する。</p>
+
+<p>型修飾子が付いている型と付いてない型は別の型扱いである。</p>
+      </article>
+      <article>
+<p>以下の二つについて紹介する。</p>
+
+<ul>
+<li>const</li>
+<li>volatile</li>
+</ul>
+      </article>
+      <article>
+<h3>定数（const）</h3>
+
+<p>値を書き換えることが出来ないデータ型。</p>
+
+<pre><code>#include &lt;stdio.h&gt;
+
+int main(void) {
+
+    const int a = 10;
+    a += 2;
+
+    printf("%d\n", a);
+
+    return 0;
+}
+</code></pre>
+
+<p>このプログラムはコンパイル時にエラーする。<code>a += 2</code>で、値を書き換えようとしたことが原因である。</p>
+      </article>
+      <article>
+<p>また、定数の初期化は宣言時にしか行えないので注意。</p>
+
+<p>ポインタ定数の場合特別な挙動をする。これを積極的に使うと便利である。ポインタを紹介してないから今は書かない。</p>
+      </article>
+      <article>
+<h3>volatile変数</h3>
+
+<p>コンパイラによる最適化を行わない変数。</p>
+
+<p>通常のプログラミングでは関係ないが、マルチスレッドなプログラムを書いたりする際に必要になってくるらしい。 <br />
+これぼくよくわかんないんでググってください。</p>
+      </article>
+    </section>
+  </body>
+</html>
