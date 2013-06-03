@@ -156,7 +156,7 @@ printf関数は、文字列で指定したフォーマットで標準出力に�
 </tr>
 <tr> 
 <th class="bg_green">%e</th>
-<td class="bg_cyan">float</td>
+<td class="bg_cyan">float, double</td>
 <td class="bg_cyan">実数を指数表示で出力する</td>
 <td class="bg_cyan">"%5.3e"</td>
 </tr>
