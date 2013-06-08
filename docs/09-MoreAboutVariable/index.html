@@ -34,8 +34,8 @@ June 2, 2013</p>
 <ul>
 <li>型変換
 <ul>
-<li>暗黙の型変換</li>
 <li>明示的型変換（キャスト）</li>
+<li>暗黙の型変換</li>
 </ul></li>
 <li>データ型
 <ul>
@@ -64,15 +64,15 @@ June 2, 2013</p>
 
 <p><em>強制的に別の型に変換</em> したいときに用いる。</p>
 
+<h4>文法</h4>
+
 <pre><code>(型)式
 </code></pre>
 
-<p>int変数 i をdouble型に変換するなら、</p>
+<h4>int変数 i をdouble型に変換する例</h4>
 
 <pre><code>(double)i
 </code></pre>
-
-<p>と書く。</p>
       </article>
       <article>
 <h3>暗黙の型変換</h3>
@@ -363,6 +363,67 @@ float x = a / b;
 </ul>
       </article>
       <article>
+<h3>sizeof 演算子</h3>
+
+<p>sizeofに渡された型や変数のメモリサイズを返す。</p>
+
+<h4>文法</h4>
+
+<pre><code>sizeof 型名or変数名
+または
+sizeof(型名or変数名)
+</code></pre>
+
+<h4>型のメモリサイズを得る例</h4>
+
+<pre><code>int integerSize = sizeof(int);
+</code></pre>
+
+<ul>
+<li>integerSizeにはint型のメモリサイズ、4が入る</li>
+<li><p>これは int 型は４バイトのメモリを使うという意味だ。</p></li>
+<li><p><small>（int型のメモリサイズは環境依存）</small></p></li>
+</ul>
+      </article>
+      <article>
+<h4>変数のメモリサイズを得る例</h4>
+
+<pre><code>int i = 10;
+int integerSize = sizeof(x);
+</code></pre>
+
+<ul>
+<li>型名ではなく、変数名を入れてもよい。</li>
+<li><p>integerSizeにはint型のメモリサイズ、4が入る</p></li>
+<li><p><small>（int型のメモリサイズは環境依存）</small></p></li>
+</ul>
+      </article>
+      <article>
+<h4>配列のメモリサイズを得る例</h4>
+
+<pre><code>int arr[10];
+int arrSize = sizeof(arr);
+</code></pre>
+
+<ul>
+<li>arrSizeには配列のメモリサイズ、40が入る。</li>
+<li><p>これは、サイズが4であるint型変数を10個持っているからである。</p></li>
+<li><p><small>（int型のメモリサイズは環境依存）</small></p></li>
+</ul>
+      </article>
+      <article>
+<h4>配列の要素数を算出</h4>
+
+<pre><code>配列の要素数 = sizeof(配列名) / sizeof(配列の要素の型)
+すなわち
+配列の要素数 = sizeof(配列名) / sizeof(配列名[0])
+</code></pre>
+
+<ul>
+<li>これは、配列のメモリサイズが <code>配列の要素の型のサイズ</code> * <code>配列の要素数</code> だからである。</li>
+</ul>
+      </article>
+      <article>
 <h3>接尾語</h3>
 
 <p>式に直接、定数を書き込むとき、接尾語を付けることでその型を指定出来る。</p>
@@ -370,7 +431,7 @@ float x = a / b;
 <pre><code>float x = 3.0f / 2.0f;  // 3.0と2.0がfloat型であることを示している。
 </code></pre>
 
-<p>整数定数の接尾語  </p>
+<h4>整数定数の接尾語</h4>
 
 <table>
     <tr>
@@ -416,7 +477,7 @@ float x = a / b;
 </table>
       </article>
       <article>
-<p>浮動小数点定数の接尾語  </p>
+<h4>浮動小数点定数の接尾語</h4>
 
 <table>
     <tr>
@@ -453,9 +514,11 @@ float x = a / b;
     </tr>
 </table>
 
-<p>例）</p>
+<h4>例</h4>
 
 <pre><code>423     : int
+423L    : long
+
 423.0f  : float
 423.0   : double
 </code></pre>
@@ -586,22 +649,27 @@ int main(void) {
 
 <p>変数の保存方法を更に細かく指定する</p>
 
-<pre><code>static int a;
+<h4>文法</h4>
+
+<p>通常の変数の宣言の前につける。</p>
+
+<pre><code>記憶クラス指定子 型名 変数名;
 </code></pre>
 
-<p>この<code>static</code>のように、通常の変数の宣言の前につける。</p>
+<h4>例</h4>
 
-<p>以下の五つが存在する</p>
+<pre><code>static int a;
+</code></pre>
+      </article>
+      <article>
+<h4>以下の五つが存在する</h4>
 
 <ul>
 <li>static</li>
 <li>extern</li>
 <li>auto - (時代遅れ)</li>
 <li>register - (時代遅れ)</li>
-<li>typedef - （構文の都合で分類されているだけ）
-<ul>
-* 
-</ul></li>
+<li>typedef - （構文の都合で分類されているだけ）</li>
 </ul>
       </article>
       <article>
@@ -610,12 +678,11 @@ int main(void) {
 <p>プログラム中の宣言されたブロック内でのみ使用できる変数。 <br />
 つまり、 <em>今まで使ってきた普通の変数</em> 。</p>
 
-<pre><code>auto int a;
-</code></pre>
+<h4>文法</h4>
 
-<p>または</p>
-
-<pre><code>int a;
+<pre><code>auto 型名 変数名;
+または
+型名 変数名;
 </code></pre>
 
 <ul>
@@ -627,6 +694,8 @@ int main(void) {
 <h3>自動変数のココが自動</h3>
 
 <p><em>特定の区域内に到達すると自動的に変数領域を確保し</em> 、 <em>その区域を脱すると自動的にその領域を開放して消滅する</em> 点が自動</p>
+
+<h4>例</h4>
 
 <pre><code>void print_a() {
     int o;
@@ -653,10 +722,17 @@ int main(void) {
 
 <p>どこに宣言していようとも関係なく、<em>プログラムの実行開始時にメモリ上に作られ、初期値も与えられる変数</em> 。</p>
 
+<h4>文法</h4>
+
+<pre><code>static 型名 変数名;
+</code></pre>
+
 <ul>
 <li><em>関数が終了しても値を保持しているローカル変数</em> 。という認識で問題ないだろう。</li>
 <li>auto変数の逆</li>
 </ul>
+
+<h4>例</h4>
       </article>
       <article>
 <pre><code>#include &lt;stdio.h&gt;
@@ -682,7 +758,11 @@ int main(void) {
 </ul>
       </article>
       <article>
-<h3>静的変数は必ず初期化される</h3>
+<h4>グローバル変数でのstatic</h4>
+
+<p>グローバル変数にstaticをつけると、今まで説明した意味と全く違う意味になる。</p>
+
+<h4>静的変数は必ず初期化される</h4>
 
 <p>静的変数は、具体的な初期値を与えなくても、必ず 0 で初期化されることが保証されている。</p>
 
@@ -768,17 +848,23 @@ int main(void) {
 
 <p>データ型を用途に応じてきめ細かく指定する。</p>
 
+<h4>文法</h4>
+
 <p>変数を宣言する際、型の前後に付加して使う。</p>
 
+<pre><code>型修飾子 型名 変数名;
+または
+型名 型修飾子 変数名;
+</code></pre>
+
+<h4>例</h4>
+
 <pre><code>const int a;
+int const a;
 </code></pre>
-
-<p>または</p>
-
-<pre><code>int const a;
-</code></pre>
-
-<p>のように記述する。</p>
+      </article>
+      <article>
+<h4>補足</h4>
 
 <ul>
 <li>型修飾子が付いている型と付いてない型は別の型扱いされる。
@@ -786,9 +872,8 @@ int main(void) {
 <li><small>例:）int と const int は別の型</small></li>
 </ul></li>
 </ul>
-      </article>
-      <article>
-<p>以下の二つについて紹介する。</p>
+
+<h4>以下の二つについて紹介する。</h4>
 
 <ul>
 <li>const</li>
@@ -799,6 +884,21 @@ int main(void) {
 <h3>定数（const）</h3>
 
 <p>指定した変数が定数であることを指定する。</p>
+
+<ul>
+<li>定数とは初期化出来ても、書き換え出来ない変数のことである。</li>
+<li>書き換えを行うようなコードを書いた場合、コンパイルの時点でエラーになる。</li>
+</ul>
+
+<h4>文法</h4>
+
+<pre><code>const 型名 変数名;
+または
+型名 const 変数名;
+</code></pre>
+      </article>
+      <article>
+<h4>例</h4>
 
 <pre><code>#include &lt;stdio.h&gt;
 
@@ -818,10 +918,12 @@ int main(void) {
 </ul>
       </article>
       <article>
+<h4>補足</h4>
+
 <ul>
-<li><p>また、定数の初期化は宣言時にしか行えないので注意。</p></li>
+<li><p>定数の初期化は宣言時にしか行えないので注意。</p></li>
 <li><p>ポインタ定数の場合特別な挙動をする。これを積極的に使うと便利である。ポインタを紹介してないから今は書かない。</p></li>
-<li><p>わざわざ変数を定数にするのは、プログラムを書く際のミスを減らすためだ。変更しないつもりの変数は積極的に定数として宣言すべきである。</p></li>
+<li><p>わざわざ変数を定数にするのは、プログラムを書く際のミスを減らすためである。変更しないつもりの変数は積極的に定数として宣言すべきである。</p></li>
 </ul>
       </article>
       <article>
@@ -829,7 +931,7 @@ int main(void) {
 
 <p>コンパイラによる最適化を行わない変数。</p>
 
-<p>今のコンパイラは頭がいいので、私たちの書いたクソのようなプログラムをできるだけ素晴らしい効率で動くように最適化する。</p>
+<p>今のコンパイラは頭がいいので、私たちの書いたなプログラムをできるだけ素晴らしい効率で動くように最適化する。</p>
 
 <p>だが、マルチスレッドなプログラム等、コンパイラの設計の想定を超えるプログラムを書いた場合、逆にその最適化のせいでプログラムが正常に作動しなくなることがある。</p>
 
@@ -838,7 +940,7 @@ int main(void) {
 </ul>
       </article>
       <article>
-<p>↓次回↓</p>
+<h3>次回</h3>
 
 <ul>
 <li>アドレス
