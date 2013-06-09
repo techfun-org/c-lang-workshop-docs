@@ -134,9 +134,9 @@ printf("%s : height = %dcm, vision = %f\n", a.name, a.height, a.vision);
 </code></pre>
       </article>
       <article>
-<h3>構造体の代入</h3>
+<h3>構造体のコピー</h3>
 
-<p>同じ構造体同士で代入式を書くと、構造体内のメンバの値を全てコピーすることができる(構造体のメンバ全体に対して代入が行われる)。</p>
+<p>同じ構造体同士で代入式を書くと、構造体内のメンバの値を全てコピーすることができる。（例え配列でもうまくコピーしてくれる。）</p>
 
 <p>例) STUDENT型の変数bを変数aにコピーする場合</p>
 
@@ -152,7 +152,7 @@ printf("%s : height = %dcm, vision = %f\n", a.name, a.height, a.vision);
 
 <pre><code>STUDENT add_height(STUDENT a){
   a.height += 10;
-  //a.height = a.height + 10; と同じ意味//
+  /* a.height = a.height + 10; と同じ意味 */
 
   return a;
 }
@@ -173,14 +173,18 @@ b = add_height(a);
       <article>
 <h3>構造体宣言</h3>
 
-<p>実は今までのページで説明した構造体の宣言はただ構造体宣言ではない。 <br />
-構造体宣言にtypedefと呼ばれる命令を組み合わせたものである。  </p>
+<p>実は今までのページで説明した構造体の宣言はただの構造体宣言ではない。 <br />
+構造体宣言にtypedefと呼ばれる命令を組み合わせたものである。</p>
+
+<p>何故そんなものを先に紹介したのかというと、</p>
 
 <ul>
-<li>だが、typedefを用いないただの構造体宣言は <em>利便性が低いのであまり用いられない</em> 。</li>
+<li>この方法のほうが便利であり、C言語で構造体を宣言する際のデファクトスタンダードとなっている。</li>
 </ul>
 
-<p>これより、typedefと、ただの構造体宣言を紹介し、今まで教えた構造体宣言が本当はどういう意味か解説する。</p>
+<p>からだ。</p>
+
+<p>だが、構造体を真に理解するべく、これより、<code>typedef</code>と、<code>ただの構造体宣言</code>を紹介する。</p>
       </article>
       <article>
 <h3>typedef</h3>
@@ -191,9 +195,11 @@ b = add_height(a);
 <li>構造体でなくても使える。type(型) definition(定義)の略である。</li>
 </ul>
 
-<p>文法</p>
+<h4>文法</h4>
 
-<pre><code>typedef 既存のデータ型 新しい名前
+<pre><code>typedef (既存の)データ型 新しい名前
+または
+(既存の)データ型 typedef 新しい名前
 </code></pre>
       </article>
       <article>
@@ -208,9 +214,9 @@ b = add_height(a);
 </code></pre>
       </article>
       <article>
-<h3>typedefを用いない構造体宣言</h3>
+<h3>タグ名を使った構造体宣言</h3>
 
-<p><em>struct タグ名 {メンバ1, メンバ2, ...}</em></p>
+<p><em>struct タグ名 {メンバ1, メンバ2, ...};</em></p>
 
 <p>という形で宣言する。タグ名は、新しく構造体として定義した型を識別するための名前である。</p>
 
@@ -225,7 +231,7 @@ b = add_height(a);
 </ul>
       </article>
       <article>
-<h3>typedefを用いない構造体宣言を使ったプログラムの例</h3>
+<h4>例</h4>
 
 <pre><code>#include &lt;stdio.h&gt;
 
@@ -241,7 +247,6 @@ int main(void) {
         175.2,
         63.7
     };
-
     printf("ぼくの名前は%s。身長%.1fcmで体重%.1fcmなヤングマンだぜ！\n",
         boku.name, boku.height, boku.weight);
     return 0;
@@ -251,15 +256,16 @@ int main(void) {
       <article>
 <h3>タグを作らず直接、構造体変数を宣言する</h3>
 
-<p><em>struct {メンバ1, メンバ2, ...} 変数名</em></p>
+<p><em>struct {メンバ1, メンバ2, ...} 変数名;</em></p>
 
 <p>という形で直接、構造体変数を宣言できる。  </p>
 
 <ul>
 <li>タグ名がないので、構造体の型の名前を表現できないため、他の場所で型の名前が必要な場合使えない。</li>
 </ul>
-
-<p>例）</p>
+      </article>
+      <article>
+<h4>例</h4>
 
 <pre><code>#include &lt;stdio.h&gt;
 
@@ -277,24 +283,106 @@ int main(void) {
 </code></pre>
       </article>
       <article>
-<h3>typedefと組み合わせた構造体宣言</h3>
+<h3>真の構造体宣言の文法</h3>
 
-<p>「タグを作らず直接、構造体変数を宣言する方法」と「typedef」を組み合わせたのが、今まで説明したよくある便利な構造体宣言の方法である。</p>
+<ul>
+<li>タグ名を作り、構造体変数を宣言することを同時に行うことも可能である。</li>
+<li>逆に、タグ名も構造体変数も省略することも可能である。</li>
+</ul>
 
-<p><code>typedef 既存のデータ型 新しい名前</code> <br />
+<p>簡単のため省略してきたが、本当に正しい構造体宣言の文法は以下のとおりだ。</p>
+
+<h4>文法</h4>
+
+<pre><code>struct [タグ名] {
+    メンバ1,
+    メンバ2,
+    ...
+} [変数名];
+
+// []内は省略可
+</code></pre>
+      </article>
+      <article>
+<h4>例</h4>
+
+<p>タグ名を作り、構造体変数も同時に宣言する。</p>
+
+<pre><code>struct Point2d {
+    double x;
+    double y;
+} p1;
+
+struct Point2d p2;
+</code></pre>
+
+<ul>
+<li><code>構造体Point2d</code> を宣言すると同時に、 構造体変数 <code>p1</code> を宣言。その後、タグ名を利用して <code>p2</code> も宣言することができている。</li>
+</ul>
+      </article>
+      <article>
+<p>タグ名を作らず、構造体変数も作らない。</p>
+
+<pre><code>struct {
+    double x;
+    double y;
+}
+</code></pre>
+
+<ul>
+<li>文法上間違ってないが、全く利用できない。</li>
+</ul>
+      </article>
+      <article>
+<h3>typedef + 構造体 = とても便利</h3>
+
+<p><em>「<code>typedef</code>」と「<code>タグ名を作らず、構造体変数も作らない方法</code>」を組み合わせ、構造体に別名を付ける</em>のが、今まで説明したよくある便利な構造体宣言の方法である。</p>
+
+<p><code>typedef データ型 新しい名前</code> <br />
 ＋ <br />
-<code>struct {メンバ1, メンバ2, ...} 変数名</code> <br />
-＝</p>
+<code>struct {メンバ1, メンバ2, ...}</code> <br />
+＝ <br />
+<em><code>typedef struct {メンバ1, メンバ2, ...} 新しい名前</code></em></p>
 
 <pre><code>typedef struct {
     メンバ1,
     メンバ2,
     ...
-} 新しい名前
+} 新しい名前;
 </code></pre>
       </article>
       <article>
 <p>これで、typedefと組み合わせた構造体宣言の仕組みがわかったはずだ。</p>
+
+<ul>
+<li>実際に使う際は、typedefと組み合わせた構造体宣言をすることをおすすめする。</li>
+</ul>
+      </article>
+      <article>
+<h3>構造体の比較</h3>
+
+<p>用意されていないので、自分で各メンバーを比較する必要がある。</p>
+
+<h4>例</h4>
+
+<pre><code>typedef struct {
+    int x;
+    int y;
+} POINT;
+
+POINT a, b;
+
+/* if ( a == b )                   駄目 */
+if ( a.x == b.x &amp;&amp; a.y == b.y ) /* OK */
+    return 1;
+
+return 0;
+</code></pre>
+      </article>
+      <article>
+<h3>次回</h3>
+
+<p>変数について色々細かい話します。</p>
       </article>
     </section>
   </body>
