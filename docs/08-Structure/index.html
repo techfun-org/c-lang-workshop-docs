@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<!--
+  TechFUN HTML5 slide template
+
+  Authors: Kodama Shindo(@kodam)
+
+  Using: Google HTML5 slides template(https://code.google.com/p/html5slides/)
+-->
+<html>
+  <head>
+    <title>﻿構造体</title>
+    <meta charset="utf-8" />
+    <script src="../template/files/slides.js"></script>
+    <style>
+.slides article em {
+    color: red;
+    font-style: normal;
+}
+  </style>
+  </head>
+  <body style="display: none">
+    <section class="slides layout-regular template-default">
+      <article>
+<h1>﻿構造体</h1>
+
+<p>C言語勉強会 第八回</p>
+
+<p>Mrtanaka</p>
+
+<p>Jun. 12, 2013</p>
+      </article>
+      <article>
+<h3>構造体とは</h3>
+
+<ul>
+<li><em>構造体</em> とは、複数の変数を1つにまとめたものである。</li>
+<li>配列とは違い、異なる型の変数もまとめることが可能である。</li>
+<li>まとめた変数の集合体を新しい型として作り出すことができる。</li>
+</ul>
+      </article>
+      <article>
+<h3>例えば</h3>
+
+<ul>
+<li>10人の生徒に対して、生徒の名前(19文字まで)、身長(整数)、視力(小数)をまとめた身体検査のデータを用意するとする。</li>
+</ul>
+
+<p>普通に1つ1つ変数宣言をすると</p>
+
+<pre><code>char name1[20];
+int height1;
+double vision1;
+char name2[20]; …
+</code></pre>
+
+<ul>
+<li><strong>変数が30個と膨大な数になってしまう。</strong></li>
+</ul>
+      </article>
+      <article>
+<p>配列でまとめて変数宣言をすると</p>
+
+<pre><code>char name[10][20];
+int height[10];
+double vision[10];
+</code></pre>
+
+<ul>
+<li>かなりすっきりしたが、生徒Aが0、生徒Bが1…などと対応する配列の添え字を覚えておいたり、利用する時に添え字を揃えたりする必要があり、後に<strong>混乱する危険がある。</strong></li>
+</ul>
+      </article>
+      <article>
+<h3>構造体の宣言方法</h3>
+
+<p>構造体を利用することで、これらの情報を｢生徒Aの身長｣、｢生徒Bの視力｣といった感じに <em>関連付けて管理できるようになる。</em></p>
+
+<pre><code>typedef struct{
+  要素(メンバ)の宣言;
+  要素(メンバ)の宣言; …
+}新しく定義したい型の名前
+</code></pre>
+
+<ul>
+<li>このように記述することで構造体の宣言ができる</li>
+</ul>
+      </article>
+      <article>
+<p>例)</p>
+
+<pre><code>typedef struct{
+  char name[20];
+  int height;
+  double vision;
+}STUDENT;
+
+STUDENT a,b,c;
+</code></pre>
+
+<ul>
+<li><p>例えば、こう書くことでchar型のname[20]、int型のheight、double型のvisionの3つのメンバ(要素)を持ったSTUDENT型を定義し、STUDENT型の変数a,b,cを宣言したことになる。</p></li>
+<li><p>また、STUDENT data[10]; のように配列を用いて宣言することも可能である。</p></li>
+</ul>
+      </article>
+      <article>
+<h3>メンバの参照・利用方法</h3>
+
+<p>構造体は複数の異なる型の変数を持つ場合が多いので、a = 3;などといった直接的な代入式は用いることができない。 <br />
+そのため、各メンバ1つ1つに対して式を書くことが必要となる。</p>
+
+<ul>
+<li>｢<strong>構造体の変数名.メンバの名前</strong>｣で構造体のメンバに代入や参照を行うことが可能となる。</li>
+</ul>
+
+<p>例) 前のページのSTUDENT型の変数aに対して代入、参照を行う場合</p>
+
+<pre><code>a.name = "Mrtanaka";
+a.height = 172;
+a.vision = 0.01;
+
+printf("%s : height = %dcm, vision = %f\n", a.name, a.height, a.vision);
+</code></pre>
+      </article>
+      <article>
+<h3>構造体の初期化</h3>
+
+<p>構造体の変数を宣言する時に、次のように記述することで宣言と同時に初期化を行うことも可能である。</p>
+
+<pre><code>構造型名 構造体の変数名 = { 1つ目のメンバの初期値 , 2つ目のメンバの初期値 , … };
+</code></pre>
+
+<p>例) STUDENT型の変数aを宣言・初期化する場合</p>
+
+<pre><code>STUDENT a = {"Mrtanaka", 172, 0.01};
+</code></pre>
+      </article>
+      <article>
+<h3>構造体のコピー</h3>
+
+<p>同じ構造体同士で代入式を書くと、構造体内のメンバの値を全てコピーすることができる。（例え配列でもうまくコピーしてくれる。）</p>
+
+<p>例) STUDENT型の変数bを変数aにコピーする場合</p>
+
+<pre><code>a = b;
+</code></pre>
+      </article>
+      <article>
+<h3>構造体を利用した関数</h3>
+
+<p>構造体は他の変数型と同じように扱えるため、関数の引数や戻り値に設定することが可能である。</p>
+
+<p>例) 引数にSTUDENT型を渡すと、身長(height)を10加算させる関数</p>
+
+<pre><code>STUDENT add_height(STUDENT a){
+  a.height += 10;
+  /* a.height = a.height + 10; と同じ意味 */
+
+  return a;
+}
+</code></pre>
+      </article>
+      <article>
+<p>例) 上のadd_height関数を使う場合</p>
+
+<pre><code>STUDENT a = {"Mrtanaka", 172, 0.01};
+STUDENT b;
+
+b = add_height(a);
+</code></pre>
+      </article>
+      <article>
+<h2>おまけ</h2>
+      </article>
+      <article>
+<h3>構造体宣言</h3>
+
+<p>実は今までのページで説明した構造体の宣言はただの構造体宣言ではない。 <br />
+構造体宣言にtypedefと呼ばれる命令を組み合わせたものである。</p>
+
+<p>何故そんなものを先に紹介したのかというと、</p>
+
+<ul>
+<li>この方法のほうが便利であり、C言語で構造体を宣言する際のデファクトスタンダードとなっている。</li>
+</ul>
+
+<p>からだ。</p>
+
+<p>だが、構造体を真に理解するべく、これより、<code>typedef</code>と、<code>ただの構造体宣言</code>を紹介する。</p>
+      </article>
+      <article>
+<h3>typedef</h3>
+
+<p><em>データ型に新しい名前（別名）をつける。</em></p>
+
+<ul>
+<li>構造体でなくても使える。type(型) definition(定義)の略である。</li>
+</ul>
+
+<h4>文法</h4>
+
+<pre><code>typedef (既存の)データ型 新しい名前
+または
+(既存の)データ型 typedef 新しい名前
+</code></pre>
+      </article>
+      <article>
+<p>例えば、int に自分の好きな別名をつけるには、</p>
+
+<pre><code>typedef int Seisu;
+</code></pre>
+
+<p>このように書く。この例では int に Seisu という別名をつけた。なので以降、以下のように書くことで int 型変数 n を宣言できる。</p>
+
+<pre><code>Seisu n;
+</code></pre>
+      </article>
+      <article>
+<h3>タグ名を使った構造体宣言</h3>
+
+<p><em>struct タグ名 {メンバ1, メンバ2, ...};</em></p>
+
+<p>という形で宣言する。タグ名は、新しく構造体として定義した型を識別するための名前である。</p>
+
+<p>そして、宣言した構造体型の変数を宣言するには、</p>
+
+<p><em>struct タグ名 変数名</em></p>
+
+<p>とかく。  </p>
+
+<ul>
+<li>こうして宣言した構造体も勿論、関数の引数や戻り値にできる。</li>
+</ul>
+      </article>
+      <article>
+<h4>例</h4>
+
+<pre><code>#include &lt;stdio.h&gt;
+
+struct HUMAN {
+    char name[20];
+    double height;
+    double weight;
+};
+
+int main(void) {
+    struct HUMAN boku = {
+        "Tanaka Taro",
+        175.2,
+        63.7
+    };
+    printf("ぼくの名前は%s。身長%.1fcmで体重%.1fcmなヤングマンだぜ！\n",
+        boku.name, boku.height, boku.weight);
+    return 0;
+}
+</code></pre>
+      </article>
+      <article>
+<h3>タグを作らず直接、構造体変数を宣言する</h3>
+
+<p><em>struct {メンバ1, メンバ2, ...} 変数名;</em></p>
+
+<p>という形で直接、構造体変数を宣言できる。  </p>
+
+<ul>
+<li>タグ名がないので、構造体の型の名前を表現できないため、他の場所で型の名前が必要な場合使えない。</li>
+</ul>
+      </article>
+      <article>
+<h4>例</h4>
+
+<pre><code>#include &lt;stdio.h&gt;
+
+int main(void) {
+    struct {
+        int x;
+        int y;
+    } point1;
+
+    point1.x = 100;
+    point1.y = 120;
+    printf("(%d, %d)", point1.x, point1.y);
+    return 0;
+}
+</code></pre>
+      </article>
+      <article>
+<h3>真の構造体宣言の文法</h3>
+
+<p>簡単のため省略してきたが、本当に正しい構造体宣言の文法は以下のとおりだ。</p>
+
+<h4>文法</h4>
+
+<pre><code>struct [タグ名] {
+    メンバ1,
+    メンバ2,
+    ...
+} [変数名];
+
+// []内は省略可
+</code></pre>
+
+<ul>
+<li>タグ名を作り、構造体変数を宣言することを同時に行うことも可能である。</li>
+<li>逆に、タグ名も構造体変数も省略することも可能である。</li>
+</ul>
+      </article>
+      <article>
+<h4>例</h4>
+
+<p>タグ名を作り、構造体変数も同時に宣言する。</p>
+
+<pre><code>struct Point2d {
+    double x;
+    double y;
+} p1;
+
+struct Point2d p2;
+</code></pre>
+
+<ul>
+<li><code>構造体Point2d</code> を宣言すると同時に、 構造体変数 <code>p1</code> を宣言。その後、タグ名を利用して <code>p2</code> も宣言することができている。</li>
+</ul>
+      </article>
+      <article>
+<p>タグ名を作らず、構造体変数も作らない。</p>
+
+<pre><code>struct {
+    double x;
+    double y;
+};
+</code></pre>
+
+<ul>
+<li>文法上間違ってないが、全く利用できない。</li>
+</ul>
+      </article>
+      <article>
+<h3>typedef + 構造体 = とても便利</h3>
+
+<p><em>「<code>typedef</code>」と「<code>タグ名を作らず、構造体変数も作らない方法</code>」を組み合わせ、構造体に別名を付ける</em>のが、今まで説明したよくある便利な構造体宣言の方法である。</p>
+
+<p><code>typedef データ型 新しい名前</code> <br />
+＋ <br />
+<code>struct {メンバ1, メンバ2, ...}</code> <br />
+＝ <br />
+<em><code>typedef struct {メンバ1, メンバ2, ...} 新しい名前</code></em></p>
+
+<pre><code>typedef struct {
+    メンバ1,
+    メンバ2,
+    ...
+} 新しい名前;
+</code></pre>
+      </article>
+      <article>
+<p>これで、typedefと組み合わせた構造体宣言の仕組みがわかったはずだ。</p>
+
+<ul>
+<li>実際に使う際は、typedefと組み合わせた構造体宣言をすることをおすすめする。</li>
+</ul>
+      </article>
+      <article>
+<h3>構造体の比較</h3>
+
+<p>用意されていないので、自分で各メンバーを比較する必要がある。</p>
+
+<h4>例</h4>
+
+<pre><code>typedef struct {
+    int x;
+    int y;
+} POINT;
+
+POINT a, b;
+
+/* if ( a == b )                   駄目 */
+if ( a.x == b.x &amp;&amp; a.y == b.y ) /* OK */
+    return 1;
+
+return 0;
+</code></pre>
+      </article>
+      <article>
+<h3>次回</h3>
+
+<p>変数について色々細かい話します。</p>
+      </article>
+    </section>
+  </body>
+</html>
