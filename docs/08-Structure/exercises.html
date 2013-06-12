@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<!--
+  TechFUN HTML5 slide template
+
+  Authors: Kodama Shindo(@kodam)
+
+  Using: Google HTML5 slides template(https://code.google.com/p/html5slides/)
+-->
+<html>
+  <head>
+    <title>演習問題</title>
+    <meta charset="utf-8" />
+    <script src="../template/files/slides.js"></script>
+    <style>
+.slides article em {
+    color: red;
+    font-style: normal;
+}
+  </style>
+  </head>
+  <body style="display: none">
+    <section class="slides layout-regular template-default">
+      <article>
+<p><small>C言語勉強会 第七回 文字/文字列</small></p>
+
+<h3>演習問題</h3>
+
+<p><a href="./ex/08-ex.zip">問題に使うソースコード</a></p>
+
+<ul>
+<li>長さ20のchar型配列en, fr, jpをメンバに持つ構造体を宣言せよ。その構造体をLocaleという型名で扱えるようにせよ。</li>
+<li>その構造体Localeを利用して、'e'と入力されたらHello, 'f'ならBonjour, 'j'ならこんにちは と出力するように<a href="./ex/ex01.c">ex01.c</a>を書き足し、プログラムを完成させよ。</li>
+</ul>
+      </article>
+      <article>
+<ul>
+<li>あなたは動画投稿サイトの検索機能を作っている。<a href="./ex/ex02.c">ex02.c</a>を書き足し、プログラムを完成させよ。
+<ul>
+<li>動画のメタ情報は構造体VideoMetaを使って用意されている。</li>
+<li>構造体を引数にとりメタ情報を画面に出力する関数 <code>printVideoMeta(VideoMeta a)</code> を利用してよい。
+<ul>
+<li><small>この関数の中で呼び出している一部の関数や、構造体のtime_t型は標準ライブラリ<code>&lt;time.h&gt;</code>で宣言されている。気になる方は<code>time.h</code>で今すぐ検索</small></li>
+</ul></li>
+<li>この問題が物足りなかったら冒頭の<code>#define _EX02_DIFFICULT</code>をコメントアウトして、ID順や再生回数順等で画面に出力する機能を加えよ。
+<ul>
+<li><small>#defineや#ifdefはわかんなかったらググると良い</small></li>
+</ul></li>
+</ul></li>
+</ul>
+      </article>
+    </section>
+  </body>
+</html>
