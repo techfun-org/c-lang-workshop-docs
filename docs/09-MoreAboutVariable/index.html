@@ -336,7 +336,8 @@ float x = a / b;
     </td>
   </tr>
 </table>
-
+      </article>
+      <article>
 <ul>
 <li><small>これはWindows 32/64bit環境における値である。</small></li>
 <li><small>UNIX 64bit環境ではlong型はlong long型と同じ大きさになる。</small></li>
@@ -658,11 +659,15 @@ int main(void) {
 <p>通常の変数の宣言の前につける。</p>
 
 <pre><code>記憶クラス指定子 型名 変数名;
+または
+型名 記憶クラス指定子 変数名;
 </code></pre>
 
 <h4>例</h4>
 
 <pre><code>static int a;
+または
+int static a;
 </code></pre>
       </article>
       <article>
@@ -872,13 +877,18 @@ int const a;
       <article>
 <h4>補足</h4>
 
-<ul>
-<li>型修飾子が付いている型と付いてない型は別の型扱いされる。
-<ul>
-<li><small>例:）int と const int は別の型</small></li>
-</ul></li>
-</ul>
+<p>関数の仮引数で型修飾子を使うことも出来る。</p>
 
+<pre><code>void func(const int a) {
+    ...
+}
+</code></pre>
+
+<ul>
+<li>この場合、その関数の中でだけ修飾子の効果がある。つまりこの関数は、仮引数に int型変数 a を一つとり、 関数内で a に const 修飾子の効果を利用する 関数である。<small>（const int型変数だけを引数にとるのではなく、どんな修飾子がついたint型変数も引数に取る。）</small></li>
+</ul>
+      </article>
+      <article>
 <h4>以下の二つについて紹介する。</h4>
 
 <ul>
@@ -930,6 +940,7 @@ int main(void) {
 <li><p>定数の初期化は宣言時にしか行えないので注意。</p></li>
 <li><p>ポインタ定数の場合特別な挙動をする。これを積極的に使うと便利である。ポインタを紹介してないから今は書かない。</p></li>
 <li><p>わざわざ変数を定数にするのは、プログラムを書く際のミスを減らすためである。変更しないつもりの変数は積極的に定数として宣言すべきである。</p></li>
+<li><p>厳密な話、C言語におけるconstは定数ではなく、ただの「書き換えできない変数」である。なので、配列宣言時の要素数指定や、switch文のcase定数式などに必要な、「コンパイル時に既に値が確定している必要がある」という意味の、本当の定数とは別であることに注意。</p></li>
 </ul>
       </article>
       <article>
