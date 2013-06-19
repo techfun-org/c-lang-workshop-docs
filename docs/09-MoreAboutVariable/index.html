@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<!--
+  TechFUN HTML5 slide template
+
+  Authors: Kodama Shindo(@kodam)
+
+  Using: Google HTML5 slides template(https://code.google.com/p/html5slides/)
+-->
+<html>
+  <head>
+    <title>変数についてより詳しく</title>
+    <meta charset="utf-8" />
+    <script src="../template/files/slides.js"></script>
+    <style>
+.slides article em {
+    color: red;
+    font-style: normal;
+}
+  </style>
+  </head>
+  <body style="display: none">
+    <section class="slides layout-regular template-default">
+      <article>
+<h1>変数についてより詳しく</h1>
+
+<p>C言語勉強会 第九回</p>
+
+<p>kumar8600 <br />
+June 2, 2013</p>
+      </article>
+      <article>
+<h3>今回の内容</h3>
+
+<ul>
+<li>型変換
+<ul>
+<li>明示的型変換（キャスト）</li>
+<li>暗黙の型変換</li>
+</ul></li>
+<li>データ型
+<ul>
+<li>符号の有無</li>
+<li>最大値・最小値</li>
+</ul></li>
+<li>スコープ
+<ul>
+<li>変数が存在する範囲</li>
+</ul></li>
+<li>記憶クラス指定子
+<ul>
+<li>変数の保存方法を指定する</li>
+</ul></li>
+<li>型修飾子
+<ul>
+<li>変数の属性を指定する</li>
+</ul></li>
+</ul>
+      </article>
+      <article>
+<h2>型変換</h2>
+      </article>
+      <article>
+<h3>明示的型変換（キャスト）</h3>
+
+<p><em>強制的に別の型に変換</em> したいときに用いる。</p>
+
+<h4>文法</h4>
+
+<pre><code>(型)式
+</code></pre>
+
+<h4>int変数 i をdouble型に変換する例</h4>
+
+<pre><code>(double)i
+</code></pre>
+      </article>
+      <article>
+<h3>暗黙の型変換</h3>
+
+<h4>代入時の変換</h4>
+
+<p>左辺の型と右辺の型が異なっている場合は、 <em>左辺の型に変換</em> される。</p>
+
+<p>次の例では、 a は小数部の1415が切り捨てられて「3」になる。</p>
+
+<pre><code>int a;
+double x = 3.1415;
+a = x;
+</code></pre>
+
+<ul>
+<li>代入時にかかわらず、C言語の型変換は四捨五入ではなく切り捨てであることに注意されたい。
+<ul>
+<li>上の例で例え x が　3.99999 だったとしても a は 3 になる。</li>
+</ul></li>
+</ul>
+      </article>
+      <article>
+<h4>式の中で行われる変換</h4>
+
+<p>式の中で異なる型の定数や変数が現れたときは、 <em>精度の高い型に統一</em> される。</p>
+
+<ul>
+<li>精度の順番
+<ul>
+<li><code>char</code> &lt; <code>int</code> &lt; <code>long</code> &lt; <code>float</code> &lt; <code>double</code></li>
+</ul></li>
+</ul>
+      </article>
+      <article>
+<h3>3 ÷ 2 は 1 ？？？？？？</h3>
+
+<p>下の式では x は 1 になってしまう。</p>
+
+<pre><code>int a = 3;
+int b = 2;
+
+float x = a / b;
+</code></pre>
+
+<ul>
+<li>C言語では右辺での計算が行われたあと、代入するときになって初めて左辺の型への型変換が行われる。</li>
+<li>だから、左辺の x の型がfloatであるのに、 <br />
+右辺のaとbが共にint型であるから、int型の値が代入されてしまった。</li>
+</ul>
+
+<p>こうすれば右辺はfloat型の精度で計算され、 x は 1.5 になる。</p>
+
+<pre><code>float x = (float)a / b;
+</code></pre>
+      </article>
+      <article>
+<h2>データ型をもっと知ろう</h2>
+      </article>
+      <article>
+<h3>符号の有無</h3>
+
+<p>以下のキーワードを整数型の前後に付加することで符号の有無を指定する。</p>
+
+<table>
+    <tr>
+        <th>
+            キーワード
+        </th>
+        <th>
+            意味
+        </th>
+    </tr>
+    <tr>
+        <td>
+            signed
+        </td>
+        <td>
+            符号あり
+        </td>
+    </tr>
+    <tr>
+        <td>
+            unsigned
+        </td>
+        <td>
+            符号なし
+        </td>
+    </tr>
+</table>
+
+<p>符号無しのint型変数を宣言するには以下のように書く。</p>
+
+<pre><code>unsigned int x;
+</code></pre>
+
+<ul>
+<li>符号がないので、当然負の数は扱えない。</li>
+<li>これらのキーワードを省略した場合、自動的に<code>signed</code>が指定される。<small>（ただしchar型は処理系による）</small></li>
+</ul>
+      </article>
+      <article>
+<h3>なぜわざわざ符号なしの変数なんか宣言するのか？</h3>
+
+<p>それは、符号なしの時のほうが、扱える値の範囲が正の方向に長いので、そのほうが便利な場面があるからだ。</p>
+
+<ul>
+<li><small>これは実際にそういった場面が来ればわかると思う。</small></li>
+</ul>
+      </article>
+      <article>
+<h3>整数型の最大値・最小値</h3>
+
+<p>変数の型によって、扱える値の範囲は変わる。</p>
+
+<table>
+  <tr>
+    <th>
+      符号
+    </th>
+    <th>
+      型
+    </th>
+    <th>
+      容量
+    </th>
+    <th>
+      値の範囲
+    </th>
+  </tr>
+  <tr>
+    <td>
+      signed
+    </td>
+    <td rowspan="2">
+      char
+    </td>
+    <td rowspan="2">
+      1
+    </td>
+    <td>
+        -128 ～ 127
+    </td>
+  </tr>
+  <tr>
+    <td>
+      unsinged
+    </td>
+    <td>
+        0 ～ 255
+    </td>
+  </tr>
+  <tr>
+    <td>
+      signed
+    </td>
+    <td rowspan="2">
+      short
+    </td>
+    <td rowspan="2">
+      2
+    </td>
+    <td>
+        -32,768 ～ 32,767
+    </td>
+  </tr>
+  <tr>
+    <td>
+      unsigned
+    </td>
+    <td>
+        0 ～ 65,535
+    </td>
+  </tr>
+  <tr>
+    <td>
+      signed
+    </td>
+    <td rowspan="2">
+      int<small>※</small>
+    </td>
+    <td rowspan="2">
+      4
+    </td>
+    <td>
+        -2,147,483,648 ～ 2,147,483,647(±約21億)
+    </td>
+  </tr>
+  <tr>
+    <td>
+      unsigned
+    </td>
+    <td>
+        0～4,294,967,295(約42億)
+    </td>
+  </tr>
+</table>
+
+<ul>
+<li><small>※大半の32bit、64bit環境において。</small></li>
+</ul>
+      </article>
+      <article>
+<table>
+  <tr>
+    <th>
+      符号
+    </th>
+    <th>
+      型
+    </th>
+    <th>
+      容量
+    </th>
+    <th>
+      値の範囲
+    </th>
+  </tr>
+  <tr>
+    <td>
+      signed
+    </td>
+    <td rowspan="2">
+      long
+    </td>
+    <td rowspan="2">
+      4
+    </td>
+    <td>
+        -2,147,483,648 ～ 2,147,483,647(±約21億)
+    </td>
+  </tr>
+  <tr>
+    <td>
+      unsigned
+    </td>
+    <td>
+        0～4,294,967,295(約42億)
+    </td>
+  </tr>
+  <tr>
+    <td>
+      signed
+    </td>
+    <td rowspan="2">
+      long long
+    </td>
+    <td rowspan="2">
+      8
+    </td>
+    <td>
+        -9,223,372,036,854,775,808 ～ 9,223,372,036,854,775,807(±約922京)
+    </td>
+  </tr>
+  <tr>
+    <td>
+      unsigned
+    </td>
+    <td>
+        0～18,446,744,073,709,551,615(約1844京)
+    </td>
+  </tr>
+</table>
+      </article>
+      <article>
+<ul>
+<li><small>これはWindows 32/64bit環境における値である。</small></li>
+<li><small>UNIX 64bit環境ではlong型はlong long型と同じ大きさになる。</small></li>
+<li><small><code>short</code>, <code>long</code>, <code>long long</code> は <code>~ int</code>の略である。</small></li>
+<li><small>Cの規格では、変数型の大きさは定義されていない。</small></li>
+</ul>
+      </article>
+      <article>
+<h3>浮動小数点型</h3>
+
+<p>精度が低い順に、</p>
+
+<ul>
+<li><code>float</code></li>
+<li><code>double</code></li>
+<li><code>long double</code></li>
+</ul>
+
+<p>がある。</p>
+
+<ul>
+<li><p>それぞれが、具体的にどの程度の範囲の値を扱えるかは環境に依存する。（整数型もそうだが）</p></li>
+<li><p>とりあえずdouble型を使うと高速だし十分な精度があると思う。</p></li>
+<li><p>詳しくはこれ見てください  </p>
+
+<blockquote>
+  <p><a href="http://ja.wikipedia.org/wiki/%E6%B5%AE%E5%8B%95%E5%B0%8F%E6%95%B0%E7%82%B9%E6%95%B0">浮動小数点数 - Wikipedia</a></p>
+</blockquote></li>
+</ul>
+      </article>
+      <article>
+<h3>sizeof 演算子</h3>
+
+<p>sizeofに渡された型や変数のメモリサイズを返す。</p>
+
+<h4>文法</h4>
+
+<pre><code>sizeof 変数名
+または
+sizeof (型名or変数名)
+</code></pre>
+
+<h4>型のメモリサイズを得る例</h4>
+
+<pre><code>int integerSize = sizeof (int);
+</code></pre>
+
+<ul>
+<li>integerSizeにはint型のメモリサイズ、4が入る</li>
+<li><p>これは int 型は４バイトのメモリを使うという意味だ。</p></li>
+<li><p><small>（int型のメモリサイズは環境依存）</small></p></li>
+</ul>
+      </article>
+      <article>
+<h4>変数のメモリサイズを得る例</h4>
+
+<pre><code>int i = 10;
+int integerSize = sizeof (i);
+</code></pre>
+
+<ul>
+<li>型名ではなく、変数名を入れてもよい。</li>
+<li>integerSizeにはint型のメモリサイズ、4が入る</li>
+<li><p><small>変数名の場合、<code>()</code>を書かなくても良い。逆に型名のときは必須なので注意。</small></p></li>
+<li><p><small>（int型のメモリサイズは環境依存）</small></p></li>
+</ul>
+      </article>
+      <article>
+<h4>配列のメモリサイズを得る例</h4>
+
+<pre><code>int arr[10];
+int arrSize = sizeof(arr);
+</code></pre>
+
+<ul>
+<li>arrSizeには配列のメモリサイズ、40が入る。</li>
+<li><p>これは、サイズが4であるint型変数を10個持っているからである。</p></li>
+<li><p><small>（int型のメモリサイズは環境依存）</small></p></li>
+</ul>
+      </article>
+      <article>
+<h4>配列の要素数を算出</h4>
+
+<pre><code>配列の要素数 = sizeof(配列名) / sizeof(配列の要素の型)
+すなわち
+配列の要素数 = sizeof(配列名) / sizeof(配列名[0])
+</code></pre>
+
+<ul>
+<li>これは、配列のメモリサイズが <code>配列の要素の型のサイズ</code> * <code>配列の要素数</code> だからである。</li>
+</ul>
+      </article>
+      <article>
+<h3>接尾語</h3>
+
+<p>式に直接、定数を書き込むとき、接尾語を付けることでその型を指定出来る。</p>
+
+<pre><code>float x = 3.0f / 2.0f;  // 3.0と2.0がfloat型であることを示している。
+</code></pre>
+
+<h4>整数定数の接尾語</h4>
+
+<table>
+    <tr>
+        <th>
+            接尾語
+        </th>
+        <th>
+            型
+        </th>
+    </tr>
+    <tr>
+        <td>
+            なし
+        </td>
+        <td>
+            int 以上の符号あり整数型
+        </td>
+    </tr>
+    <tr>
+        <td>
+            u または U
+        </td>
+        <td>
+            unsigned int 以上の符号なし整数型
+        </td>
+    </tr>
+    <tr>
+        <td>
+            l または L
+        </td>
+        <td>
+            long int 以上の符号あり整数型
+        </td>
+    </tr>
+    <tr>
+        <td>
+            ll または LL
+        </td>
+        <td>
+            long long int
+        </td>
+    </tr>
+</table>
+      </article>
+      <article>
+<h4>浮動小数点定数の接尾語</h4>
+
+<table>
+    <tr>
+        <th>
+            接尾語
+        </th>
+        <th>
+            型
+        </th>
+    </tr>
+    <tr>
+        <td>
+            なし
+        </td>
+        <td>
+            double
+        </td>
+    </tr>
+    <tr>
+        <td>
+            f または F
+        </td>
+        <td>
+            float
+        </td>
+    </tr>
+    <tr>
+        <td>
+            l または L
+        </td>
+        <td>
+            long double
+        </td>
+    </tr>
+</table>
+
+<h4>例</h4>
+
+<pre><code>423     : int
+423L    : long
+
+423.0f  : float
+423.0   : double
+</code></pre>
+      </article>
+      <article>
+<h2>スコープ</h2>
+      </article>
+      <article>
+<h3>ブロック</h3>
+
+<p><code>{</code>と<code>}</code>に囲まれた領域をブロックと呼ぶ。</p>
+      </article>
+      <article>
+<h3>ローカル変数</h3>
+
+<p>プログラムの一部分でしかアクセスできない変数のこと（グローバル変数の逆）</p>
+
+<ul>
+<li>宣言された場所からその変数が宣言されたブロックを抜けるまででしかアクセス出来ない</li>
+</ul>
+      </article>
+      <article>
+<pre><code>#include &lt;stdio.h&gt;
+
+void print_a() {
+    int o = a;
+    printf("%d\n", o);
+}
+
+int main(void) {
+    int a = 10;  /* ここから変数 a にアクセスできる */
+
+    print_a();
+
+    return 0;
+} /* ここで変数 a は開放され、消滅する */
+</code></pre>
+
+<ul>
+<li>a はローカル変数なので、その変数が宣言された場所からその変数が定義されたブロックを抜けるまででしかアクセス出来ない。</li>
+<li>だから、上の例は、コンパイル時にエラーとなる。 </li>
+</ul>
+      </article>
+      <article>
+<h3>スコープ</h3>
+
+<p>先程の例では a にアクセスできるのはmain関数の終わりまでである。</p>
+
+<ul>
+<li><p>こういったある変数や関数が特定の名前で参照される範囲のことを、 <em>スコープ</em> と呼ぶ。</p></li>
+<li><p>スコープ外で同名の別の変数を新たに宣言することが可能である。</p></li>
+<li><p>このスコープがなるべく狭くなるようにプログラムを書くと、ミスの少ないコードを書ける。特にグローバル変数は必要最小限の量にしよう。</p></li>
+</ul>
+      </article>
+      <article>
+<h3>グローバル変数</h3>
+
+<p>全てのスコープからアクセスできる変数。どこの関数の中でもない、プログラムの最も外側の部分に書く。</p>
+
+<pre><code>#include &lt;stdio.h&gt;
+
+int a = 3;
+
+int main(void) {
+
+    printf("%d\n", a);
+
+    return 0;
+}
+</code></pre>
+
+<ul>
+<li>上の例では a はグローバル変数であり、すべてのブロック（関数）からアクセスできる。</li>
+<li>上の例では a の値 3 が出力される。</li>
+</ul>
+      </article>
+      <article>
+<ul>
+<li>具体的な初期値を与えなかった場合、必ず 0 で初期化される。</li>
+<li>ローカル変数も同じく、宣言より先にアクセスすることは基本的に出来ない
+<ul>
+<li>ただし、後述のアクセス指定子<code>extern</code>を利用することでアクセスできるようになる。</li>
+</ul></li>
+</ul>
+      </article>
+      <article>
+<h3>変数の優先度</h3>
+
+<p>ブロックの外側で宣言された変数よりも、内側で宣言された変数が優先される。 </p>
+
+<pre><code>#include &lt;stdio.h&gt;
+
+int a = 3;
+
+int main(void) {
+    int a = 10;
+
+    printf("%d\n", a);
+
+    return 0;
+}
+</code></pre>
+
+<ul>
+<li>上の例では、main関数の中で宣言された方の a の値 10 が出力される。  </li>
+</ul>
+      </article>
+      <article>
+<h3>理解の再確認</h3>
+
+<p>今までの内容を理解しているなら、下のプログラムを実行するとどう出力されるかわかるはずだ。</p>
+
+<pre><code>#include &lt;stdio.h&gt;
+
+int main(void) {
+    int a = 10;
+
+  if(1) {
+    int a = 20;
+    printf("%d\n", a);
+  }
+
+    printf("%d\n", a);
+
+  return 0;
+}
+</code></pre>
+      </article>
+      <article>
+<p>main関数ではじめに a を宣言し、10で初期化した。その後、if文の中でもう一度 a という名前の変数を宣言したが、これらが全く別の変数であることを意識出来れば、なんの迷いもない問題だ。</p>
+
+<ul>
+<li>答えは<code>20(改行)10</code>。</li>
+</ul>
+      </article>
+      <article>
+<h2>記憶クラス指定子</h2>
+      </article>
+      <article>
+<h3>記憶クラス指定子</h3>
+
+<p>変数の保存方法を更に細かく指定する</p>
+
+<h4>文法</h4>
+
+<p>通常の変数の宣言の前につける。</p>
+
+<pre><code>記憶クラス指定子 型名 変数名;
+または
+型名 記憶クラス指定子 変数名;
+</code></pre>
+
+<h4>例</h4>
+
+<pre><code>static int a;
+または
+int static a;
+</code></pre>
+      </article>
+      <article>
+<h4>以下の五つが存在する</h4>
+
+<ul>
+<li>static</li>
+<li>extern</li>
+<li>auto - (時代遅れ)</li>
+<li>register - (時代遅れ)</li>
+<li>typedef - （構文の都合で分類されているだけ）</li>
+</ul>
+      </article>
+      <article>
+<h3>auto | 自動変数</h3>
+
+<p>プログラム中の宣言されたブロック内でのみ使用できる変数。 <br />
+つまり、 <em>今まで使ってきた普通の変数</em> 。</p>
+
+<h4>文法</h4>
+
+<pre><code>auto 型名 変数名;
+または
+型名 変数名;
+</code></pre>
+      </article>
+      <article>
+<h4>補足</h4>
+
+<ul>
+<li>auto句を付けたところで全く意味は無い。と言うか混乱を招くので付けないほうがいい。</li>
+<li><small>そんな句がなぜあるか？というと、C言語の前身であるB言語は変数の宣言に<code>auto 変数名</code>と書いたからである。型名が無いが、B言語には整数型しかなかった。</small></li>
+</ul>
+      </article>
+      <article>
+<h4>自動変数のココが自動</h4>
+
+<p><em>特定の区域内に到達すると自動的に変数領域を確保し</em> 、 <em>その区域を脱すると自動的にその領域を開放して消滅する</em> 点が自動</p>
+      </article>
+      <article>
+<h4>例</h4>
+
+<pre><code>void print_a() {
+    int o;
+    o = 10;
+    printf("%d\n", o);
+}
+</code></pre>
+
+<ul>
+<li><p><small>この関数を呼び出した場合、 <br />
+関数を呼び出すと同時にメモリーのどこかあいてるところに int型変数o のための領域を確保し、 <br />
+関数を実行しおわると先ほど確保した 変数o の領域を開放し消滅する。</small></p></li>
+<li><p>砕いていうと、関数を呼び出すたび変数を作り、抜けるとき変数を消してるだけである。</p>
+
+<ul>
+<li>この仕組みがスコープを生み出している。</li>
+</ul></li>
+</ul>
+      </article>
+      <article>
+<h3>static | 静的変数</h3>
+
+<p>どこに宣言していようとも関係なく、<em>プログラムの実行開始時にメモリ上に作られ、初期値も与えられる変数</em> 。</p>
+
+<h4>文法</h4>
+
+<pre><code>static 型名 変数名;
+</code></pre>
+
+<ul>
+<li><em>関数が終了しても値を保持しているローカル変数</em> 。という認識で問題ないだろう。</li>
+<li>auto変数の逆</li>
+</ul>
+
+<h4>例</h4>
+      </article>
+      <article>
+<pre><code>#include &lt;stdio.h&gt;
+
+void printCalledNum() {
+    static int n = 0;
+    n++;
+    printf("%d回目の呼び出し\n", n);
+}
+
+int main(void) {
+
+    printCalledNum();
+    printCalledNum();
+    printCalledNum();
+
+    return 0;
+}
+</code></pre>
+
+<ul>
+<li>printCalledNum関数の n は静的変数なので、printCalledNum関数を抜けだしても値は保持されている。</li>
+</ul>
+      </article>
+      <article>
+<h4>静的変数は必ず初期化される</h4>
+
+<p>静的変数は、具体的な初期値を与えなかった場合、必ず 0 で初期化されることが保証されている。</p>
+
+<ul>
+<li>なので、前のページの例ではわかりやすいように 0 で n を初期化しているが、書かなくても同じ結果である。</li>
+</ul>
+
+<p>また、グローバル変数も、具体的な初期値を与えなかった場合、必ず 0 で初期化される。</p>
+
+<ul>
+<li>もしかして知らなかった人もいるかもしれないが、逆に普通の変数や配列は、宣言しても初期値は入っていないので注意。<small>厳密にはメモリ上に残ったゴミが初期値。</small></li>
+</ul>
+      </article>
+      <article>
+<h4>グローバル変数でのstatic</h4>
+
+<p>グローバル変数にstaticをつけると、今まで説明した意味と全く違う意味になる。</p>
+      </article>
+      <article>
+<h3>extern</h3>
+
+<p>変数の実体が、別のところに存在していることを表現する</p>
+
+<p>extern int a;</p>
+
+<ul>
+<li>C言語でも複数ファイルを使ったプログラムをかけるのだが、その際に別のファイルに書かれたグローバル変数や関数を使うためにextern宣言が必要になる。</li>
+<li>この話は面白いのだが奥が深いので、今回は省略する。知りたかったらググるといい。</li>
+</ul>
+      </article>
+      <article>
+<h3>register | レジスター変数（時代遅れらしい）</h3>
+
+<p>コンピューターには主記憶装置である「メモリ」の他に、CPUに内蔵されていて、メモリと比べるととてつもなく速く、低容量な「 <em>レジスタ</em> 」がある。実はCPUによる計算は、メモリに入っている値を一度レジスタにコピーしてから行われている。（なんか最近は違うらしい）</p>
+
+<p>そんな高速なレジスタに変数を格納したいとき、この指定子を使う。</p>
+
+<pre><code>register int a;
+</code></pre>
+
+<ul>
+<li><p>register変数は「出来れば」レジスタに変数を格納する。容量が足りないとき等は結局いつもどおりメモリを使うので注意。</p></li>
+<li><p>あと、register変数のアドレスを得ることは出来ない。</p></li>
+</ul>
+      </article>
+      <article>
+<ul>
+<li>ちなみに、 <em>今はコンパイラーの最適化が凄いので、こんなもの書く必要はない</em> （凄いプログラマーならあるいは）。私も書いたことないです。</li>
+</ul>
+      </article>
+      <article>
+<h3>typedef</h3>
+
+<p><em>データ型に新しい名前（別名）をつける。</em></p>
+
+<p><small>構造体を宣言する際にも何気なく使ってきたと思う。</small></p>
+
+<p>例えば、int に自分の好きな別名をつけるには、</p>
+
+<pre><code>typedef int Seisu;
+</code></pre>
+
+<p>このように書く。この例では int に Seisu という別名をつけた。なので以降、</p>
+
+<pre><code>Seisu n;
+</code></pre>
+
+<p>と書くことでも int 型変数 n を宣言できる。</p>
+      </article>
+      <article>
+<h3>typedef | よくある使用例</h3>
+
+<p>unsigned int に uint という別名をつける</p>
+
+<pre><code>typedef unsigned int uint;
+</code></pre>
+
+<p>ある構造体を名前をつけ宣言する。</p>
+
+<pre><code>typedef struct {
+    char name[20];
+    double height;
+    double weight;
+} HUMAN;
+</code></pre>
+
+<ul>
+<li>name、height、weightをもつ構造体に HUMAN という名前をつけた。</li>
+</ul>
+      </article>
+      <article>
+<h2>型修飾子</h2>
+      </article>
+      <article>
+<h3>型修飾子</h3>
+
+<p>データ型を用途に応じてきめ細かく指定する。</p>
+
+<h4>文法</h4>
+
+<p>変数を宣言する際、型の前後に付加して使う。</p>
+
+<pre><code>型修飾子 型名 変数名;
+または
+型名 型修飾子 変数名;
+</code></pre>
+
+<h4>例</h4>
+
+<pre><code>const int a;
+int const a;
+</code></pre>
+      </article>
+      <article>
+<h4>補足</h4>
+
+<p>関数の仮引数で型修飾子を使うことも出来る。</p>
+
+<pre><code>void func(const int a) {
+    ...
+}
+</code></pre>
+
+<ul>
+<li>この場合、その関数の中でだけ修飾子の効果がある。つまりこの関数は、仮引数に int型変数 a を一つとり、 関数内で a に const 修飾子の効果を利用する 関数である。<small>（const int型変数だけを引数にとるのではなく、どんな修飾子がついたint型変数も引数に取る。）</small></li>
+</ul>
+      </article>
+      <article>
+<h4>以下の二つについて紹介する。</h4>
+
+<ul>
+<li>const</li>
+<li>volatile</li>
+</ul>
+      </article>
+      <article>
+<h3>定数（const）</h3>
+
+<p>指定した変数が定数であることを指定する。</p>
+
+<ul>
+<li>定数とは初期化出来ても、書き換え出来ない変数のことである。</li>
+<li>書き換えを行うようなコードを書いた場合、コンパイルの時点でエラーになる。</li>
+</ul>
+
+<h4>文法</h4>
+
+<pre><code>const 型名 変数名;
+または
+型名 const 変数名;
+</code></pre>
+      </article>
+      <article>
+<h4>例</h4>
+
+<pre><code>#include &lt;stdio.h&gt;
+
+int main(void) {
+
+    const int a = 10;
+    a += 2;
+
+    printf("%d\n", a);
+
+    return 0;
+}
+</code></pre>
+
+<ul>
+<li>定数として宣言した <code>a</code> を <code>a += 2</code>で、値を書き換えようとしているため、このプログラムはコンパイル時にエラーする。</li>
+</ul>
+      </article>
+      <article>
+<h4>補足</h4>
+
+<ul>
+<li><p>定数の初期化は宣言時にしか行えないので注意。</p></li>
+<li><p>ポインタ定数の場合特別な挙動をする。これを積極的に使うと便利である。ポインタを紹介してないから今は書かない。</p></li>
+<li><p>わざわざ変数を定数にするのは、プログラムを書く際のミスを減らすためである。変更しないつもりの変数は積極的に定数として宣言すべきである。</p></li>
+<li><p>厳密な話、C言語におけるconstは定数ではなく、ただの「書き換えできない変数」である。なので、配列宣言時の要素数指定や、switch文のcase定数式などに必要な、「コンパイル時に既に値が確定している必要がある」という意味の、本当の定数とは別であることに注意。</p></li>
+</ul>
+      </article>
+      <article>
+<h3>volatile変数</h3>
+
+<p>コンパイラによる最適化を行わない変数。</p>
+
+<p>今のコンパイラは頭がいいので、私たちの書いたなプログラムをできるだけ素晴らしい効率で動くように最適化する。</p>
+
+<p>だが、マルチスレッドなプログラム等、コンパイラの設計の想定を超えるプログラムを書いた場合、逆にその最適化のせいでプログラムが正常に作動しなくなることがある。</p>
+
+<ul>
+<li>その際に、この変数にはお節介するなよ？とコンパイラに伝えるための修飾子である。</li>
+</ul>
+      </article>
+      <article>
+<h3>次回</h3>
+
+<ul>
+<li>アドレス
+<ul>
+<li>変数のメモリ上での座標</li>
+</ul></li>
+<li>ポインタ変数
+<ul>
+<li>アドレスを代入するための変数の型</li>
+</ul></li>
+</ul>
+      </article>
+    </section>
+  </body>
+</html>
