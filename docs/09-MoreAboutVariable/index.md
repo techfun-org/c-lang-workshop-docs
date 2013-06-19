@@ -330,7 +330,7 @@ sizeofに渡された型や変数のメモリサイズを返す。
 ####  変数のメモリサイズを得る例
 
 	int i = 10;
-	int integerSize = sizeof(x);
+	int integerSize = sizeof(i);
 
 * 型名ではなく、変数名を入れてもよい。
 * integerSizeにはint型のメモリサイズ、4が入る
