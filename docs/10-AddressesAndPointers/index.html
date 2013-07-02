@@ -26,7 +26,7 @@
 <p>C言語勉強会 第十回</p>
 
 <p>kumar <br />
-June 26, 2013 <br />
+July 3, 2013 <br />
 <a href="http://www.geocities.jp/ky_webid/index.html">引用 : Programming Place Plus</a></p>
       </article>
       <article>
@@ -159,7 +159,7 @@ int main(void) {
       </article>
       <article>
 <ul>
-<li>ポインタ変数の実体は
+<li>ポインタ変数の実体は <small>（Windows、UNIXの32bit、64bit環境において）</small>
 <ul>
 <li>符号なし整数である。</li>
 <li>アドレス空間の大きさと同じ大きさを持つ。
@@ -167,12 +167,11 @@ int main(void) {
 <li>つまり、sizeof(ポインタ)は、32bit環境なら4、64bit環境なら8</li>
 </ul></li>
 </ul></li>
-<li><p>Tが違えば違うポインタ型として区別される。</p>
-
+<li>Tが違えば違うポインタ型として区別される。
 <ul>
-<li>例えばint型へのポインタへfloat型へのポインタを代入することは出来ない（強制型変換なしには）</li>
+<li>例えばint型へのポインタへfloat型へのポインタを代入することは出来ない（明示的型変換なしには）    </li>
 </ul></li>
-<li><p>ポインタに対しての演算は通常の演算と異なる。（後述）</p></li>
+<li>ポインタに対しての演算は通常の演算と異なる。（後述）</li>
 </ul>
       </article>
       <article>
@@ -261,7 +260,8 @@ int main(void) {
 <ul>
 <li><code>NULL</code> は <code>0</code> もしくは <code>(void *)0</code> を示すマクロである。
 <ul>
-<li>ただしstddef.hをインクルードしなければ使えない。（stdio.hの中でstddef.hをインクルードしているのであまり問題にはならない）</li>
+<li><small>ただしstddef.hをインクルードしなければ使えない。（stdio.hの中でstddef.hをインクルードしているのであまり問題にはならない）</small></li>
+<li><small>規格上、NULLは0以外でも構わないので、環境によっては、全く違う実装になっていることもある。</small></li>
 </ul></li>
 </ul>
       </article>
@@ -334,7 +334,7 @@ printf("%d\n", *ap);
       <article>
 <h4>例（コード片）</h4>
 
-<p>ポインタだけを使って、配列3番目の要素と1番目の要素の間にいくつ要素があるか計算する</p>
+<p>ポインタだけを使って、配列4番目の要素と2番目の要素の間にいくつ要素があるか計算する</p>
 
 <pre><code>int arr[] = {10, 20, 30, 40, 50};
 int* a = &amp;arr[3];
@@ -506,6 +506,19 @@ printf("%d\n", sizeof p);
 </code></pre>
       </article>
       <article>
+<p>ポインタへポインタを代入することは出来ても、配列へ配列を代入できない。</p>
+
+<h4>例</h4>
+
+<pre><code>int arr1[] = {10, 20, 30, 40, 50};
+int arr2[] = {60, 70, 80, 90, 100};
+int *p = arr1;  /* 配列のアドレスを代入 */
+int *p = arr2;  /* アドレスを代入し直すことも可能 */
+
+arr2 = arr1;    /* 不可能。コンパイルエラーとなる */
+</code></pre>
+      </article>
+      <article>
 <h3>配列を引数にとる関数</h3>
 
 <p>関数の引数として配列をとることも出来る。</p>
@@ -546,7 +559,7 @@ int func(int *arr);
 </code></pre>
 
 <ul>
-<li>どれもint型配列arrを引数にとる関数。
+<li>どれもintへのポインタ型変数 arr を引数にとる関数。
 <ul>
 <li>2行目の引数arrの添字に10と書かれているが、無視される</li>
 </ul></li>
@@ -567,15 +580,14 @@ int func(int *arr);
 <h3>次回予告</h3>
 
 <ul>
+<li>constポインタ</li>
 <li>動的配列
 <ul>
 <li>要素数が可変な配列</li>
-<li>ポインターの代表的な使用例のひとつ</li>
+<li>ポインタの代表的な使用例のひとつ</li>
 </ul></li>
+<li>ファイル入出力</li>
 </ul>
-      </article>
-      <article>
-
       </article>
     </section>
   </body>
