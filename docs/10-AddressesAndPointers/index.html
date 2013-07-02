@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<!--
+  TechFUN HTML5 slide template
+
+  Authors: Kodama Shindo(@kodam)
+
+  Using: Google HTML5 slides template(https://code.google.com/p/html5slides/)
+-->
+<html>
+  <head>
+    <title>アドレスとポインタ</title>
+    <meta charset="utf-8" />
+    <script src="../template/files/slides.js"></script>
+    <style>
+.slides article em {
+    color: red;
+    font-style: normal;
+}
+  </style>
+  </head>
+  <body style="display: none">
+    <section class="slides layout-regular template-default">
+      <article>
+<h1>アドレスとポインタ</h1>
+
+<p>C言語勉強会 第十回</p>
+
+<p>kumar <br />
+June 26, 2013 <br />
+<a href="http://www.geocities.jp/ky_webid/index.html">引用 : Programming Place Plus</a></p>
+      </article>
+      <article>
+<h3>今回の内容</h3>
+
+<ul>
+<li>アドレス
+<ul>
+<li>変数のメモリ上での座標</li>
+</ul></li>
+<li>ポインタ型
+<ul>
+<li>アドレスを格納するための変数の型</li>
+</ul></li>
+<li>ポインタ演算
+<ul>
+<li>ポインタ型変数の演算は特殊である</li>
+</ul></li>
+<li>ポインタを引数、戻り値にとる関数
+<ul>
+<li>ポインタ渡し</li>
+</ul></li>
+<li>配列とポインタ
+<ul>
+<li>配列は実はポインタに似ている</li>
+</ul></li>
+</ul>
+      </article>
+      <article>
+<h2>アドレス</h2>
+      </article>
+      <article>
+<h3>アドレス</h3>
+
+<p>メモリ上の位置の一意な識別子</p>
+
+<ul>
+<li>C言語のアドレス空間は１次元である。</li>
+<li>そのアドレス空間上の座標（位置）を表現するのが、アドレスである。</li>
+<li>C言語では、単なる符号なし整数で表現される。</li>
+<li>C言語ではアドレスの単位はバイトである。</li>
+<li>C言語では通常、主記憶装置（物理メモリ）のアドレスを扱う。</li>
+</ul>
+      </article>
+      <article>
+<h3>アドレス空間の大きさ</h3>
+
+<ul>
+<li>32bitOSを使っているなら32bit（4バイト）</li>
+<li>64bitOSを使っているなら64bit（8バイト）</li>
+</ul>
+
+<p>つまり、アドレスは下記の値を取りうる。</p>
+
+<ul>
+<li>32bitOSなら0～4,294,967,295(約42億)</li>
+<li>64bitOSなら0～18,446,744,073,709,551,615(約1844京)</li>
+</ul>
+      </article>
+      <article>
+<h3>変数のアドレス</h3>
+
+<p>変数はメモリのどこかに保存されていて、その座標を得ることが出来る。</p>
+
+<h4>文法</h4>
+
+<pre><code>&amp;変数名
+</code></pre>
+
+<h4>例</h4>
+
+<p>変数 x が宣言されているとすると</p>
+
+<pre><code>&amp;x
+</code></pre>
+
+<p>と書くことで、<code>変数xのアドレス</code>を得ることが出来る。</p>
+      </article>
+      <article>
+<h3>変数のアドレスは実行するごとに変わる</h3>
+
+<p>変数のためのメモリ領域の確保は、そのときメモリが空いているところのどこかになる。</p>
+
+<h4>例</h4>
+
+<p>変数 x のアドレスを出力する</p>
+
+<pre><code>#include&lt;stdio.h&gt;
+
+int main(void) {
+    int x;
+    printf("%p\n", &amp;x); /* %pはポインタのフォーマット指定子 */
+    return 0;
+}
+</code></pre>
+      </article>
+      <article>
+<h5>出力結果の例</h5>
+
+<pre><code>0x7fff59161b48
+</code></pre>
+
+<p>この出力結果は実行するごとに違う。なぜなら、先程述べたように</p>
+
+<blockquote>
+  <p>変数のためのメモリ領域の確保は、そのときメモリが空いているところのどこかになる</p>
+</blockquote>
+
+<p>からだ。</p>
+      </article>
+      <article>
+<h2>ポインタ型</h2>
+      </article>
+      <article>
+<h3>ポインタ型</h3>
+
+<p>ある型 T の変数のアドレスを格納するための型</p>
+
+<ul>
+<li>ある型 T から派生されるポインタ型は <em>Tへのポインタ</em> と呼ぶ。
+<ul>
+<li>int → intへのポインタ</li>
+<li>float → floatへのポインタ</li>
+</ul></li>
+<li>ポインタからも派生できる
+<ul>
+<li>intへのポインタ → intへのポインタへのポインタ → intへのポインタへのポインタへのポインタ → …</li>
+</ul></li>
+</ul>
+      </article>
+      <article>
+<ul>
+<li>ポインタ変数の実体は
+<ul>
+<li>符号なし整数である。</li>
+<li>アドレス空間の大きさと同じ大きさを持つ。
+<ul>
+<li>つまり、sizeof(ポインタ)は、32bit環境なら4、64bit環境なら8</li>
+</ul></li>
+</ul></li>
+<li><p>Tが違えば違うポインタ型として区別される。</p>
+
+<ul>
+<li>例えばint型へのポインタへfloat型へのポインタを代入することは出来ない（強制型変換なしには）</li>
+</ul></li>
+<li><p>ポインタに対しての演算は通常の演算と異なる。（後述）</p></li>
+</ul>
+      </article>
+      <article>
+<h3>宣言</h3>
+
+<h4>文法</h4>
+
+<pre><code>型 *変数名
+
+または
+
+型* 変数名
+</code></pre>
+      </article>
+      <article>
+<h4>例</h4>
+
+<p>intへのポインタ p を宣言する</p>
+
+<pre><code>int *p;
+</code></pre>
+
+<p>x をint型変数とし、p にxのアドレスを代入する</p>
+
+<pre><code>p = &amp;x;
+</code></pre>
+
+<p>p を出力する</p>
+
+<pre><code>printf("%p\n", p); /* %pはポインタのフォーマット指定子 */;
+</code></pre>
+      </article>
+      <article>
+<h3>間接参照（デリファレンス）</h3>
+
+<p>ポインタが指し示す変数にアクセスする</p>
+
+<h4>文法</h4>
+
+<pre><code>*ポインタ変数名
+</code></pre>
+
+<ul>
+<li>宣言のときと同じ記号 <code>*</code> を使っていることに注意。</li>
+</ul>
+      </article>
+      <article>
+<h4>例</h4>
+
+<p>int型変数 x 、intへのポインタ p が宣言されていて、p には &amp;x (xのアドレス)が代入されているとする。</p>
+
+<p>ポインタ p から間接参照で x へ 10を代入する</p>
+
+<pre><code>*p = 10;
+</code></pre>
+
+<p>ポインタ p から間接参照で x を出力する</p>
+
+<pre><code>printf("%d\n", *p);
+</code></pre>
+
+<p>つまり、ここでは <code>*p</code> と書くと <code>x</code> と書くのと同じ動きをする。</p>
+      </article>
+      <article>
+<h3>NULLポインタ</h3>
+
+<p>値 0 もしくは (void *) にキャストした 0 を持つポインタ</p>
+
+<ul>
+<li>メモリ上のどのアドレスも指していないという意味を持つ。</li>
+</ul>
+      </article>
+      <article>
+<h4>例</h4>
+
+<p>ポインタ p をNULLポインタにする</p>
+
+<pre><code>p = 0;
+</code></pre>
+
+<p>もしくは</p>
+
+<pre><code>p = NULL;
+</code></pre>
+
+<ul>
+<li><code>NULL</code> は <code>0</code> もしくは <code>(void *)0</code> を示すマクロである。
+<ul>
+<li>ただしstddef.hをインクルードしなければ使えない。（stdio.hの中でstddef.hをインクルードしているのであまり問題にはならない）</li>
+</ul></li>
+</ul>
+      </article>
+      <article>
+<h2>ポインタ演算</h2>
+      </article>
+      <article>
+<h3>ポインタ演算</h3>
+
+<p>ある型 <code>T</code> へのポインタ型変数 に <code>x</code> 足すと <code>x</code> の <code>sizeof(T)</code> 倍 足される</p>
+
+<ul>
+<li>整数の加減算のみ可能。</li>
+<li>引き算でも同様。
+<ul>
+<li>ただし、ポインタ同士の減算を行った場合異なる。（後述）</li>
+</ul></li>
+<li>インクリメント、デクリメントも同様</li>
+</ul>
+      </article>
+      <article>
+<h4>例（コード片）</h4>
+
+<pre><code>int x;
+int *p = &amp;x;
+
+printf("%p\n", p);
+p++;
+printf("%p\n", p);
+printf("%p\n", p + 2);
+</code></pre>
+      </article>
+      <article>
+<h5>出力結果</h5>
+
+<pre><code>0x7fff5a396b48
+0x7fff5a396b4c // インクリメントしたら 4 増えた
+0x7fff5a396b54 // 更に 2 足したら 8 増えた
+</code></pre>
+
+<p>xのアドレスは毎回違うのだが、三つの出力の差を見て欲しい。まず、<code>p</code>をインクリメントした結果、4増えている。次に <code>p + 2</code> を出力した場合も、8増えている。</p>
+      </article>
+      <article>
+<p>この特徴は、配列のポインタへの演算に便利である。</p>
+
+<h4>例（コード片）</h4>
+
+<pre><code>int arr[] = {10, 20, 30, 40};
+int* ap = &amp;arr[0];
+printf("%d\n", *ap);
+ap++;
+printf("%d\n", *ap);
+</code></pre>
+
+<p>配列の要素はメモリ上に隙間なく順番に並ぶことが保証されているため、配列のi番目の要素へのポインタである <code>ap</code> をインクリメントするだけで、<code>ap</code>は 次の要素を指すようになる。</p>
+      </article>
+      <article>
+<h4>ポインタ同士の減算</h4>
+
+<p>a,bをT型変数へのポインタとし、<code>a - b</code> すると、その答えは <code>(a - b) / sizeof(T)</code>になる</p>
+
+<ul>
+<li>この値は、a と b の間に、T型変数が何個入る、という意味を持つと考えて良い。</li>
+<li>計算結果の型は<code>ptrdiff_t</code>である。
+<ul>
+<li>だがint型で受け取ってもエラーにはならない</li>
+</ul></li>
+</ul>
+      </article>
+      <article>
+<h4>例（コード片）</h4>
+
+<p>ポインタだけを使って、配列3番目の要素と1番目の要素の間にいくつ要素があるか計算する</p>
+
+<pre><code>int arr[] = {10, 20, 30, 40, 50};
+int* a = &amp;arr[3];
+int* b = &amp;arr[1];
+printf("%d\n", a - b);
+</code></pre>
+
+<h5>出力結果</h5>
+
+<pre><code>2
+</code></pre>
+      </article>
+      <article>
+<h2>ポインタを引数、戻り値に取る関数</h2>
+      </article>
+      <article>
+<h3>ポインタを引数、戻り値に取る関数</h3>
+
+<p>通常の変数と同じようにポインタを引数、戻り値に取れる。</p>
+
+<h4>例</h4>
+
+<p>int型へのポインタを引数にとり、アドレスと値を出力する関数。nをそのまま戻り値として返す。</p>
+
+<pre><code>int *myPrint(int *n) {
+    printf("アドレス: %p\n", n);
+    printf("値: %d\n", *n);
+    return n;
+}
+</code></pre>
+      </article>
+      <article>
+<h3>ポインタ渡し</h3>
+
+<p>渡されたポインタが指し示す変数を、前述の間接参照で書き換えることが出来る。</p>
+
+<ul>
+<li>あくまで渡されているのはポインタなので、そのポインタが示すアドレスにある変数を書き換えられる。</li>
+</ul>
+      </article>
+      <article>
+<h4>例</h4>
+
+<p>引数に渡されたポインタ変数 n が示す先を 1 に書き換える関数</p>
+
+<pre><code>void assignOne(int *n) {
+    *n = 1;
+}
+</code></pre>
+
+<p>この関数を呼び出す例（コード片）</p>
+
+<pre><code>int x = 100;
+assignOne(&amp;x);
+printf("%d\n", x);
+</code></pre>
+
+<ul>
+<li>x の値は最初 100 だったが、assignOne が x を書き換えたため、  <code>1</code> と出力される</li>
+</ul>
+      </article>
+      <article>
+<h3>値渡し</h3>
+
+<p>ポインタ渡しと逆の、今までどおりの普通な引数の渡し方</p>
+
+<ul>
+<li>変数の値が仮引数へコピーされるので、ポインタ渡しのように引数を書き換えられることはない。</li>
+</ul>
+      </article>
+      <article>
+<h2>配列とポインタ</h2>
+      </article>
+      <article>
+<h3>配列のアドレス</h3>
+
+<p>配列のアドレスとは、配列の0番目の要素のアドレスのことである。</p>
+
+<pre><code>配列名
+</code></pre>
+
+<p>だけ書くと、配列の先頭のアドレスを示す。それは<code>&amp;配列名[0]</code>と同じアドレスである。</p>
+      </article>
+      <article>
+<h4>例（コード片）</h4>
+
+<pre><code>int arr[10];
+printf("%p\n", arr);
+printf("%p\n", &amp;arr[0]);
+</code></pre>
+
+<h5>出力結果</h5>
+
+<pre><code>0x7fff5ed1db10
+0x7fff5ed1db10
+</code></pre>
+
+<p>当然アドレスなので毎回違う結果が出力されるが、arrと&amp;arr[0]は同じなので、二行とも同じになる。</p>
+      </article>
+      <article>
+<h3>添字は糖衣構文</h3>
+
+<p>今まで配列 arr の i 番目の要素にアクセスするときは</p>
+
+<pre><code>arr[i]
+</code></pre>
+
+<p>と書いてきたが、実はこれは</p>
+
+<pre><code>*(arr + i)
+</code></pre>
+
+<p>の糖衣構文である。</p>
+
+<blockquote>
+  <p><small>糖衣構文（とういこうぶん）は、プログラミング言語において、読み書きのしやすさのために導入される構文 <br />
+  定義上、糖衣構文はプログラムの意味としては同じものを、よりわかりやすい構文で書けるものを指す。 <br />
+  <a href="http://ja.wikipedia.org/wiki/%E7%B3%96%E8%A1%A3%E6%A7%8B%E6%96%87">糖衣構文 - Wikipedia</a></small></p>
+</blockquote>
+      </article>
+      <article>
+<p>また、この添字は、配列以外の物にも使える。例えば、intへのポインタ p がある場合、</p>
+
+<pre><code>*p
+</code></pre>
+
+<p>と</p>
+
+<pre><code>p[0]
+</code></pre>
+
+<p>は同じである。(<code>p[0]</code> は、<code>*(p + 0)</code> つまり <code>*p</code> に展開されるから) <br />
+<small>ただ、このような表現は遠回りで誤解を招くのでやめよう</small></p>
+      </article>
+      <article>
+<h3>ポインタで配列を代替できる</h3>
+
+<p>前述のとおり添字は単なるポインタ演算の糖衣構文であるから、配列のアドレスを代入したポインタで同じように扱える。</p>
+
+<h4>例</h4>
+
+<pre><code>int arr[] = {10, 20, 30, 40, 50};
+int *p = arr;   /* 配列のアドレスを代入 */
+int i;
+for(i = 0; i &lt; 5; i++)
+    printf("%d\n", p[i]); /* 配列と同じようにアクセス */
+</code></pre>
+
+<p>だが、完全に配列の機能を代替出来るわけではない。（次項）</p>
+      </article>
+      <article>
+<h3>配列とポインタの違い</h3>
+
+<p>sizeof演算子で大きさを得たとき、配列は配列の大きさが得られるが、ポインタだとポインタの大きさしか得られない。</p>
+
+<h4>例</h4>
+
+<pre><code>int arr[] = {0, 1, 2, 3, 4};
+printf("%d\n", sizeof arr);
+
+int *p = arr;
+printf("%d\n", sizeof p);
+</code></pre>
+
+<h5>出力例</h5>
+
+<pre><code>20  // 配列arrの大きさ（sizeof(int) * 要素数 = 4 * 5 = 20）
+8   // ポインタの大きさ（sizeof(int *)）
+</code></pre>
+      </article>
+      <article>
+<h3>配列を引数にとる関数</h3>
+
+<p>関数の引数として配列をとることも出来る。</p>
+
+<h4>例</h4>
+
+<p>配列arrのn番目までの要素をすべて出力する関数</p>
+
+<pre><code>int func(int arr[], int n) {
+    int i;
+    for(i = 0; i &lt; n; i++)
+        printf("%d\n", arr[i]);
+}
+</code></pre>
+      </article>
+      <article>
+<h4>実体はポインタ</h4>
+
+<p>実は、配列を関数の引数としてとったように見えるが、実体はただの配列の最初の要素へのポインタである。</p>
+
+<ul>
+<li>仮引数における <code>int arr[]</code> は <code>int *arr</code> の糖衣構文である。</li>
+<li>よって、sizeof演算子により配列の要素数を求めることは出来ない。
+<ul>
+<li>（配列の大きさでなく、ポインタの大きさが返ってきてしまうから）</li>
+</ul></li>
+<li>また、これもまた前述のポインタ渡しであるから、値の書き換えが可能である。</li>
+</ul>
+      </article>
+      <article>
+<h4>文法</h4>
+
+<p>以下のプロトタイプはすべて正しく、同じ意味である</p>
+
+<pre><code>int func(int arr[]);
+int func(int arr[10]);
+int func(int *arr);
+</code></pre>
+
+<ul>
+<li>どれもint型配列arrを引数にとる関数。
+<ul>
+<li>2行目の引数arrの添字に10と書かれているが、無視される</li>
+</ul></li>
+</ul>
+      </article>
+      <article>
+<h4>例</h4>
+
+<p>前のページの例の関数 func のプロトタイプはこう書き換えることが出来る。</p>
+
+<pre><code>int func(int *arr, int n);
+</code></pre>
+      </article>
+      <article>
+<h2>次回</h2>
+      </article>
+      <article>
+<h3>次回予告</h3>
+
+<ul>
+<li>動的配列
+<ul>
+<li>要素数が可変な配列</li>
+<li>ポインターの代表的な使用例のひとつ</li>
+</ul></li>
+</ul>
+      </article>
+      <article>
+
+      </article>
+    </section>
+  </body>
+</html>
