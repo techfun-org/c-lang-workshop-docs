@@ -56,6 +56,19 @@ July 3, 2013 <br />
 </ul>
       </article>
       <article>
+<h3>アドレスやポインタで何ができる？</h3>
+
+<ul>
+<li>複数の戻り値を返す<small>※</small>関数を作れる</li>
+<li>配列を引数、戻り値にとる<small>※</small>関数を作れる</li>
+<li>関数を引数、戻り値に取る<small>※</small>巻数を作れる</li>
+</ul>
+
+<p>※（ような動きをする）</p>
+
+<p>このように、他の言語では当たり前にできることを、C言語ではポインタを介して行う。</p>
+      </article>
+      <article>
 <h2>アドレス</h2>
       </article>
       <article>
@@ -65,7 +78,10 @@ July 3, 2013 <br />
 
 <ul>
 <li>C言語のアドレス空間は１次元である。</li>
-<li>そのアドレス空間上の座標（位置）を表現するのが、アドレスである。</li>
+<li>そのアドレス空間上の座標（位置）を表現するのが、アドレスである。
+<ul>
+<li><small>アドレス空間上の座標を、わかりやすく「番地」と表現することが多い。</small></li>
+</ul></li>
 <li>C言語では、単なる符号なし整数で表現される。</li>
 <li>C言語ではアドレスの単位はバイトである。</li>
 <li>C言語では通常、主記憶装置（物理メモリ）のアドレスを扱う。</li>
@@ -104,6 +120,10 @@ July 3, 2013 <br />
 </code></pre>
 
 <p>と書くことで、<code>変数xのアドレス</code>を得ることが出来る。</p>
+
+<ul>
+<li><code>&amp;</code> を、アドレス演算子と呼ぶ。</li>
+</ul>
       </article>
       <article>
 <h3>変数のアドレスは実行するごとに変わる</h3>
@@ -138,6 +158,74 @@ int main(void) {
 <p>からだ。</p>
       </article>
       <article>
+<h3>間接参照（デリファレンス）</h3>
+
+<p>アドレスが指し示す変数にアクセスする</p>
+
+<h4>文法</h4>
+
+<pre><code>*アドレス
+</code></pre>
+
+<ul>
+<li><code>*</code>は乗算演算子と同じ記号だが、全く違う意味を持つ。</li>
+</ul>
+      </article>
+      <article>
+<ul>
+<li><code>*</code> をこの場合、間接演算子と呼ぶ。</li>
+</ul>
+      </article>
+      <article>
+<h4>例</h4>
+
+<p>メモリの1000番地に10を代入する。</p>
+
+<pre><code>*(1000) = 10;
+</code></pre>
+
+<p>メモリの1000番地の値を式で使う。</p>
+
+<pre><code>int x = 20 + *(1000);
+</code></pre>
+
+<ul>
+<li>この例は解説のため極端な例である。※</li>
+</ul>
+
+<p><small>※なので、実際には動作しない</small></p>
+      </article>
+      <article>
+<p>xのアドレスが示す番地に10を代入したり、値を式で使う。</p>
+
+<pre><code>*(&amp;x) = 10;
+int y = 20 + *(&amp;x);
+</code></pre>
+
+<p>これは結局以下のように書くのと同じ動きをする。</p>
+
+<pre><code>x = 10;
+int y = 20 + x;
+</code></pre>
+
+<ul>
+<li>今のままだと全く使い道がないように感じられるが、ポインタ型を紹介した後、もう一度間接参照について紹介する。</li>
+</ul>
+      </article>
+      <article>
+<h3>コラム</h3>
+
+<p><code>&amp;変数名</code>と聞いて、scanf関数で使ったなぁと思った人はカンがいい。scanf関数に引数として渡しているのは実はアドレスだったのだ。</p>
+
+<h4>scanf関数を使う例</h4>
+
+<pre><code>int x;
+scanf("%d", &amp;x); /* xのアドレスを引数として渡している */
+</code></pre>
+
+<p>そのように、アドレスを引数にとる関数を作るには、これから紹介するポインタを理解する必要がある。アドレスは整数値であるが、それを格納するための型はintではなく、ポインタだからだ。</p>
+      </article>
+      <article>
 <h2>ポインタ型</h2>
       </article>
       <article>
@@ -145,21 +233,34 @@ int main(void) {
 
 <p>ある型 T の変数のアドレスを格納するための型</p>
 
+<h4>宣言の一例</h4>
+
+<pre><code>int *foo;       /* intへのポインタfooを宣言 */
+double *bar;    /* doubleへのポインタbarを宣言 */
+</code></pre>
+
+<h4>概説</h4>
+
 <ul>
 <li>ある型 T から派生されるポインタ型は <em>Tへのポインタ</em> と呼ぶ。
 <ul>
-<li>int → intへのポインタ</li>
-<li>float → floatへのポインタ</li>
+<li>int → intへのポインタ <code>(int *)</code></li>
+<li>float → floatへのポインタ <code>(float *)</code></li>
 </ul></li>
 <li>ポインタからも派生できる
 <ul>
-<li>intへのポインタ → intへのポインタへのポインタ → intへのポインタへのポインタへのポインタ → …</li>
+<li><small>intへのポインタ <code>(int *)</code> → intへのポインタへのポインタ <code>(int **)</code>  → intへのポインタへのポインタへのポインタ <code>(int ***)</code> → …</small></li>
 </ul></li>
 </ul>
       </article>
       <article>
 <ul>
-<li>ポインタ変数の実体は <small>（Windows、UNIXの32bit、64bit環境において）</small>
+<li>Tが違えば違うポインタ型として区別される。
+<ul>
+<li>例えばint型へのポインタへfloat型へのポインタを代入することは出来ない（明示的型変換なしには）    </li>
+</ul></li>
+<li><p>ポインタ変数の実体は <small>（Windows、UNIXの32bit、64bit環境において）</small></p>
+
 <ul>
 <li>符号なし整数である。</li>
 <li>アドレス空間の大きさと同じ大きさを持つ。
@@ -167,11 +268,7 @@ int main(void) {
 <li>つまり、sizeof(ポインタ)は、32bit環境なら4、64bit環境なら8</li>
 </ul></li>
 </ul></li>
-<li>Tが違えば違うポインタ型として区別される。
-<ul>
-<li>例えばint型へのポインタへfloat型へのポインタを代入することは出来ない（明示的型変換なしには）    </li>
-</ul></li>
-<li>ポインタに対しての演算は通常の演算と異なる。（後述）</li>
+<li><p>ポインタに対しての演算は通常の演算と異なる。（後述）</p></li>
 </ul>
       </article>
       <article>
@@ -179,12 +276,20 @@ int main(void) {
 
 <h4>文法</h4>
 
-<pre><code>型 *変数名
-
-または
-
-型* 変数名
+<pre><code>型T *変数名
 </code></pre>
+
+<p>または</p>
+
+<pre><code>型T* 変数名
+</code></pre>
+
+<ul>
+<li><code>*</code>演算子は乗算の演算子と同じ記号だが、全く違う意味を持つ。
+<ul>
+<li>間接演算子とも同じ記号だが、それとも違う意味である。</li>
+</ul></li>
+</ul>
       </article>
       <article>
 <h4>例</h4>
@@ -194,7 +299,7 @@ int main(void) {
 <pre><code>int *p;
 </code></pre>
 
-<p>x をint型変数とし、p にxのアドレスを代入する</p>
+<p>x をint型変数とし、p に x のアドレスを代入する</p>
 
 <pre><code>p = &amp;x;
 </code></pre>
@@ -207,15 +312,20 @@ int main(void) {
       <article>
 <h3>間接参照（デリファレンス）</h3>
 
-<p>ポインタが指し示す変数にアクセスする</p>
+<p>アドレスが指し示す変数にアクセスする</p>
 
-<h4>文法</h4>
+<h4>文法（先ほども紹介したが）</h4>
 
-<pre><code>*ポインタ変数名
+<pre><code>*アドレス
+</code></pre>
+
+<p>すなわち</p>
+
+<pre><code>*ポインタ
 </code></pre>
 
 <ul>
-<li>宣言のときと同じ記号 <code>*</code> を使っていることに注意。</li>
+<li>しつこいようだが<code>*</code>は宣言時の<code>*</code>とは同じ記号だが別物である。</li>
 </ul>
       </article>
       <article>
@@ -228,42 +338,84 @@ int main(void) {
 <pre><code>*p = 10;
 </code></pre>
 
+<p>ポインタ p を間接参照して、式で使う</p>
+
+<pre><code>int y = 20 + *p;
+</code></pre>
+      </article>
+      <article>
 <p>ポインタ p から間接参照で x を出力する</p>
 
 <pre><code>printf("%d\n", *p);
 </code></pre>
 
-<p>つまり、ここでは <code>*p</code> と書くと <code>x</code> と書くのと同じ動きをする。</p>
+<ul>
+<li>ここでも <code>*p</code> と書くと <code>x</code> と書くのは結局同じ動きである。</li>
+<li>だが、間接参照はポインタを関数の引数として渡した際、ポインタが示す値にアクセスするには、必ず必要となる。（後述）</li>
+</ul>
       </article>
       <article>
-<h3>NULLポインタ</h3>
+<h2>ポインタを引数、戻り値に取る関数</h2>
+      </article>
+      <article>
+<h3>ポインタを引数、戻り値に取る関数</h3>
 
-<p>値 0 もしくは (void *) にキャストした 0 を持つポインタ</p>
+<p>通常の変数と同じようにポインタを引数、戻り値に取れる。</p>
+
+<h4>例</h4>
+
+<p>int型へのポインタを引数にとり、アドレスと値を出力する関数。nをそのまま戻り値として返す。</p>
+
+<pre><code>int *myPrint(int *n) {
+    printf("アドレス: %p\n", n);
+    printf("値: %d\n", *n);
+    return n;
+}
+</code></pre>
+      </article>
+      <article>
+<h3>ポインタ渡し</h3>
+
+<p>渡されたポインタが指し示す変数を、前述の間接参照で書き換えることが出来る。</p>
 
 <ul>
-<li>メモリ上のどのアドレスも指していないという意味を持つ。</li>
+<li>あくまで渡されているのはポインタなので、そのポインタが示すアドレスにある変数を書き換えられる。</li>
 </ul>
       </article>
       <article>
 <h4>例</h4>
 
-<p>ポインタ p をNULLポインタにする</p>
+<p>引数に渡されたポインタ変数 n が示す先を 1 に書き換える関数</p>
 
-<pre><code>p = 0;
+<pre><code>void assignOne(int *n) {
+    *n = 1;
+}
 </code></pre>
 
-<p>もしくは</p>
+<p>この関数を呼び出す例（コード片）</p>
 
-<pre><code>p = NULL;
+<pre><code>int x = 100;
+assignOne(&amp;x);
+printf("%d\n", x);
 </code></pre>
 
 <ul>
-<li><code>NULL</code> は <code>0</code> もしくは <code>(void *)0</code> を示すマクロである。
-<ul>
-<li><small>ただしstddef.hをインクルードしなければ使えない。（stdio.hの中でstddef.hをインクルードしているのであまり問題にはならない）</small></li>
-<li><small>規格上、NULLは0以外でも構わないので、環境によっては、全く違う実装になっていることもある。</small></li>
-</ul></li>
+<li>x の値は最初 100 だったが、assignOne が x を書き換えたため、  <code>1</code> と出力される</li>
 </ul>
+      </article>
+      <article>
+<h3>値渡し</h3>
+
+<p>ポインタ渡しと逆の、今までどおりの普通な引数の渡し方</p>
+
+<ul>
+<li>変数の値が仮引数へコピーされるので、ポインタ渡しのように引数を書き換えられることはない。</li>
+</ul>
+      </article>
+      <article>
+<h2>ここで一服</h2>
+
+<p>理解を整理すべく、演習問題1問目を解いてから次の内容に進もう。</p>
       </article>
       <article>
 <h2>ポインタ演算</h2>
@@ -348,61 +500,33 @@ printf("%d\n", a - b);
 </code></pre>
       </article>
       <article>
-<h2>ポインタを引数、戻り値に取る関数</h2>
-      </article>
-      <article>
-<h3>ポインタを引数、戻り値に取る関数</h3>
+<h3>NULLポインタ</h3>
 
-<p>通常の変数と同じようにポインタを引数、戻り値に取れる。</p>
-
-<h4>例</h4>
-
-<p>int型へのポインタを引数にとり、アドレスと値を出力する関数。nをそのまま戻り値として返す。</p>
-
-<pre><code>int *myPrint(int *n) {
-    printf("アドレス: %p\n", n);
-    printf("値: %d\n", *n);
-    return n;
-}
-</code></pre>
-      </article>
-      <article>
-<h3>ポインタ渡し</h3>
-
-<p>渡されたポインタが指し示す変数を、前述の間接参照で書き換えることが出来る。</p>
+<p>値 0 もしくは (void *) にキャストした 0 を持つポインタ</p>
 
 <ul>
-<li>あくまで渡されているのはポインタなので、そのポインタが示すアドレスにある変数を書き換えられる。</li>
+<li>メモリ上のどのアドレスも指していないという意味を持つ。</li>
 </ul>
       </article>
       <article>
 <h4>例</h4>
 
-<p>引数に渡されたポインタ変数 n が示す先を 1 に書き換える関数</p>
+<p>ポインタ p をNULLポインタにする</p>
 
-<pre><code>void assignOne(int *n) {
-    *n = 1;
-}
+<pre><code>p = 0;
 </code></pre>
 
-<p>この関数を呼び出す例（コード片）</p>
+<p>もしくは</p>
 
-<pre><code>int x = 100;
-assignOne(&amp;x);
-printf("%d\n", x);
+<pre><code>p = NULL;
 </code></pre>
 
 <ul>
-<li>x の値は最初 100 だったが、assignOne が x を書き換えたため、  <code>1</code> と出力される</li>
-</ul>
-      </article>
-      <article>
-<h3>値渡し</h3>
-
-<p>ポインタ渡しと逆の、今までどおりの普通な引数の渡し方</p>
-
+<li><code>NULL</code> は <code>0</code> もしくは <code>(void *)0</code> を示すマクロである。
 <ul>
-<li>変数の値が仮引数へコピーされるので、ポインタ渡しのように引数を書き換えられることはない。</li>
+<li><small>ただしstddef.hをインクルードしなければ使えない。（stdio.hの中でstddef.hをインクルードしているのであまり問題にはならない）</small></li>
+<li><small>規格上、NULLは0以外でも構わないので、環境によっては、全く違う実装になっていることもある。</small></li>
+</ul></li>
 </ul>
       </article>
       <article>
