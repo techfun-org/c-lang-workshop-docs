@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<!--
+  TechFUN HTML5 slide template
+
+  Authors: Kodama Shindo(@kodam)
+
+  Using: Google HTML5 slides template(https://code.google.com/p/html5slides/)
+-->
+<html>
+  <head>
+    <title>ポインタと動的メモリ確保</title>
+    <meta charset="utf-8" />
+    <script src="../template/files/slides.js"></script>
+    <style>
+.slides article em {
+    color: red;
+    font-style: normal;
+}
+  </style>
+  </head>
+  <body style="display: none">
+    <section class="slides layout-regular template-default">
+      <article>
+<h1>ポインタと動的メモリ確保</h1>
+
+<p>C言語勉強会 第十一回</p>
+
+<p>kumar <br />
+September 24, 2013 <br />
+<a href="http://www.geocities.jp/ky_webid/index.html">引用 : Programming Place Plus</a></p>
+      </article>
+      <article>
+<h3>今回の内容</h3>
+
+<ul>
+<li>構造体へのポインタ
+<ul>
+<li>アロー演算子</li>
+</ul></li>
+<li>constポインタ
+<ul>
+<li>間接参照先への代入を禁止</li>
+</ul></li>
+<li>動的メモリ確保
+<ul>
+<li>可変長な配列を実現できる</li>
+</ul></li>
+</ul>
+      </article>
+      <article>
+<h2>構造体へのポインタ</h2>
+      </article>
+      <article>
+<h3>構造体へのポインタ</h3>
+
+<p>の、メンバにアクセスするには、アロー演算子<code>-&gt;</code>を使う。</p>
+
+<h4>文法</h4>
+
+<pre><code>構造体へのポインタ-&gt;メンバ名
+</code></pre>
+
+<h4>例1</h4>
+
+<p>ps を構造体 S へのポインタとし、構造体 S は x, y をメンバに持つとする。</p>
+
+<p>psの 間接参照先（指し示す先）の x へアクセスする。</p>
+
+<pre><code>ps-&gt;x
+</code></pre>
+      </article>
+      <article>
+<h4>例2</h4>
+
+<p>Humanのメンバはchar name[20], int height, int weightとする。</p>
+
+<pre><code>void printHuman(Human *p) {
+    printf(" 名前: %s", p-&gt;name);
+    printf(" 身長: %d", p-&gt;height);
+    printf(" 体重: %d¥n", p-&gt;weight);
+}
+</code></pre>
+
+<p>構造体Humanへのポインタを引数にとる関数。</p>
+      </article>
+      <article>
+<h3>アロー演算子は糖衣構文</h3>
+
+<p>アロー演算子も配列の添字と同じく、糖衣構文（シンタックスシュガー）である。</p>
+
+<h4>文法</h4>
+
+<pre><code>ps-&gt;x
+</code></pre>
+
+<p>におけるアロー演算子は</p>
+
+<pre><code>(*ps).x
+</code></pre>
+
+<p>の糖衣構文（シンタックスシュガー）である</p>
+      </article>
+      <article>
+<h2>constポインタ</h2>
+      </article>
+      <article>
+<h3>おさらい｜const変数</h3>
+
+<blockquote>
+  <p>指定した変数が定数であることを指定する。 <br />
+  定数とは、初期化出来ても書き換え出来ない変数のことである。</p>
+  
+  <h4>文法</h4>
+  
+  <p>const 型名 変数名;
+    または
+    型名 const 変数名;</p>
+</blockquote>
+
+<p><strong>constポインタはこれとは似て非なる意味を持つことに注意。</strong></p>
+      </article>
+      <article>
+<h3>constポインタ</h3>
+
+<p>そのポインタから間接参照先を書き換えることを禁じる</p>
+
+<h4>文法</h4>
+
+<pre><code>const 型 *変数名
+または
+型 const *変数名
+</code></pre>
+      </article>
+      <article>
+<h4>例</h4>
+
+<p>int 型変数 x が宣言されているとする。</p>
+
+<pre><code>const int *cp = &amp;x; /* constポインタを宣言 */
+int *p = &amp;x;
+
+int foo = 10 + *cp; /* 可能 */
+*p = 100;           /* 可能 */
+
+*px = 5;            /* 不可能。コンパイルエラー */
+</code></pre>
+
+<ul>
+<li>constポインタ cp からの書き換え <strong>のみが不可能</strong>
+<ul>
+<li>cp でも読み込みは可能。 </li>
+</ul></li>
+</ul>
+      </article>
+      <article>
+<h3>constポインタでできること</h3>
+
+<p>ミスが減る。特に配列を<small>（ポインタにして）</small>引数にとる関数を書く際に、配列を誤って書き換えることがない</p>
+
+<h4>例</h4>
+
+<p>constポインタを引数にとる関数の例</p>
+
+<pre><code>int strlen(const char *str) {
+    int len = 0;
+    while(str++ != '¥0')
+        len++;
+    return len;
+}
+</code></pre>
+      </article>
+      <article>
+<ul>
+<li>この関数は引数にとった文字列の長さを返す関数である。よって、引数 str を書き換えることはない。この関数を書いた人は、誤って引数 str を書き換えてしまうプログラムを書いてしまうミスを防ぐため、char *strにconstをつけた。</li>
+</ul>
+      </article>
+      <article>
+<h2>コラム</h2>
+      </article>
+      <article>
+<h3>（前置｜後置）（イン｜デ）クリメント</h3>
+
+<p>インクリメントやデクリメントは、演算子を変数名の前に書くか後ろに書くかで名前、性質が変わる。</p>
+
+<h4>文法</h4>
+
+<p>vを何らかの変数とする。</p>
+
+<table>
+    <tr>
+        <td>++v</td><td>前置インクリメント</td>
+    </tr>
+    <tr>
+        <td>v++</td><td>後置インクリメント</td>
+    </tr>
+</table>
+      </article>
+      <article>
+<p>御存知の通り、インクリメントは「変数に１足す」という意味で、デクリメントは「変数から１引く」という意味である。だが、演算子が前置か後置かで、式の中で演算が行われるタイミングが異なる。</p>
+
+<h4>前置（イン｜デ）クリメント</h4>
+
+<p>式の評価より先に（イン｜デ）クリメントを行う。</p>
+
+<h4>後置（イン｜デ）クリメント</h4>
+
+<p>式の評価の後で（イン｜デ）クリメントを行う。</p>
+      </article>
+      <article>
+<h4>例</h4>
+
+<pre><code>int n, i = 0;
+
+n = i++;    // n = 0, i = 1
+
+i = 0;
+
+n = ++i;    // n = 1, i = 1
+</code></pre>
+      </article>
+      <article>
+<h3>ポインタの複数宣言</h3>
+
+<p>ポインタを一行で一度に宣言するとき、</p>
+
+<pre><code>int *x, y, z;
+</code></pre>
+
+<p>と書きたくなるかと思うが、こう書くと、xだけがポインタになり、yとzは通常の変数になってしまう。正しくは</p>
+
+<pre><code>int *x, *y, *z;
+</code></pre>
+
+<p>こう書くのが正しい。</p>
+      </article>
+      <article>
+<h3>ポインタとconst修飾子</h3>
+
+<p>以下の例はconstポインタの宣言の文法である</p>
+
+<pre><code>const int *x;
+int const *x;
+</code></pre>
+
+<p>だが以下の例はそうではない。</p>
+
+<pre><code>int *const x: 
+</code></pre>
+
+<ul>
+<li>こう書くと、xの関節参照先ではなく、xそのものを書き換えできなくなる。</li>
+</ul>
+      </article>
+      <article>
+<h2>動的メモリ確保</h2>
+      </article>
+      <article>
+<h3>動的メモリ確保</h3>
+
+<p>実行時にメモリ領域の確保を行うこと。</p>
+
+<p>具体的にいうと、実行時に自由な大きさの配列を作ること。</p>
+
+<p>なお、以降の関数を利用するためには、標準ライブラリ<stdlib.h>がインクルードされている必要がある。</p>
+      </article>
+      <article>
+<h3>malloc()</h3>
+
+<pre><code>void *malloc(size_t size);
+</code></pre>
+
+<p>size バイト分のメモリを確保し、その領域へのポインタを返す。</p>
+
+<p>エラー時にはNULLを返す。</p>
+      </article>
+      <article>
+<h3>free()</h3>
+
+<pre><code>void free(void *pointer)
+</code></pre>
+
+<p>pointerの指すメモリブロックを開放する。</p>
+
+<p>malloc等で動的確保したメモリは、この関数を使わない限り、プログラムが終了するまで開放されない。メモリリークやメモリの無駄遣いを防ぐため、<strong>必ず使い終わったメモリはこの関数で開放すること</strong>。</p>
+      </article>
+      <article>
+<h4>例</h4>
+
+<p>長さ ? のint型配列を作る。</p>
+
+<pre><code>size_t n = ?;
+int *p = malloc( n * sizeof(int) );
+
+/* 使い終わったら */
+free( p );
+</code></pre>
+
+<p>当然 ? は定数でも構わないが、定数なら通常の配列宣言でいいと思う。</p>
+      </article>
+      <article>
+<h3>calloc()</h3>
+
+<pre><code>void *calloc(size_t nelements, size_t bytes)
+</code></pre>
+
+<p>bytesのサイズのメモリ領域をnelements個格納できるメモリ領域を確保する。</p>
+
+<p>これは以下の様な解釈で問題ない。</p>
+
+<pre><code>void *calloc(size_t nelements, size_t bytes) {
+    return malloc(nelements * bytes);
+}
+</code></pre>
+      </article>
+      <article>
+<h3>realloc()</h3>
+
+<pre><code>void *realloc(void *pointer, size_t bytes)
+</code></pre>
+
+<p>pointerが指すメモリブロックをリサイズする。</p>
+
+<p>具体的には、bytesバイトのメモリ領域を新たに確保して、pointerメモリブロックにあったデータはできる限りコピーする。</p>
+      </article>
+      <article>
+<h2>次回</h2>
+      </article>
+      <article>
+<h3>次回予告（多分最終回）</h3>
+
+<ul>
+<li>ファイル入出力</li>
+<li>標準ライブラリ</li>
+</ul>
+      </article>
+    </section>
+  </body>
+</html>
