@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<!--
+  TechFUN HTML5 slide template
+
+  Authors: Kodama Shindo(@kodam)
+
+  Using: Google HTML5 slides template(https://code.google.com/p/html5slides/)
+-->
+<html>
+  <head>
+    <title>ポインタと動的メモリ確保</title>
+    <meta charset="utf-8" />
+    <script src="../template/files/slides.js"></script>
+    <style>
+.slides article em {
+    color: red;
+    font-style: normal;
+}
+  </style>
+  </head>
+  <body style="display: none">
+    <section class="slides layout-regular template-default">
+      <article>
+<h1>ポインタと動的メモリ確保</h1>
+
+<p>C言語勉強会 第十一回</p>
+
+<p>kumar <br />
+September 24, 2013 <br />
+<a href="http://www.geocities.jp/ky_webid/index.html">引用 : Programming Place Plus</a></p>
+      </article>
+      <article>
+<h3>今回の内容</h3>
+
+<ul>
+<li>構造体へのポインタ
+<ul>
+<li>アロー演算子</li>
+</ul></li>
+<li>constポインタ
+<ul>
+<li>参照先への代入を禁止</li>
+</ul></li>
+<li>動的メモリ確保
+<ul>
+<li>可変長な配列を実現できる</li>
+</ul></li>
+</ul>
+      </article>
+      <article>
+<h2>構造体へのポインタ</h2>
+      </article>
+      <article>
+<h3>構造体へのポインタ</h3>
+
+<p>参照先のメンバにアクセスするには、<code>.</code>ではなく、 <strong>アロー演算子<code>-&gt;</code></strong> を使う。</p>
+
+<h4>文法</h4>
+
+<pre><code>構造体へのポインタ-&gt;メンバ名
+</code></pre>
+      </article>
+      <article>
+<h4>例</h4>
+
+<pre><code>typedef struct {
+    char name[20];
+    float height;
+    float weight;
+} Human;
+
+/* Human構造体のポインタを引数に取る関数 */
+void printHuman(Human *p) {
+    printf(" 名前: %s", p-&gt;name);
+    printf(" 身長: %f", p-&gt;height);
+    printf(" 体重: %f¥n", p-&gt;weight);
+}   
+</code></pre>
+      </article>
+      <article>
+<h2>constポインタ</h2>
+      </article>
+      <article>
+<h3>まずは const変数 をおさらい</h3>
+
+<blockquote>
+  <p>指定した変数が定数であることを指定する。 <br />
+  定数とは、初期化出来ても書き換え出来ない変数のことである。</p>
+  
+  <h4>文法</h4>
+  
+  <p>const 型名 変数名;
+    または
+    型名 const 変数名;</p>
+</blockquote>
+
+<p><strong>これに対して、constポインタはポインタ自身でなく、参照先の書き換えを禁じる。</strong></p>
+      </article>
+      <article>
+<h3>constポインタ</h3>
+
+<p><strong>そのポインタから参照先を書き換えることを禁じる</strong></p>
+
+<h4>文法</h4>
+
+<pre><code>const 型 *変数名
+または
+型 const *変数名
+</code></pre>
+      </article>
+      <article>
+<h4>例</h4>
+
+<p>int 型変数 x が宣言されているとする。</p>
+
+<pre><code>int *pointer = &amp;x;              /* ポインタを宣言 */
+const int *const_pointer = &amp;x;  /* constポインタを宣言 */
+
+int bar = 10 + *pointer;        /* 可能 */
+int foo = 10 + *const_pointer;  /* 可能 */
+
+*pointer = 100;                 /* 可能 */
+*const_pointer = 100;           /* 不可能。コンパイルエラー */
+</code></pre>
+
+<ul>
+<li>constポインタ cp からの <strong>書き換えのみが不可能</strong></li>
+</ul>
+      </article>
+      <article>
+<h3>constポインタでできること</h3>
+
+<p><strong>ミスが減る。</strong> 特に配列を<small>（ポインタにして）</small>引数にとる関数を書く際に、配列を誤って書き換えることがない</p>
+
+<h4>例</h4>
+
+<p>constポインタを引数にとる関数の例</p>
+
+<pre><code>int strlen(const char *str) {
+    int len = 0;
+    while(str++ != '¥0')
+        len++;
+    return len;
+}
+</code></pre>
+      </article>
+      <article>
+<ul>
+<li>この関数は引数にとった文字列の長さを返す関数である。よって、引数 str を書き換えることはない。 <strong>この関数を書いた人は、誤って引数 str を書き換えてしまうプログラムを書いてしまうミスを防ぐため、char *strにconstをつけた。</strong></li>
+<li>出来るプログラマはみんなconstが大好きです。C++ではよりconstの旨みを得られるようになっているので、今のうちにconstを使う癖をつけておきましょう。</li>
+<li>constは、コンパイラに対しての命令なので、実行時の負荷は全くありません。（多分バイナリへの影響ない）</li>
+</ul>
+      </article>
+      <article>
+<h2>コラム</h2>
+      </article>
+      <article>
+<h3>i++ と ++i</h3>
+
+<p>インクリメントやデクリメントは、演算子を変数名の前に書くか後ろに書くかで名前、性質が変わる。</p>
+
+<h4>文法</h4>
+
+<p>iを何らかの変数とする。</p>
+
+<table>
+    <tr>
+        <td>++i</td><td>前置インクリメント</td>
+    </tr>
+    <tr>
+        <td>i++</td><td>後置インクリメント</td>
+    </tr>
+</table>
+      </article>
+      <article>
+<p>御存知の通り、インクリメントは「変数に１足す」という意味で、デクリメントは「変数から１引く」という意味である。だが、演算子が前置か後置かで、式の中で演算が行われるタイミングが異なる。</p>
+
+<h4>前置インクリメント・デクリメント</h4>
+
+<p><strong>式の評価より先に</strong> インクリメント、またはデクリメントを行う。</p>
+
+<h4>後置インクリメント・デクリメント</h4>
+
+<p><strong>式の評価の後で</strong> インクリメント、またはデクリメントを行う。</p>
+      </article>
+      <article>
+<h4>例</h4>
+
+<pre><code>int n, i = 0;
+
+n = i++;    // n = 0, i = 1
+
+i = 0;
+
+n = ++i;    // n = 1, i = 1
+</code></pre>
+      </article>
+      <article>
+<p>ちなみに、前置の方が後置より微妙に高速である。すごいプログラマは前置と後置、どちらを使っても良い状況で、前置を好む傾向にある。（気がする）</p>
+
+<pre><code>size_t i;
+for(i = 0; i &lt; 100; ++i)
+{
+    unko unko unko...
+}
+</code></pre>
+
+<p>こんなかんじです。</p>
+      </article>
+      <article>
+<h3>ポインタの複数宣言</h3>
+
+<p>ポインタを一行で一度に宣言するとき、</p>
+
+<pre><code>int *x, y, z;
+</code></pre>
+
+<p>と書きたくなるかと思うが、こう書くと、xだけがポインタになり、yとzは通常の変数になってしまう。正しくは</p>
+
+<pre><code>int *x, *y, *z;
+</code></pre>
+
+<p>こう書くのが正しい</p>
+      </article>
+      <article>
+<h3>わざわざ構造体をポインタ渡しする理由</h3>
+
+<p>先の例で、構造体をわざわざ関数にポインタ渡ししていたが、ポインタを使わず普通に渡してもいいのでは？（普通に渡すことを、 <strong>値渡し</strong> という）と思った人も居るかもしれない。</p>
+
+<pre><code>/* Human構造体を値渡しで引数に取る関数 */
+void printHumanValue(Human v) {
+    printf(" 名前: %s", v.name);
+    printf(" 身長: %f", v.height);
+    printf(" 体重: %f¥n", v.weight);
+}
+
+/* Human構造体のポインタを引数に取る関数 */
+void printHumanPointer(Human *p) {
+    printf(" 名前: %s", p-&gt;name);
+    printf(" 身長: %f", p-&gt;height);
+    printf(" 体重: %f¥n", p-&gt;weight);
+}
+</code></pre>
+      </article>
+      <article>
+<p>だが、値渡しより、 <strong>ポインタ渡しの方が高速</strong> である。何故なら <strong>値渡しでは構造体のメンバを全てコピーして渡す</strong> のに対して、 <strong>ポインタ渡しでは、ポインタのみをコピーして渡す</strong> だけであるからだ。これは32bit環境ならたったの4バイトであり、構造体がいくら巨大であろうと固定である。</p>
+      </article>
+      <article>
+<p>しつこい話をする。</p>
+
+<p>簡単のため省略していたが、</p>
+
+<pre><code>void printHumanPointer(Human *p);
+</code></pre>
+
+<p>は、 p の参照先のメンバを画面に出力するだけで、書き換えるつもりのない関数だ。だから、 p は const 修飾すべきだ。</p>
+
+<pre><code>void printHumanPointer(const Human *p);
+</code></pre>
+      </article>
+      <article>
+<h3>アロー演算子は糖衣構文</h3>
+
+<p>アロー演算子も配列の添字と同じく、糖衣構文（シンタックスシュガー）である。</p>
+
+<h4>文法</h4>
+
+<pre><code>ps-&gt;x
+</code></pre>
+
+<p>におけるアロー演算子は</p>
+
+<pre><code>(*ps).x
+</code></pre>
+
+<p>の糖衣構文（シンタックスシュガー）である</p>
+      </article>
+      <article>
+<h3>ポインタとconst修飾子</h3>
+
+<p>以下の例はconstポインタの宣言の文法である</p>
+
+<pre><code>const int *x;
+int const *x;
+</code></pre>
+
+<p>だが以下の例はそうではない。</p>
+
+<pre><code>int *const x: 
+</code></pre>
+
+<ul>
+<li>こう書くと、xの参照先ではなく、xそのものを書き換えできなくなる。</li>
+</ul>
+      </article>
+      <article>
+<h2>動的メモリ確保</h2>
+      </article>
+      <article>
+<h3>動的メモリ確保のまえに、静的メモリ確保についておさらい</h3>
+
+<p>静的メモリ確保とは、今まで扱ってきた、配列宣言のこと。</p>
+
+<pre><code>int arr[ 10 ];
+</code></pre>
+      </article>
+      <article>
+<p>実は以下の例はC言語では動かないのだ。（例外有り。後述）</p>
+
+<pre><code>int n = ?;  // ? は任意の数字
+int arr[ n ];   // コンパイルエラー
+</code></pre>
+
+<p>何故なら、配列の要素数は定数で無くては宣言できないからだ。言い換えると、 <strong>コンパイルするタイミングで、配列の長さが決定されている必要がある</strong> 。 これが静的メモリ確保だ。 <strong>この欠点を補うのが動的メモリ確保である。</strong></p>
+      </article>
+      <article>
+<h3>動的メモリ確保</h3>
+
+<p><strong>実行時にメモリ領域の確保を行うこと。</strong></p>
+
+<p>今までの静的メモリとは違い、 <strong>実行時に自由な大きさの配列を作ることができる。</strong></p>
+
+<p>なお、以降の関数を利用するためには、標準ライブラリ<code>stdlib.h</code>がインクルードされている必要がある。これを忘れた場合、なんとコンパイルエラーとはならず、本来とは違う挙動を行うことがあるので要注意である。</p>
+      </article>
+      <article>
+<p><strong>配列の宣言とは全く違い、関数を使って確保を行う。</strong> 直感的でないのだが、古い言語なので我慢して欲しい。</p>
+
+<p>動的メモリ確保を担う関数は以下のとおりだ。</p>
+
+<ul>
+<li>malloc</li>
+<li>calloc</li>
+<li>realloc</li>
+</ul>
+
+<p>確保したメモリを解放する関数は以下のとおりだ。</p>
+
+<ul>
+<li>free</li>
+</ul>
+      </article>
+      <article>
+<h3>malloc</h3>
+
+<pre><code>void *malloc(size_t size);
+</code></pre>
+
+<p><strong>size バイト分の連続したメモリ領域を確保し、その領域へのポインタを返す。</strong></p>
+
+<p>エラー時にはNULLを返す。</p>
+
+<p>この関数はvoidポインターが戻り値である。voidポインターは汎用ポインタと呼ばれ、どの型にも勝手にキャストされる。</p>
+      </article>
+      <article>
+<h4>簡単な例</h4>
+
+<pre><code>int *p = malloc( 10 * sizeof(int) );
+</code></pre>
+
+<p><strong>要素数10のint型配列を作った。</strong> 32bit環境ではsizeof(int)は4なので、mallocに 40 を渡して、 <strong>40バイト分、メモリを確保した。</strong></p>
+
+<p>簡単のため要素数は10にしたが、このように要素数が定数の場合は静的メモリ確保でいいと思う。 <strong>実際には定数でなく変数を渡すのが普通だ。</strong></p>
+
+<p><strong>そして、このようにメモリを確保したら必ず、必ず、次に説明するfreeで、確保したメモリ領域を開放し無くてはならない。</strong></p>
+      </article>
+      <article>
+<h3>free</h3>
+
+<pre><code>void free(void *pointer)
+</code></pre>
+
+<p><strong>pointerの指すメモリ領域を開放する。</strong></p>
+
+<p>malloc等で動的確保したメモリは、この関数を使わない限り、プログラムが終了するまで開放されない。メモリの無駄遣いを防ぐため、 <strong>必ず使い終わったメモリはこの関数で開放すること</strong> 。メモリの解放をし忘れることを、 <strong>メモリリーク</strong> と呼び、大量にメモリリークすると、システムの全てのメモリを食いつぶしてしまい、 <strong>最悪OSを巻き込んで停止してしまう。</strong></p>
+      </article>
+      <article>
+<h4>例</h4>
+
+<p>長さ ? のint型配列を作る。</p>
+
+<pre><code>size_t n = ?;
+
+/* 動的メモリ確保する */
+int *p = malloc( n * sizeof(int) );
+
+/* 配列と同じように使える */
+p[0] = 100;
+printf("%d¥n", p[0]);
+
+/* 使い終わったら */
+free( p );
+</code></pre>
+      </article>
+      <article>
+<h3>calloc</h3>
+
+<pre><code>void *calloc(size_t nelements, size_t bytes)
+</code></pre>
+
+<p><strong>bytesのサイズのメモリ領域をnelements個格納できるメモリ領域を確保する。</strong></p>
+
+<p>これは以下の様な解釈で問題ない。</p>
+
+<pre><code>void *calloc(size_t nelements, size_t bytes) {
+    return malloc(nelements * bytes);
+}
+</code></pre>
+
+<p>当然、mallocと同じくfreeで開放し無くてはならない。</p>
+      </article>
+      <article>
+<h3>realloc</h3>
+
+<pre><code>void *realloc(void *pointer, size_t bytes)
+</code></pre>
+
+<p><strong>pointerが指すメモリブロックをリサイズする。</strong></p>
+
+<p>具体的には、bytesバイトのメモリ領域を新たに確保して、pointerメモリブロックにあったデータはできる限りコピーする。</p>
+
+<p>以前より大きくすることも、小さくすることも可能である。</p>
+
+<p>当然、mallocと同じくfreeで開放し無くてはならない。</p>
+      </article>
+      <article>
+<h3>追伸：C99以降では静的配列の宣言と同じ文で動的配列作れます</h3>
+
+<pre><code>{
+    int n = ?;
+    int arr[ n ];   // C99以降のみ可能
+
+    unko unko unko...
+
+}   // ブロックを抜けた時に自動で解放してくれる
+</code></pre>
+
+<p>このようにできます。しかもfreeを呼ぶ必要なし。freeし忘れるミスを減らせるので積極的に使っていけ</p>
+
+<p>でもmallocちゃん達もまだまだ現役なので、ちゃんと覚えてね。</p>
+      </article>
+      <article>
+<h2>次回</h2>
+      </article>
+      <article>
+<h3>次回予告（多分最終回）</h3>
+
+<ul>
+<li>ファイル入出力</li>
+<li>標準ライブラリ</li>
+</ul>
+      </article>
+    </section>
+  </body>
+</html>
