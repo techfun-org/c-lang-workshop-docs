@@ -124,7 +124,7 @@ int foo = 10 + *const_pointer;  /* 可能 */
 </code></pre>
 
 <ul>
-<li>constポインタ cp からの<strong>書き換えのみが不可能</strong></li>
+<li>constポインタ cp からの <strong>書き換えのみが不可能</strong></li>
 </ul>
       </article>
       <article>
@@ -357,9 +357,9 @@ int arr[ n ];   // コンパイルエラー
 <pre><code>int *p = malloc( 10 * sizeof(int) );
 </code></pre>
 
-<p><strong>要素数10のint型配列を作った。</strong> 32bit環境ではsizeof(int)は4なので、mallocに 40 を渡して、<strong>40バイト分、メモリを確保した。</strong></p>
+<p><strong>要素数10のint型配列を作った。</strong> 32bit環境ではsizeof(int)は4なので、mallocに 40 を渡して、 <strong>40バイト分、メモリを確保した。</strong></p>
 
-<p>簡単のため要素数は10にしたが、このように要素数が定数の場合は静的メモリ確保でいいと思う。<strong>実際には定数でなく変数を渡すのが普通だ。</strong></p>
+<p>簡単のため要素数は10にしたが、このように要素数が定数の場合は静的メモリ確保でいいと思う。 <strong>実際には定数でなく変数を渡すのが普通だ。</strong></p>
 
 <p><strong>そして、このようにメモリを確保したら必ず、必ず、次に説明するfreeで、確保したメモリ領域を開放し無くてはならない。</strong></p>
       </article>
@@ -371,7 +371,7 @@ int arr[ n ];   // コンパイルエラー
 
 <p><strong>pointerの指すメモリ領域を開放する。</strong></p>
 
-<p>malloc等で動的確保したメモリは、この関数を使わない限り、プログラムが終了するまで開放されない。メモリリークやメモリの無駄遣いを防ぐため、<strong>必ず使い終わったメモリはこの関数で開放すること</strong>。</p>
+<p>malloc等で動的確保したメモリは、この関数を使わない限り、プログラムが終了するまで開放されない。メモリリークやメモリの無駄遣いを防ぐため、 <strong>必ず使い終わったメモリはこの関数で開放すること</strong>。</p>
       </article>
       <article>
 <h4>例</h4>
