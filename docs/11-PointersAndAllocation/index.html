@@ -39,7 +39,7 @@ September 24, 2013 <br />
 </ul></li>
 <li>constポインタ
 <ul>
-<li>間接参照先への代入を禁止</li>
+<li>参照先への代入を禁止</li>
 </ul></li>
 <li>動的メモリ確保
 <ul>
@@ -340,7 +340,7 @@ int arr[ n ];   // コンパイルエラー
 </ul>
       </article>
       <article>
-<h3>malloc()</h3>
+<h3>malloc</h3>
 
 <pre><code>void *malloc(size_t size);
 </code></pre>
@@ -364,14 +364,14 @@ int arr[ n ];   // コンパイルエラー
 <p><strong>そして、このようにメモリを確保したら必ず、必ず、次に説明するfreeで、確保したメモリ領域を開放し無くてはならない。</strong></p>
       </article>
       <article>
-<h3>free()</h3>
+<h3>free</h3>
 
 <pre><code>void free(void *pointer)
 </code></pre>
 
 <p><strong>pointerの指すメモリ領域を開放する。</strong></p>
 
-<p>malloc等で動的確保したメモリは、この関数を使わない限り、プログラムが終了するまで開放されない。メモリリークやメモリの無駄遣いを防ぐため、 <strong>必ず使い終わったメモリはこの関数で開放すること</strong>。</p>
+<p>malloc等で動的確保したメモリは、この関数を使わない限り、プログラムが終了するまで開放されない。メモリの無駄遣いを防ぐため、 <strong>必ず使い終わったメモリはこの関数で開放すること</strong> 。メモリの解放をし忘れることを、 <strong>メモリリーク</strong> と呼び、大量にメモリリークすると、システムの全てのメモリを食いつぶしてしまい、 <strong>最悪OSを巻き込んで停止してしまう。</strong></p>
       </article>
       <article>
 <h4>例</h4>
@@ -392,7 +392,7 @@ free( p );
 </code></pre>
       </article>
       <article>
-<h3>calloc()</h3>
+<h3>calloc</h3>
 
 <pre><code>void *calloc(size_t nelements, size_t bytes)
 </code></pre>
@@ -409,7 +409,7 @@ free( p );
 <p>当然、mallocと同じくfreeで開放し無くてはならない。</p>
       </article>
       <article>
-<h3>realloc()</h3>
+<h3>realloc</h3>
 
 <pre><code>void *realloc(void *pointer, size_t bytes)
 </code></pre>
