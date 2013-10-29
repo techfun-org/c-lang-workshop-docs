@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<!--
+  TechFUN HTML5 slide template
+
+  Authors: Kodama Shindo(@kodam)
+
+  Using: Google HTML5 slides template(https://code.google.com/p/html5slides/)
+-->
+<html>
+  <head>
+    <title>ファイル入出力と標準ライブラリ</title>
+    <meta charset="utf-8" />
+    <script src="../template/files/slides.js"></script>
+    <style>
+.slides article em {
+    color: red;
+    font-style: normal;
+}
+  </style>
+  </head>
+  <body style="display: none">
+    <section class="slides layout-regular template-default">
+      <article>
+<h1>ファイル入出力と標準ライブラリ</h1>
+
+<p>C言語勉強会 第十二回</p>
+
+<p>kumar <br />
+October 1, 2013 <br />
+引用 : </p>
+
+<ul>
+<li><a href="http://linuxjm.sourceforge.jp/html/LDP_man-pages/man3/">JM Project Linux Programmer's Manual</a></li>
+<li><a href="http://www.open-std.org/jtc1/sc22/WG14/www/docs/n1570.pdf">N1570</a></li>
+</ul>
+      </article>
+      <article>
+<h3>今回の内容</h3>
+
+<ul>
+<li>ファイル入出力</li>
+<li>標準ライブラリ</li>
+<li>プリプロセッサ</li>
+</ul>
+      </article>
+      <article>
+<h2>ファイル入出力</h2>
+      </article>
+      <article>
+<h3>ストリーム</h3>
+
+<p><strong>データの入力または出力の機能を提供するもの。</strong></p>
+
+<p>ここで言うデータとは、ファイル、メモリ、ネットワーク通信等、様々である。</p>
+      </article>
+      <article>
+<h3>C言語におけるファイル入出力のおおまかな流れ</h3>
+
+<pre><code>ファイルを開く  
+     ↓
+ファイルに出力する or ファイルから入力を受ける  
+     ↓ 
+ファイルを閉じる
+</code></pre>
+
+<p>開いているファイルは、ハンドルと呼ばれる変数を利用して操作する。</p>
+
+<p>また、標準ライブラリ<code>stdio.h</code>をインクルードしている必要がある。</p>
+      </article>
+      <article>
+<h4>ファイルに出力する擬似コード</h4>
+
+<pre><code>ハンドル = ファイルオープン(ファイル名);
+
+ファイルに出力(ハンドル, "hogehogehoge~~~~");
+
+ファイルクローズ(ハンドル);
+</code></pre>
+
+<p>実際にC言語において扱う関数は、以下のとおりだ。</p>
+
+<table>
+    <tr>
+        <th>
+            擬似
+        </th>
+        <th>
+            C言語
+        </th>
+    </tr>
+    <tr>
+        <td>
+            ファイルオープン
+        </td>
+        <td>
+            fopen
+        </td>
+    </tr>
+    <tr>
+        <td>
+            ファイルクローズ
+        </td>
+        <td>
+            fclose
+        </td>
+    </tr>
+    <tr>
+        <td>
+            ファイルに出力
+        </td>
+        <td>
+            fprintf
+        </td>
+    </tr>
+    <tr>
+        <td>
+            ファイルから入力
+        </td>
+        <td>
+            fscanf
+        </td>
+    </tr>   
+</table>
+
+<p>そしてハンドルは、<code>FILE *</code>が担当する。</p>
+      </article>
+      <article>
+<h4>ファイルに出力するCのコード</h4>
+
+<pre><code>FILE * handle = fopen("unko.txt", "w");
+
+fprintf(handle, "hogehogehoge~~~~~\n");
+
+fclose(handle);
+</code></pre>
+
+<p>ね？簡単でしょう？</p>
+
+<p>ただし、このコードは簡単のため、万が一ファイルを開けなかった場合のエラー処理を怠っている。そして、関数<code>fopen</code>の2個めの引数の意味もまだわからないだろう。</p>
+
+<p>それらも含め、これより各部分を解説する。</p>
+      </article>
+      <article>
+<h3>FILEポインタ</h3>
+
+<p><strong>C言語における、ファイルのストリーム</strong></p>
+
+<pre><code>FILE *
+</code></pre>
+
+<p><strong>FILE構造体へのポインタである。</strong> C言語ではこれを介して、ファイル(等)の入出力を行う。</p>
+
+<p>ハンドルや、ストリームポインタとも呼ばれる。</p>
+
+<p>これを含め、ファイル入出力のための構造体や関数などの定義は、標準ライブラリ <code>stdio.h</code> で定義されている。 </p>
+      </article>
+      <article>
+<h3>fopen</h3>
+
+<pre><code>FILE *fopen(const char *path, const char *mode);
+</code></pre>
+
+<p><strong>path で指定された名前のファイルを開き、ストリームと結びつける。</strong> </p>
+
+<p>引数 mode は、以下の文字をひとつ以上組み合わせた文字列へのポインタである。</p>
+
+<p>それには以下がある。（次のページへ）</p>
+      </article>
+      <article>
+<table>
+    <tr>
+        <th>
+            文字
+        </th>
+        <th>
+            意味
+        </th>
+    </tr>
+    <tr>
+        <td>
+            r
+        </td>
+        <td>
+            テキストファイルを読み出すために開く。
+        </td>
+    </tr>
+    <tr>
+        <td>
+            w
+        </td>
+        <td>
+            ファイルを書き込みのために開く。（なければ新規作成、あれば上書き）
+        </td>
+    </tr>
+    <tr>
+        <td>
+            a
+        </td>
+        <td>
+            追加（ファイルの最後に書き込む）のために開く。（なければ新規作成）
+        </td>
+    </tr>
+</table>
+
+<p>加えて、末尾に<code>b</code>をつけるとバイナリモードで開く。</p>
+      </article>
+      <article>
+<p><strong>戻り値は開いたファイルを示すFILEポインタ。失敗するとNULL。</strong></p>
+
+<p>簡単のためかなり省略している。完全な説明は</p>
+
+<blockquote>
+  <p><a href="http://linuxjm.sourceforge.jp/html/LDP_man-pages/man3/fopen.3.html">Man page of FOPEN</a></p>
+</blockquote>
+
+<h4>例</h4>
+
+<p>はまだ載せずに、開いたファイルの閉じ方を紹介することにした。次のページヘ。</p>
+      </article>
+      <article>
+<h3>fclose</h3>
+
+<pre><code>int fclose(FILE *fp);
+</code></pre>
+
+<p><strong>fpが指すストリームを閉じる。</strong></p>
+
+<p>正常に終了すると <code>0</code> が返される。そうではない場合 <code>EOF</code> が返される。</p>
+
+<p>また、ストリームを閉じる前に、バッファリングされていた全ての出力データをフラッシュする。</p>
+
+<p>実際のところ、自分でfcloseしなくても、プログラムが終了するとき、OSが勝手にfcloseしてくれるのだが、強制終了した時はその限りでないので、忘れず書いたほうがいいと思う。（これは諸説あるので自信がない）</p>
+      </article>
+      <article>
+<h3>ファイルを開いて閉じるだけのプログラム</h3>
+
+<p>理解の確認のため、全く入出力せず、ファイルを開いて閉じるだけの、プログラムの例を載せる。</p>
+
+<pre><code>FILE * fp;
+
+/* ファイルを開く */
+fp = fopen("test.txt", "w");    /* 書き込みモードでtest.txtを開く */
+
+/* ファイルを閉じる */
+fclose(fp);
+</code></pre>
+      </article>
+      <article>
+<h3>ファイルを開いて閉じるだけのプログラム + エラー処理</h3>
+
+<p>面倒かもしれないがエラー処理は絶対にやってほしい。</p>
+
+<pre><code>FILE * fp;
+
+fp = fopen("test.txt", "w");
+
+/* エラー処理 */
+if (NULL == fp) {
+    printf("ファイルを開けなかった¥n");
+    exit(EXIT_FAILURE);
+}
+
+fclose(fp);
+</code></pre>
+      </article>
+      <article>
+<h3>fprintf</h3>
+
+<pre><code>int fprintf(FILE *stream, const char *format, ...);
+</code></pre>
+
+<p><strong>出力をstreamに書き出す。</strong></p>
+
+<p>お察しの通り、printfに一つ引数が増えただけで、以下のように使う。</p>
+
+<pre><code>fprintf(yourstream, "%d個のうんこがある¥n", 10);
+</code></pre>
+
+<p>このほかにfputcや、fputsなどがある。</p>
+      </article>
+      <article>
+<h3>fscanf</h3>
+
+<pre><code>int fscanf(FILE *stream, const char *format, ...);
+</code></pre>
+
+<p><strong>streamからの入力を読み込む。</strong></p>
+
+<p>お(ry、scanfに一つ引数が増えただけで、以下のように使う。</p>
+
+<pre><code>int x;
+fscanf(yourstream, "%d", &amp;x);
+</code></pre>
+
+<p>このほかにfgetcや、fgetsなどがある。</p>
+      </article>
+      <article>
+<h3>ファイルを書き出すプログラム</h3>
+
+<p>ファイルに文字列を書き出す簡単なプログラム</p>
+
+<pre><code>FILE * fp;
+
+fp = fopen("test.txt", "w");    /* 書き込みモード */
+
+if (NULL == fp) {
+    fprintf(stderr, "ファイルを開けなかった¥n");
+    exit(EXIT_FAILURE);
+}
+
+/* fprintfで、fpに出力 */
+fprintf(fp, "やったぜ¥n");
+
+fclose(fp);
+</code></pre>
+      </article>
+      <article>
+<h3>ファイルを読み込むプログラム</h3>
+
+<p>ファイルから空白が来るまで文字列を読み込む簡単なプログラム</p>
+
+<pre><code>FILE * fp;
+
+fp = fopen("test.txt", "r");    /* 読み込みモード */
+
+if (NULL == fp) {
+    fprintf(stderr, "ファイルを開けなかった¥n");
+    exit(EXIT_FAILURE);
+}
+
+/* fscanfで文字列を読み込んで、printfする */
+char str[100];
+fscanf(fp, "%99s", str);
+printf("%s¥n", str);
+
+fclose(fp); 
+</code></pre>
+      </article>
+      <article>
+<h3>コラム｜標準ストリーム</h3>
+
+<p><strong>ストリームの中でも、標準で用意されているもの</strong></p>
+
+<p>それらは全て <code>FILE *</code> 型で、以下の通りである。</p>
+
+<table>
+    <tr>
+        <th>
+            変数名
+        </th>
+        <th>
+            名前
+        </th>
+    </tr>
+    <tr>
+        <td>
+            stdout
+        </td>
+        <td>
+            標準出力ストリーム
+        </td>
+    </tr>
+    <tr>
+        <td>
+            stderr
+        </td>
+        <td>
+            標準エラー出力ストリーム
+        </td>
+    </tr>
+    <tr>
+        <td>
+            stdin
+        </td>
+        <td>
+            標準入力ストリーム
+        </td>
+    </tr>
+</table>
+
+<p>printf等の関数は、stdoutへ出力を行う。そしてscanf等の関数は、stdinから入力を受ける。</p>
+
+<p>プログラムを起動した時点でオープンされている。だから、fopenを呼ぶ必要はない。</p>
+      </article>
+      <article>
+<p>よって、printfはfprintfにより、こう書ける</p>
+
+<pre><code>fprintf(stdout, "フォーマット", ...);
+</code></pre>
+
+<p>そして、scanfはfscanfにより、こう書ける</p>
+
+<pre><code>fscanf(stdin, "フォーマット", ...);
+</code></pre>
+
+<p>エラーメッセージは、標準エラー出力へ出力すべきだ。</p>
+
+<pre><code>fprintf(stderr, "エラーメッセージ¥n");
+</code></pre>
+      </article>
+      <article>
+<h2>標準Cライブラリ</h2>
+      </article>
+      <article>
+<h3>標準Cライブラリ</h3>
+
+<p><strong>C言語の標準規格で定められた、型・マクロ・関数の集合からなるライブラリ</strong></p>
+
+<p>今まで使ってきた、 <code>stdio.h</code> や <code>stdlib.h</code> などのことである。</p>
+
+<p>これは調べればわかるので、自分で調べて欲しい。Wikipediaで見やすくまとめられている。</p>
+
+<blockquote>
+  <p><a href="http://ja.wikipedia.org/wiki/標準Cライブラリ">標準Cライブラリ - Wikipedia</a></p>
+</blockquote>
+      </article>
+      <article>
+<h2>プリプロセッサ</h2>
+      </article>
+      <article>
+<h3>プリプロセッサ</h3>
+
+<p><strong>ソースコードをコンパイルする前に、ソースコードに対して行われる前処理をプリプロセス（preprocess）と呼ぶ（直訳）。そのプリプロセスを行うプログラムのことをプリプロセッサと呼ぶ。</strong></p>
+
+<p>C プリプロセッサは、以下の4つの機能を提供する。</p>
+
+<ul>
+<li>ヘッダファイルの読み込み</li>
+<li>マクロによる置換</li>
+<li>条件文により、プログラムを含めたり除外する</li>
+<li>行番号の取得。</li>
+</ul>
+      </article>
+      <article>
+<p>プリプロセッサのための命令を、<strong>プリプロセッサディレクティブ</strong>という。ディレクティブは命令という意味である。</p>
+
+<ul>
+<li>プリプロセッサディレクティブの名前の先頭には、<code>#</code>が付いている。</li>
+<li>ディレクティブごとに改行を行う必要がある。</li>
+</ul>
+
+<p>gccで、プリプロセスのみの実行を行うには、<code>-E</code>オプションを使う。標準出力に結果が出力される。</p>
+      </article>
+      <article>
+<h3>ヘッダファイルの読み込み</h3>
+
+<p><code>#include</code>により行う。</p>
+
+<h4>#include</h4>
+
+<p><strong>指定したファイルの中身をまるごと挿入する</strong></p>
+
+<pre><code>#include &lt;h-char-sequence&gt;
+#include "q-char-sequence"
+</code></pre>
+
+<p>今まで使ってきたinclude文であるが実はこういう単純な意味であった。</p>
+      </article>
+      <article>
+<h3>マクロによる置換</h3>
+
+<p><strong>プリプロセッサの中でも、文字列の置換を行うプログラムのことをマクロと呼ぶ。</strong></p>
+
+<p>本当に単なる置換である。</p>
+
+<p>マクロの定義は、 <code>#define</code> で行う。</p>
+      </article>
+      <article>
+<h4>#define</h4>
+
+<p><strong><code>#define</code> にはいくつか文法がある。ここではメジャーなもの2つを紹介する。それぞれ、マクロ定数を定義するものと、マクロ関数を定義するものである。</strong></p>
+      </article>
+      <article>
+<h3>マクロ定数を定義する</h3>
+
+<pre><code>#define identifier replacement-token-list
+</code></pre>
+
+<p><strong>指定したidentifierをソースコード内で見つけたら、replacement-token-listに置き換える</strong></p>
+
+<h5>例</h5>
+
+<pre><code>#define UNKO 1
+
+int func(void) {
+    return UNKO;
+}
+</code></pre>
+
+<p>関数funcは 1 を返す。</p>
+      </article>
+      <article>
+<h4>マクロ定数の定義を書かないこともできる</h4>
+
+<pre><code>#define identifier
+</code></pre>
+
+<p>後に出る<code>#ifdef</code>等と組み合わせて使う</p>
+      </article>
+      <article>
+<h3>マクロ関数を定義する</h3>
+
+<pre><code>#define identifier(parameter-list) replacement-token-list
+</code></pre>
+
+<p><strong>マクロ定数の機能に加え、引数をとる事ができる。</strong></p>
+
+<p>とった引数は、replacement-token-listの中で使うことが出来る。</p>
+
+<h5>例</h5>
+
+<pre><code>#define ADD(A, B) A + B
+
+int func(void) {
+    const int a = 1, b = 3;
+
+    return ADD(a, b);
+}
+</code></pre>
+      </article>
+      <article>
+<p><code>ADD(a, b)</code> は <code>a + b</code> に置換され、関数funcは 4 を返す。</p>
+
+<h4>マクロ関数の注意点</h4>
+
+<ul>
+<li>ただの文字列置換なので、型を完全に無視してしまう。</li>
+<li>replacement-token-listを<code>()</code>で囲まないとヤバい</li>
+</ul>
+
+<h5>replacement-token-listを<code>()</code>で囲まなかったせいでヤバい例</h5>
+
+<pre><code>#define ADD(A, B) A + B
+
+int x = 5 * ADD(2, 3);
+</code></pre>
+
+<p><code>5 * (2 + 3) = 25</code>になることを期待したと思うが、マクロ関数による単なる置換が行われ、<code>5 * 2 + 3 = 13</code>になってしまう。</p>
+      </article>
+      <article>
+<p>なので、マクロ関数を書く場合、replacement-token-listを必ず<code>()</code>
+で囲むべきだ。</p>
+
+<h5>直した例</h5>
+
+<pre><code>#define ADD(A, B)   (A + B)
+
+int x = 5 * ADD(2, 3);  // 5 * (2 + 3) = 25
+</code></pre>
+      </article>
+      <article>
+<h3>条件分岐</h3>
+
+<p><strong>条件を満たしたらプログラムを含め、そうでなければ除外する</strong></p>
+
+<pre><code>#if constant-expression
+    …
+#endif
+</code></pre>
+
+<p>constant-expressionが真のとき（0以外のとき）、...をプログラムに含む。偽のとき（0のとき）、...はプログラムから除外される。</p>
+
+<p>constant-expressionは定数で無くてはならない。プリプロセッサはコンパイル前に実行されるので、当然である。</p>
+
+<p><small>（この場合、定数とはconst変数のことではない。）</small></p>
+      </article>
+      <article>
+<p>条件分岐ディレクティブは幾つかある。</p>
+
+<table>
+    <tr>
+        <th>
+            ディレクティブ
+        </th>
+        <th>
+            意味
+        </th>
+    </tr>
+    <tr>
+        <td>
+            #if …
+        </td>
+        <td>
+            if …
+        </td>
+    </tr>
+    <tr>
+        <td>
+            #ifdef …
+        </td>
+        <td>
+            if defined …
+        </td>
+    </tr>
+    <tr>
+        <td>
+            #ifndef …
+        </td>
+        <td>
+            if not defined ...
+        </td>
+    </tr>
+    <tr>
+        <td>
+            #elif ...
+        </td>
+        <td>
+            else if ...
+        </td>
+    </tr>
+    <tr>
+        <td>
+            #else
+        </td>
+        <td>
+            else
+        </td>
+    </tr>
+    <tr>
+        <td>
+            #endif
+        </td>
+        <td>
+            endif
+        </td>
+    </tr>
+</table>
+      </article>
+      <article>
+<h2>おわりに</h2>
+      </article>
+      <article>
+<h4>やってみませんか</h4>
+
+<ul>
+<li><strong>複数のファイルを使ったC言語プログラミング</strong>
+<ul>
+<li>C++でも役立つのでぜひ学んで欲しい。</li>
+<li>ライブラリとの連携の仕方も、是非知ってほしい。</li>
+</ul></li>
+<li><strong>最新のC言語を学ぶ</strong>
+<ul>
+<li>C言語含め、プログラミング言語には、規格がある。</li>
+<li>2013年10月現在、最新のC言語はC11で、2011年に承認されたものである。</li>
+<li><a href="http://ja.wikipedia.org/wiki/C11_(C言語)">C11 (C言語) - Wikipedia</a></li>
+</ul></li>
+</ul>
+      </article>
+      <article>
+<h4>C言語よりも楽しい言語でプログラミングしませんか</h4>
+
+<p>大抵の最近の言語はC言語より楽しい。</p>
+
+<p>他の言語を勉強してみませんか。</p>
+
+<p>どの言語でも、どこかC言語に似ているので、このC言語勉強会で学んだことは、必ず役に立つはずです。</p>
+
+<p>どの言語が良いかはあなたのやりたいこと次第で決まってきます。先輩方に相談してみよう！</p>
+      </article>
+      <article>
+<p><strong>皆さん、お疲れ様でした。</strong></p>
+      </article>
+      <article>
+<h1>終わり</h1>
+      </article>
+      <article>
+<h1>Special thanks...</h1>
+
+<ul>
+<li><strong>hitoyozake</strong></li>
+<li><strong><strong>oppai</strong></strong></li>
+<li><strong><strong>akiym</strong></strong></li>
+<li><strong>Mr.tanaka</strong></li>
+<li><strong>いーさんさん</strong></li>
+<li><strong>kumar8600</strong></li>
+<li><strong>AND YOU</strong></li>
+</ul>
+      </article>
+    </section>
+  </body>
+</html>
