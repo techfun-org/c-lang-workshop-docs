@@ -43,6 +43,7 @@
 		int m = MAX(0, a++);
 		
 		printf("m: %d\n", m);
+		printf("a: %d\n", a);
 		
 		return 0;
 	}
