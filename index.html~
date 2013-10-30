@@ -126,18 +126,6 @@
 				</li>
 			</ul>
 		</li>
-		<li>
-			第十二回（ファイル入出力と標準ライブラリとプリプロセス）
-			<ul>
-				<li>
-					<a href="docs/12-FileIOAndStandardLibraries/">資料</a>
-				</li>
-				<li>
-					<a href="docs/12-FileIOAndStandardLibraries/exercises.html">演習問題</a>
-				</li>
-			</ul>
-		</li>
-
 	</ul>
 	
 
