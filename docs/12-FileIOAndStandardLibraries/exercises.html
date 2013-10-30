@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<!--
+  TechFUN HTML5 slide template
+
+  Authors: Kodama Shindo(@kodam)
+
+  Using: Google HTML5 slides template(https://code.google.com/p/html5slides/)
+-->
+<html>
+  <head>
+    <title>演習問題</title>
+    <meta charset="utf-8" />
+    <script src="../template/files/slides.js"></script>
+    <style>
+.slides article em {
+    color: red;
+    font-style: normal;
+}
+  </style>
+  </head>
+  <body style="display: none">
+    <section class="slides layout-regular template-default">
+      <article>
+<p><small>C言語勉強会 第十二回 ファイル入出力と標準ライブラリ</small></p>
+
+<h3>演習問題</h3>
+
+<ul>
+<li>好きな文章（例えばうんこ）をlecture.txtに書き出すプログラムを書け</li>
+<li>何かテキストファイルを開いて、全て標準出力に書き出すプログラムを書け。（テキストファイルのパスを、コマンドライン引数で指定するプログラムだとなお良し）</li>
+<li>（コンパイル対象の）OSによって動作を変えるプログラムを書け。</li>
+<li>次のページもあるでｗ</li>
+</ul>
+      </article>
+      <article>
+<p>問題</p>
+
+<pre><code>#include &lt;assert.h&gt;
+
+#define add(A, B) A + B
+
+int main(void) {
+
+    assert(6 == add(1, 2) * 2);
+
+    return 0;
+}
+</code></pre>
+
+<ul>
+<li>上記のプログラムは、実行するとアサーション違反となる。main関数の中身を書き換えずに、期待通りの動作をするプログラムに書き換えよ。
+<ul>
+<li><small>アサーションとは→→→</small></li>
+</ul></li>
+</ul>
+      </article>
+      <article>
+<ul>
+<li><small>アサーションとは、直訳すると「表明」を意味し、期待するある条件を満たしているかを確かめるために用いられる。今回の例では、<code>add(1, 2) * 2</code>の答えが、<code>6</code>であって欲しい。とても便利なのでこの先バリバリ使って行こう。バリバリ</small> 
+<ul>
+<li><small><a href="http://ja.wikipedia.org/wiki/%E8%A1%A8%E6%98%8E">表明 - Wikipedia</a></small></li>
+<li><small><a href="http://www.c-tipsref.com/reference/assert/assert.html">C言語関数辞典 - assert</a></small></li>
+</ul></li>
+</ul>
+
+<p>次のページもあるでｗ</p>
+      </article>
+      <article>
+<p>問題</p>
+
+<pre><code>#include &lt;stdio.h&gt;
+
+#define MAX(A, B) (A &gt; B ? A : B)   
+
+int main(void) {
+    int a = 1;
+    int m = MAX(0, a++);
+
+    printf("m: %d\n", m);
+
+    return 0;
+}
+</code></pre>
+
+<ul>
+<li>上記のプログラムを実行し、問題点を探せ。そしてその解決法は何か考えよ。</li>
+</ul>
+      </article>
+    </section>
+  </body>
+</html>
